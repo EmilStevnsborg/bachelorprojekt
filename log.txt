@@ -1,0 +1,4 @@
+Date, "description"
+8/2, "Worked on small CNN, had some problems with training, especially with the CrossEntropyLoss function. Package problems, solved using colab"
+9/2, "Had some trouble with finding CNN visualization tool. Went back to vs code after creating new conda enviroment and no dependency issues"
+10/2, "Understanding dataflow in CNN, and mapping into Python plain code"
