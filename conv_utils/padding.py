@@ -14,11 +14,11 @@ def padding2d(input, kernel_size: tuple, pad_val: int, stride: tuple = None):
     #width_off = (kernel_size[1] * int(np.ceil(input_size[1]/kernel_size[1]))) % input_size[0]
 
     # This should generalize, however, testing is needed
-    height_off = (kernel_size[0] + stride[0] * int(np.ceil(input_size[0]-kernel_size[0])/stride[0])) % input_size[0]
-    width_off = (kernel_size[1] + stride[0] * int(np.ceil(input_size[1]-kernel_size[1])/stride[1])) % input_size[1]
+    height_off = input_size[0] - (kernel_size[0] + stride[0] * int(np.ceil(input_size[0]-kernel_size[0])/stride[0]))
+    width_off = input_size[1] - (kernel_size[1] + stride[0] * int(np.ceil(input_size[1]-kernel_size[1])/stride[1]))
     
-    output_height = None
-    output_width = None
+    output_height = input_size[0]
+    output_width = input_size[1]
 
     assert input_size[0] >= kernel_size[0] and input_size[1] >= kernel_size[1]
 
