@@ -1,6 +1,6 @@
 import numpy as np
 
-# CUSTOM STRIDE IS NOT IMPLEMENTED
+
 # IN THIS IMPLMENTATION THE KERNEL MUST BE SMALLER THAN THE INPUT
 def padding2d(input, kernel_size: tuple, pad_val: int, stride: tuple = None):    
 
