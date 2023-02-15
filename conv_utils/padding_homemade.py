@@ -18,6 +18,7 @@ def padding(channel2d, padding: tuple, pad_val: int):
     
     return channel2d_padded
 
+
 # TEST
 # 
 # channel2d_test = np.array([[1,1,1],[1,1,1],[1,1,1]])
