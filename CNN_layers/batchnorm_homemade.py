@@ -1,9 +1,12 @@
 import numpy as np
+import sys
 
 class BatchNorm:
-    def __init__(self, weights, biases):
+    def __init__(self, weights, biases, running_mean, running_var):
         self.weights = weights
         self.biases = biases
+        self.running_mean = running_mean
+        self.running_var = running_var
     
     def __call__(self, input_batch):
         # output_batch is a list
@@ -24,9 +27,9 @@ class BatchNorm:
                 
     def batchnorm_operation(self, channel2d, index: int):
         r, c = channel2d.shape
-        mean = np.mean(channel2d)
+        mean = self.running_mean[index]
         # biased estimator
-        std = np.std(channel2d)
+        var = self.running_var[index]
         weight = self.weights[index]
         bias = self.biases[index]
 
@@ -34,7 +37,7 @@ class BatchNorm:
 
         for i in range(r):
             for j in range(c):
-                ij = (channel2d[i,j] - mean) / (std) * weight + bias
+                ij = (channel2d[i,j] - mean) / np.sqrt((var)+ sys.float_info.min) * weight + bias
                 out_channel[i,j] = ij
         
         return out_channel
