@@ -35,6 +35,6 @@ class BatchNorm:
         for k_ in range(k):
             for i in range(r):
                 for j in range(c):
-                    out_channel[k_,i,j] = (np.array(channel2d)[k_,i,j] - mean[k_]) / math.sqrt(var[k_] + sys.float_info.min) * self.weights[k_] + self.biases[k_] 
+                    out_channel[k_,i,j] = (np.array(channel2d)[k_,i,j] - mean[k_]) / math.sqrt(var[k_] + sys.float_info.min)# * self.weights[k_]# + self.biases[k_] 
         
         return np.array([out_channel])
