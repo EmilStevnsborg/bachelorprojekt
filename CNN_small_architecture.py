@@ -30,6 +30,7 @@ class CNNSmall(nn.Module):
             nn.Flatten(),
             # batch x 45
             self.lin
+            
         )
     
     def forward(self, x):
