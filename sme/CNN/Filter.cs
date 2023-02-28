@@ -4,9 +4,9 @@ namespace CNN
 {
     public class Filter
     {
-        public List<Kernel> filter { get; private set; }
+        public List<ConvKernel> filter { get; private set; }
 
-        public Filter(List<Kernel> filter)
+        public Filter(List<ConvKernel> filter)
         {
             this.filter = filter;
         }

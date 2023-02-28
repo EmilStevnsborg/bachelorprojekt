@@ -1,29 +1,28 @@
 namespace CNN
 {
-    public class ConvKernel : Kernel
+    public class MaxPoolKernel : Kernel
     {
-        public double [,] kernel { get; private set; }
         public (int, int) stride { get; private set; }
-        public ConvKernel(int height,
-                          int width,
-                          double[,] kernel,
-                          (int, int)? padding,
-                          int? padVal,
-                          (int, int)? stride) : base(height, width, padding, padVal)
+        public MaxPoolKernel(int height,
+                            int width,
+                            double[,] kernel,
+                            (int, int)? padding,
+                            int? padVal,
+                            (int, int)? stride) : base(height, width, padding, padVal)
         {
-            this.kernel = kernel;
-            this.stride = stride ?? (1,1);
+            this.stride = stride ?? (height, width);
         }
 
         public override Channel KernelOperation(Channel channel)
         {
             channel.PrintChannel();
-            // Apply the padding
+            // Pad the channel
             Channel tempChannel = this.ApplyPadding(channel);
             tempChannel.PrintChannel();
             int outHeight = tempChannel.height - (this.height - 1) - (this.stride.Item1 - 1);
             int outWidth =  tempChannel.width - (this.width - 1) - (this.stride.Item2 - 1);
 
+            // initialize the values
             double[,] outChannelValues = new double[outHeight, outWidth];
 
             for (int i = 0; i < outHeight; i++)
@@ -36,7 +35,7 @@ namespace CNN
                     int y = b + this.width;
 
                     // Look at Extensions for documentation
-                    double ij = tempChannel.Slice(a, b, x, y).Multiply(this.kernel).Sum();
+                    double ij = channel.Slice(a, b, x, y).Amax();
                     outChannelValues[i,j] = ij;
                 }
             }

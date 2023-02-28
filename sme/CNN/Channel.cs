@@ -1,3 +1,5 @@
+using System;
+
 namespace CNN 
 {
     public class Channel
@@ -6,23 +8,21 @@ namespace CNN
         public int width { get; private set; }
         public (int, int) padding { get; private set; }
         public int padVal { get; private set; }
-        private double [,] channel;
+        public double [,] channel { get; private set; }
 
-        public Channel(int height, int width, double [,] channel, (int, int)? padding, int? padVal)
+        public Channel(int height, int width, double [,] channel)
         {
             this.height = height;
             this.width = width;
             this.channel = channel;
-            this.padding = padding ?? (0,0);
-            this.padVal = padVal ?? 0;
         }
 
-        // returns channel and applies padding if needed
-        public double[,] GetChannel()
+        // Applies padding and makes changes to channel
+        private void ApplyPadding()
         {
             if (padding.Item1 == 0 && padding.Item2 == 0)
             {
-                return channel;
+                // nothing
             }
             else
             {
@@ -44,7 +44,9 @@ namespace CNN
                     }
                 }
 
-                return newChannel;
+                channel = newChannel;
+                height = padHeight;
+                width = padWidth;
             }
         }
 
@@ -59,6 +61,22 @@ namespace CNN
                 }
             }
             return slice;
+        }
+
+        public void PrintChannel()
+        {
+            for (int i = 0; i < this.channel.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.channel.GetLength(1); j++) {
+                    Console.Write("{0} ", this.channel[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static implicit operator Channel(Channels v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

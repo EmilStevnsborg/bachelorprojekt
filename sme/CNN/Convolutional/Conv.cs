@@ -49,28 +49,25 @@ namespace CNN
             {
                 List<Channel> outChannels = new List<Channel>();
 
+                int b = 0;
                 foreach (Filter filter in this.filters)
                 {
                     // init outChannel to first kernel - channel
                     ConvKernel kernelInit = (ConvKernel) filter.filter[0];
                     Channel channelInit = channels.channels[0];
 
-                    double [,] outChannelSum = kernelInit.KernelOperation(channelInit);
+                    Channel outChannel = kernelInit.KernelOperation(channelInit);
 
                     for (int i = 1; i < this.numInChannels; i++)
                     {
                         ConvKernel kernel = (ConvKernel) filter.filter[i];
                         Channel channel = channels.channels[i];
-                        double [,] kernelOut = kernel.KernelOperation(channel);
-                        outChannelSum = outChannelSum.SumPairwise(kernelOut);
+                        Channel kernelOut = kernel.KernelOperation(channel);
+                        outChannel = outChannel.SumPairwise(kernelOut);
                     }
 
-                    int height = outChannelSum.GetLength(0);
-                    int width = outChannelSum.GetLength(1);
-
-                    Channel outChannel = new Channel(height, width, outChannelSum, null, null);
-
-                    outChannels.Add(outChannel);
+                    outChannels.Add(outChannel.AddBias(biases[b]));
+                    b += 1;
                 }
             }
         }
