@@ -4,10 +4,10 @@ import torch.nn as nn
 class CNNSmall(nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv1 = nn.Conv2d(1, 3, (3,3)) 
+        self.conv1 = nn.Conv2d(1, 3, (3,3))
         self.batchNorm1 = nn.BatchNorm2d(3)
         self.maxPool1 = nn.MaxPool2d((2,2))
-        self.conv2 = nn.Conv2d(3, 5, (5,5)) 
+        self.conv2 = nn.Conv2d(3, 5, (5,5))
         self.batchNorm2 = nn.BatchNorm2d(5)
         self.maxPool2 = nn.MaxPool2d((3,3))
         self.lin = nn.Linear(45,2)
