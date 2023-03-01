@@ -1,5 +1,5 @@
 import numpy as np
-from maxpool_homemade import MaxPool
+from CNN_layers.maxpool_homemade import MaxPool
 
 # TEST 1
 #

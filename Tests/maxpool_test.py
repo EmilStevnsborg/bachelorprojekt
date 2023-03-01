@@ -1,5 +1,9 @@
+import numpy as np
 import torch
 import torch.nn as nn
+
+from CNN_layers.maxpool_homemade import MaxPool
+
 
 class CNNSmall(nn.Module):
     def __init__(self):
@@ -30,8 +34,8 @@ class CNNSmall(nn.Module):
             nn.Flatten(),
             # batch x 45
             self.lin
-            
         )
     
     def forward(self, x):
         return self.network(x)
+
