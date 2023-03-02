@@ -1,10 +1,11 @@
 using SME;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CNN 
 {
-    public class Conv : SimpleProcess
+    public class Conv // : SimpleProcess
     {
 
         // filter x channels x height x width
@@ -14,81 +15,92 @@ namespace CNN
         public int numInChannels { get; private set; }
         public (int, int) padding { get; private set; }
         public (int, int) stride { get; private set; }
+        public int padVal { get; private set; }
 
-        public Conv(List<Filter> filters , double[] biases, int numInChannels, (int, int)? padding, (int, int)? stride)
+        public Conv(List<Filter> filters , double[] biases, int numInChannels, (int, int)? stride, (int, int)? padding, int? padVal)
         {
             this.filters = filters;
             this.biases = biases;
             this.numInChannels = numInChannels;
-            this.padding = padding ?? (0,0);
             this.stride = stride ?? (1,1);
+            this.padding = padding ?? (0,0);
+            this.padVal = padVal ?? 0;
+
         }
 
-        // Can't handle null
-        public interface IInputBatch : IBus
+        public List<Channels> Call(List<Channels> inBatch)
         {
-            // batch x channels x height x width
-            List<Channels> InputBatch { get; set; }
-        }
+            List<Channels> outBacth = new List<Channels>();
 
-        // Can't handle null
-        public interface IResultBatch : IBus
-        {
-            // batch x channels x height x width
-            public List<Channels> ResultBatch { get; set; }
-        }
-
-        [InputBus]
-        private readonly IInputBatch Input = Scope.CreateBus<IInputBatch>();
-        [OutputBus]
-        private readonly IResultBatch Output = Scope.CreateBus<IResultBatch>();
-
-        private void Call()
-        {
-            foreach (Channels channels in Input.InputBatch)
+            // go through batch, each is a Channels object
+            for (int cs = 0; cs < inBatch.Count; cs++)
             {
-                List<Channel> outChannels = new List<Channel>();
-
+                Channels channels = inBatch[cs];
+                Channels outChannels = new Channels();
                 int b = 0;
+
+                // Go through filters
                 foreach (Filter filter in this.filters)
                 {
-                    // init outChannel to first kernel - channel
+                    // initialize outChannel with first KernelOperation
                     ConvKernel kernelInit = (ConvKernel) filter.filter[0];
                     Channel channelInit = channels.channels[0];
-
-                    Channel outChannel = kernelInit.KernelOperation(channelInit);
+                    Channel outChannel = this.KernelOperation(channelInit, kernelInit);
 
                     for (int i = 1; i < this.numInChannels; i++)
                     {
                         ConvKernel kernel = (ConvKernel) filter.filter[i];
                         Channel channel = channels.channels[i];
-                        Channel kernelOut = kernel.KernelOperation(channel);
-                        outChannel = outChannel.SumPairwise(kernelOut);
+                        Channel channelKernel = this.KernelOperation(channel, kernel);
+                        outChannel = outChannel.SumPairwise(channelKernel);
                     }
 
-                    outChannels.Add(outChannel.AddBias(biases[b]));
+                    outChannels.channels.Add(outChannel.AddBias(biases[b]));
                     b += 1;
                 }
+                outBacth.Add(outChannels);
             }
+
+            return outBacth;
+        }
+        public Channel KernelOperation(Channel channel, ConvKernel kernel)
+        {
+            channel.channel.PrintArray();
+            // Apply the padding
+            Channel tempChannel = channel.ApplyPadding(this.padding, this.padVal);
+            tempChannel.channel.PrintArray();
+            int outHeight = tempChannel.height - (kernel.height - 1) - (this.stride.Item1 - 1);
+            int outWidth =  tempChannel.width - (kernel.width - 1) - (this.stride.Item2 - 1);
+
+            double[,] outChannelValues = new double[outHeight, outWidth];
+
+            for (int i = 0; i < outHeight; i++)
+            {
+                for (int j = 0; j < outWidth; j++)
+                {
+                    int a = i * stride.Item1;
+                    int b = j * stride.Item2;
+                    int x = a + kernel.height;
+                    int y = b + kernel.width;
+
+                    // Look at Extensions for documentation
+                    double ij = tempChannel.Slice(a, b, x, y).Multiply(kernel.kernel).Sum();
+                    outChannelValues[i,j] = ij;
+                }
+            }
+            
+            Channel outChannel = new Channel(outHeight, outWidth, outChannelValues);
+            outChannel.channel.PrintArray();
+            return outChannel;
         }
         
-        /// <summary>
-        /// Called on each clock tick.
-        /// </summary>
-        protected override void OnTick()
-        {
-            //
-        }
-         /// <summary>
-        /// Run this instance, calling OnTick each clocktick.
-        /// </summary>
-        public override async Task Run()
-        {
-            while (true)
-            {
-                await ClockAsync();
-                OnTick();
-            }
-        }
+        // /// <summary>
+        // /// Called on each clock tick.
+        // /// </summary>
+        // protected override void OnTick()
+        // {
+        //     List<Channels> resultBatch = this.Call();
+        //     Output.ResultBatch = resultBatch;
+        // }
     }
 }

@@ -10,6 +10,10 @@ namespace CNN
         {
             this.channels = channels;
         }
+        public Channels()
+        {
+            this.channels = new List<Channel>();
+        }
 
     }
 }

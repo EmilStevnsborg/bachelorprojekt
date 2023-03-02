@@ -7,16 +7,17 @@ namespace CNN
         public static void Main(string[] args)
         {
 
-            using(var sim = new Simulation())
-            {
-                sim
-                .BuildCSVFile()
-                .BuildGraph()
-                .Run(
-                    // ConvTester()
-                );
-            }
+            // using(var sim = new Simulation())
+            // {
+            //     sim
+            //     .BuildCSVFile()
+            //     .BuildGraph()
+            //     .Run(
+            //         new ConvTester()
+            //     );
+            // }
 
+            ConvTester.testOne();
 
         }
     }

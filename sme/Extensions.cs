@@ -31,6 +31,17 @@ namespace CNN
             }
             return outArray;
         }
+
+        public static void PrintArray(this double [,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++) {
+                    Console.Write("{0} ", array[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
         public static Channel AddBias(this Channel channel, double bias)
         {
             double [,] outChannelValues = new double[channel.height, channel.width];
@@ -60,6 +71,39 @@ namespace CNN
             
             Channel outChannel = new Channel(channel.height, channel.width, outChannelValues);
             return outChannel;
+        }
+
+        // returns channel and applies padding if needed
+        public static Channel ApplyPadding(this Channel channel, (int, int) padding, int padVal)
+        {
+            if (padding.Item1 == 0 && padding.Item2 == 0)
+            {
+                return channel;
+            }
+            else
+            {
+                (int pr, int pc) = padding;
+                int padHeight = channel.height + 2 * pr;
+                int padWidth = channel.width + 2 * pc;
+                double [,] newChannelValues = new double [padHeight, padWidth];
+                for (int i = 0; i < padHeight; i++)
+                {
+                    for (int j = 0; j < padWidth; j++)
+                    {
+                        if (i < pr || j < pc || i >= channel.height + pr || j >= channel.width + pc)
+                        {
+                            newChannelValues[i,j] = padVal;
+                        }
+                        else
+                        {
+                            newChannelValues[i,j] = channel.channel[i-pr,j-pc];
+                        }
+                    }
+                }
+
+                Channel newChannel = new Channel(padHeight, padWidth, newChannelValues);
+                return newChannel;
+            }
         }
     }
 }
