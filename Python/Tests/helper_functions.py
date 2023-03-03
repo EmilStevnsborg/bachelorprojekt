@@ -23,8 +23,63 @@ def tokenize(num):
     else:
         return torch.tensor(np.array([0., 1.]))
 
-MNIST_test = datasets.MNIST(root='./data', train=True, download=True, transform=torchvision.transforms.ToTensor())
-test_set = [[data[0], tokenize(data[1])] for data in MNIST_test if data[1] in [1,2]]
+# takes a 4-dimensional tensor from the dataloader (batch_size x channel_size x height x width)
+# and turns it into a list of lists of (height x width) numpy arrays
+def transform_input(input_batch):
+    return list(input_batch.detach().numpy())
 
-batch_size = 2
-test_loader = DataLoader(test_set, batch_size=batch_size)
+# compares two lists of batches with same amount of channels 
+# and returns the summed absoute loss for each batch over the channels
+def compare(x, y):
+    b_diff = []
+    batch_size = len(x)
+
+    for b in range(batch_size):
+        c_diff = []
+        channels = len(x[b])
+
+        for c in range(channels):
+            diff = np.sum(np.absolute(x[b][c] - y[b][c]))
+            c_diff.append(diff)
+        
+        b_diff.append(c_diff)
+    
+    return b_diff
+
+def create_conv_homemade(model_conv):
+    weights = model_conv.weight
+    biases = model_conv.bias.detach().numpy()
+
+    out_c, in_c, r, c = weights.shape
+    conv1_filters = []
+
+    for f in range(out_c):
+        filter_ = []
+        kernels = []
+
+        for kernel in list(weights[f,:,:,:]):
+            kernels.append(kernel.detach().numpy())
+
+        filter_.append(kernels)
+        filter_.append(biases[f])
+        conv1_filters.append(filter_)
+    
+    return conv_homemade.Conv(filters=conv1_filters, in_channels=in_c)
+
+def create_batchnorm_homemade(model_batchnorm):
+    weights = model_batchnorm.weight
+    biases = model_batchnorm.bias
+    running_mean = model_batchnorm.running_mean
+    running_var = model_batchnorm.running_var
+
+    return batchnorm_homemade.BatchNorm(weights=weights, biases=biases, running_mean = running_mean, running_var = running_var)
+
+def create_maxpool_homemade(model_maxpool):
+    kernel_size = model_maxpool.kernel_size
+    stride = model_maxpool.stride
+    if type(model_maxpool.padding) == int:
+        padding = (model_maxpool.padding, model_maxpool.padding)
+    else:
+        padding = model_maxpool.padding
+    
+    return maxpool_homemade.MaxPool(kernel_size=kernel_size, stride=stride, padding=padding)
