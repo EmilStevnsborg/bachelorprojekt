@@ -1,0 +1,6 @@
+using SME;
+
+namespace CNN
+{
+    //
+}
