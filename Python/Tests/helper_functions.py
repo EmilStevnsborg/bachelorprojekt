@@ -34,6 +34,8 @@ def compare(x, y):
     b_diff = []
     batch_size = len(x)
 
+    max_error = 0
+
     for b in range(batch_size):
         c_diff = []
         channels = len(x[b])
@@ -41,10 +43,13 @@ def compare(x, y):
         for c in range(channels):
             diff = np.sum(np.absolute(x[b][c] - y[b][c]))
             c_diff.append(diff)
+
+            if (np.max(np.absolute(x[b][c]-y[b][c])) > max_error):
+                max_error = np.max(np.absolute(x[b][c]-y[b][c]))
         
         b_diff.append(c_diff)
     
-    return b_diff
+    return b_diff, max_error
 
 def create_conv_homemade(model_conv):
     weights = model_conv.weight
