@@ -16,8 +16,7 @@ namespace CNN
         bool IsValid { get; set; }
         [InitialValue]
         bool LastPixel { get; set; }
-
-        byte Pixel { get; set; }
+        double Pixel { get; set; }
     }
     //<summary>
     //  A bus for one channel
@@ -30,5 +29,16 @@ namespace CNN
         int Width { get; set; }
         [FixedArrayLength(STANDARD_SAFE_SIZE)]
         IFixedArray<double> Data { get; set; }
+    }
+
+    public interface Pixel : IBus
+    {
+        [InitialValue]
+        bool IsValid { get; set; }
+        // [InitialValue(0)]
+        // int I { get; set; }
+        // [InitialValue(0)]
+        // int J { get; set; }
+        double Value { get; set; }
     }
 }

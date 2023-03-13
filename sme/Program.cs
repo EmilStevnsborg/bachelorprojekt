@@ -10,14 +10,15 @@ namespace CNN
             using(var sim = new Simulation())
             {
                 var reluTester = new RELUTester();
-                var reluChannel = new RELUChannel();
+                var reluCtrl = new RELUCtrl(2,2);
+                var relu = new RELU();
 
-                reluChannel.Input = reluTester.Input;
-                reluTester.Result = reluChannel.Output;
+                reluCtrl.Input = reluTester.Input;
+                relu.Input = reluCtrl.Output;
+                //
+                // reluTester.Result.Data[x] = relu.Output.Value;
 
                 sim
-                .AddTopLevelInputs(reluChannel.Input)
-                .AddTopLevelOutputs(reluChannel.Output)
                 .Run();
             }
 
