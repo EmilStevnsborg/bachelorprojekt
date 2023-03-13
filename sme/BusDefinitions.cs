@@ -1,4 +1,5 @@
 using SME;
+using static CNN.ChannelSizes;
 
 namespace CNN
 {
@@ -19,28 +20,15 @@ namespace CNN
         byte Pixel { get; set; }
     }
     //<summary>
-    //  A bus for reading a channel channel
-    //</summary>
-    public interface ChannelInput : IBus
-    {
-        [InitialValue]
-        bool IsValid { get; set; }
-        uint Height { get; set; }
-        uint Width { get; set; }
-        double[,] Values { get; set; }
-        // SME.IFixedArray<double> Values { get; set; }
-
-    }
-    //<summary>
     //  A bus for one channel
     //</summary>
-    public interface ChannelOutput : IBus
+    public interface Channel : IBus
     {
         [InitialValue]
         bool IsValid { get; set; }
-        uint Height { get; set; }
-        uint Width { get; set; }
-        double[,] Values { get; set; }
-        // SME.IFixedArray<double> Values { get; set; }
+        int Height { get; set; }
+        int Width { get; set; }
+        [FixedArrayLength(STANDARD_SAFE_SIZE)]
+        IFixedArray<double> Data { get; set; }
     }
 }
