@@ -14,7 +14,7 @@ namespace CNN
         public override async Task Run()
         {
             await ClockAsync();
-            //
+            // 2x2 input channel
             Input.Height = 2;
             Input.Width = 2;
             for (int i = 0; i < Input.Height; i++)

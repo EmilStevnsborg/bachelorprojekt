@@ -4,7 +4,7 @@ using static System.Math;
 
 namespace CNN
 {
-    public class RELUCtrl : SimpleProcess
+    public class Ctrl : SimpleProcess
     {
 
         [InputBus] 
@@ -15,36 +15,40 @@ namespace CNN
 
         private int i = 0;
         private int j = 0;
-        private int height;
-        private int width;
+        private int channelHeight;
+        private int channelWidth;
         private double [,] tmp;
 
 
-        public RELUCtrl(int height, int width)
+        public Ctrl(int channelHeight, int channelWidth)
         {
-            tmp = new double[height,width];
+            this.channelHeight = channelHeight;
+            this.channelWidth = channelWidth;
+            this.tmp = new double[channelHeight,channelWidth];
         }
         protected override void OnTick()
         {
             if (i == 0 && j == 0)
             {
-                for (int ii = 0; ii < height; ii++)
+                for (int ii = 0; ii < channelHeight; ii++)
                 {
-                    for (int jj = 0; jj < width; jj++)
+                    for (int jj = 0; jj < channelWidth; jj++)
                     {
-                        tmp[ii,jj] = Input.Data[ii*width+jj];
+                        tmp[ii,jj] = Input.Data[ii*channelWidth+jj];
                     }
                 }
                 Output.Value = tmp[i,j];
+                // Output.I = i;
+                // Output.J = j;
                 j += 1;
             }
             else 
             {
                 Output.Value = tmp[i,j];
-                j = (j+1)%width;
+                j = (j+1)%channelWidth;
                 if (j == 0)
                 {
-                    i = (i+1)%height;
+                    i = (i+1)%channelHeight;
                     if (i == 0)
                     {
                         // new image
