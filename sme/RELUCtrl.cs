@@ -1,56 +1,40 @@
+using System.Threading.Tasks;
 using SME;
-using SME.Components;
-using static System.Math;
 
 namespace CNN
 {
-    public class RELUCtrl : SimpleProcess
+    public class RELUCtrl : SimulationProcess
     {
 
-        [InputBus] 
-        public Channel Input;
+        public RELUCtrl(int height, int width) 
+        {
+            // Read data -- Below is just for testing
+            tmp[0] = 1;
+            tmp[1] = 2;
+            tmp[2] = 3;
+            tmp[3] = 4;
+        }
 
         [OutputBus]
-        public Pixel Output = Scope.CreateBus<Pixel>();
+        public Pixel Output = Scope.CreateOrLoadBus<Pixel>();
 
-        private int i = 0;
-        private int j = 0;
-        private int height;
-        private int width;
-        private double [,] tmp;
+        public uint[] tmp = new uint[4];
 
-
-        public RELUCtrl(int height, int width)
+        public override async Task Run()
         {
-            tmp = new double[height,width];
-        }
-        protected override void OnTick()
-        {
-            if (i == 0 && j == 0)
+            await ClockAsync();
+
+            //
+            for (int i = 0; i < 2; i++)
             {
-                for (int ii = 0; ii < height; ii++)
+                for (int j = 0; j < 2; j++)
                 {
-                    for (int jj = 0; jj < width; jj++)
-                    {
-                        tmp[ii,jj] = Input.Data[ii*width+jj];
-                    }
-                }
-                Output.Value = tmp[i,j];
-                j += 1;
-            }
-            else 
-            {
-                Output.Value = tmp[i,j];
-                j = (j+1)%width;
-                if (j == 0)
-                {
-                    i = (i+1)%height;
-                    if (i == 0)
-                    {
-                        // new image
-                    }
+                    Output.Value = tmp[i * 2 + j];
                 }
             }
+
+            await ClockAsync();
+
         }
     }
 }

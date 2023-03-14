@@ -10,13 +10,16 @@ namespace CNN
 
             using(var sim = new Simulation())
             {
-                var reluTester = new RELUTester(2,2);
+                var reluTester = new RELUCtrl(2,2);
                 var relu = new RELU();
+                var test = new ReLUTest();
 
                 relu.Input = (Pixel) reluTester.Output;
+                test.Input = relu.Output;
                 
-                
-                
+            
+
+
 
                 sim
                 .Run();
