@@ -5,23 +5,31 @@ namespace CNN
 {
     public class RELUTester : SimulationProcess
     {
-        [InputBus]
-        public Channel Result;
+
+        public RELUTester(int height, int width) 
+        {
+            // Read data -- Below is just for testing
+            tmp[0] = 1;
+            tmp[1] = 2;
+            tmp[2] = 3;
+            tmp[3] = 4;
+        }
 
         [OutputBus]
-        public Channel Input = Scope.CreateOrLoadBus<Channel>();
+        public Pixel Output = Scope.CreateOrLoadBus<Pixel>();
+
+        public uint[] tmp = new uint[2 * 2];
 
         public override async Task Run()
         {
             await ClockAsync();
+
             //
-            Input.Height = 2;
-            Input.Width = 2;
-            for (int i = 0; i < Input.Height; i++)
+            for (int i = 0; i < 2; i++)
             {
-                for (int j = 0; j < Input.Width; j++)
+                for (int j = 0; j < 2; j++)
                 {
-                    Input.Data[i*Input.Width+j] = (double) i;
+                    Output.Value = tmp[i * 2 + j];
                 }
             }
 

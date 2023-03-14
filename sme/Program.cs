@@ -1,4 +1,5 @@
 ﻿using SME;
+using System;
 
 namespace CNN
 {
@@ -9,14 +10,13 @@ namespace CNN
 
             using(var sim = new Simulation())
             {
-                var reluTester = new RELUTester();
-                var reluCtrl = new RELUCtrl(2,2);
+                var reluTester = new RELUTester(2,2);
                 var relu = new RELU();
 
-                reluCtrl.Input = reluTester.Input;
-                relu.Input = reluCtrl.Output;
-                //
-                // reluTester.Result.Data[x] = relu.Output.Value;
+                relu.Input = (Pixel) reluTester.Output;
+                
+                
+                
 
                 sim
                 .Run();
