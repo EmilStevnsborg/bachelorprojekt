@@ -10,6 +10,7 @@ namespace CNN
 
         protected override void OnTick()
         {
+            Console.WriteLine("RELU TEST");
             Console.WriteLine(Input.Value);
         }
     }

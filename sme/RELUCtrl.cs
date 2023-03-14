@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using SME;
+using System;
 
 namespace CNN
 {
@@ -22,19 +23,15 @@ namespace CNN
 
         public override async Task Run()
         {
-            await ClockAsync();
-
             //
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < 2; j++)
                 {
+                    await ClockAsync();
                     Output.Value = tmp[i * 2 + j];
                 }
-            }
-
-            await ClockAsync();
-
+            }           
         }
     }
 }
