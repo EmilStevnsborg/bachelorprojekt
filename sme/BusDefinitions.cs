@@ -3,42 +3,42 @@ using static CNN.ChannelSizes;
 
 namespace CNN
 {
-    // FOR NOW DON'T THINK ABOUT THIS ONE
-    //
-    //
-    //<summary>
-    //  A bus for reading Grey scale images from a sensor,
-    //  one pixel at a time
-    //</summary>
-    public interface GreyScaleImageInputLine : IBus
-    {
-        [InitialValue]
-        bool IsValid { get; set; }
-        [InitialValue]
-        bool LastPixel { get; set; }
-        double Pixel { get; set; }
-    }
     //<summary>
     //  A bus for one channel
     //</summary>
-    public interface Channel : IBus
+    public interface ChannelBus : IBus
     {
-        [InitialValue]
-        bool IsValid { get; set; }
+        [InitialValue(false)]
+        bool enable { get; set; }
         int Height { get; set; }
         int Width { get; set; }
         [FixedArrayLength(STANDARD_SAFE_SIZE)]
-        IFixedArray<double> Data { get; set; }
+        IFixedArray<float> ArrData { get; set; }
+    }
+    public interface SliceBus : IBus
+    {
+        [InitialValue(false)]
+        bool enable { get; set; }
+        int Height { get; set; }
+        int Width { get; set; }
+        [FixedArrayLength(STANDARD_SAFE_SIZE)]
+        IFixedArray<float> ArrData { get; set; }
+    }
+    public interface SliceInfoBus : IBus
+    {
+        [InitialValue(false)]
+        bool enable { get; set; }
+        // start and end i,j
+        [FixedArrayLength(4)]
+        IFixedArray<int> Data { get; set; }
     }
 
-    public interface Pixel : IBus
+    [InitializedBus]
+    public interface ValueBus : IBus
     {
-        [InitialValue]
-        bool IsValid { get; set; }
-        // [InitialValue(0)]
-        // int I { get; set; }
-        // [InitialValue(0)]
-        // int J { get; set; }
-        double Value { get; set; }
+        bool enable { get; set; }
+        float Value { get; set; }
+        [InitialValue(false)]
+        bool LastValue { get; set; }
     }
 }
