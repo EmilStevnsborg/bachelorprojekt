@@ -18,6 +18,7 @@ namespace CNN
             {
                 buffer += InputValue.Value;
             }
+            // Now we can set the buffer
             if (InputValue.LastValue)
             {
                 Output.Value = buffer;

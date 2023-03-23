@@ -38,7 +38,6 @@ namespace CNN
     {
         bool enable { get; set; }
         float Value { get; set; }
-        [InitialValue(false)]
         bool LastValue { get; set; }
     }
 }

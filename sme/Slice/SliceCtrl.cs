@@ -16,8 +16,6 @@ namespace CNN
         [OutputBus]
         public SliceBus Output = Scope.CreateBus<SliceBus>();
 
-        private int i = 0;
-        private int j = 0;
         private int channelHeight;
         private int channelWidth;
         bool bufferValid = false;
@@ -45,8 +43,8 @@ namespace CNN
                 }
                 // buffer is now loaded fully
                 bufferValid = true;
-                i = j = 0;
             }
+            Output.enable = bufferValid;
             if (bufferValid && SliceInfo.enable)
             {
                 int h = SliceInfo.Data[2]-SliceInfo.Data[0];
@@ -63,7 +61,6 @@ namespace CNN
                     }
                 }
             }
-            Output.enable = bufferValid;
         }
     }
 }

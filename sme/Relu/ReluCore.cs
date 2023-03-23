@@ -1,3 +1,4 @@
+using System;
 using SME;
 
 namespace CNN
@@ -17,7 +18,14 @@ namespace CNN
             // Output should only be updated when the input is valid.
             if (Output.enable)
             {
-                Output.Value = Input.Value > 0 ? Input.Value : 0;
+                if (Input.Value > 0)
+                {
+                    Output.Value = Input.Value;
+                }
+                else
+                {
+                    Output.Value = 0;
+                }
             }
         }
     }

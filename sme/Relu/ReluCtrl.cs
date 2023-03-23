@@ -41,7 +41,6 @@ namespace CNN
                 }
                 // buffer is now loaded fully
                 bufferValid = true;
-                i = j = 0;
             }
 
             Output.enable = bufferValid;
