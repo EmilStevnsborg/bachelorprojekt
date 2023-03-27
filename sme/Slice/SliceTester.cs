@@ -22,15 +22,15 @@ namespace CNN
             // Pack test data onto bus
             for (int i = 0; i < 6; i++)
             {
-                Output.ArrData[i] = (float) i+1;
+                Output.ArrData[i] = (float) i;
             }
             Output.Height = 2;
             Output.Width = 3;
             // Slice info
-            SliceInfo.Data[0] = 0;
-            SliceInfo.Data[1] = 0;
-            SliceInfo.Data[2] = 2;
-            SliceInfo.Data[3] = 2;
+            SliceInfo.startRow = 0;
+            SliceInfo.startCol = 0;
+            SliceInfo.endRow = 2;
+            SliceInfo.endCol = 2;
             await ClockAsync();
             // Data shouldn't be read again
             Output.enable = false;
@@ -45,8 +45,9 @@ namespace CNN
                 {
                     for (int j = 0; j < iw; j++)
                     {
-                        Console.WriteLine(Input.ArrData[i*iw + j]);
+                        Console.Write(Input.ArrData[i*iw + j]);
                     }
+                    Console.WriteLine();
                 }
             }
         }

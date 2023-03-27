@@ -2,6 +2,8 @@ using SME;
 
 namespace CNN
 {
+
+    [ClockedProcess]
     public class PlusCtrl : SimpleProcess
     {
         [InputBus]

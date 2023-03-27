@@ -1,6 +1,7 @@
 ﻿using System;
 using SME;
 using SME.Components;
+using static CNN.ChannelSizes;
 
 namespace CNN
 {
@@ -11,20 +12,20 @@ namespace CNN
 
             using(var sim = new Simulation())
             {
-
+                // // SliceCtrl Test
                 // SliceCtrl slicectrl = new SliceCtrl(2,3);
                 // SliceTester sliceTester = new SliceTester();
                 // slicectrl.Input = sliceTester.Output;
                 // slicectrl.SliceInfo = sliceTester.SliceInfo;
                 // sliceTester.Input = slicectrl.Output;
 
-                // // ReluCore test
+                // // ReluCore Test
                 // ReluCore reluCore = new ReluCore();
                 // ReluCoreTester reluCoreTester = new ReluCoreTester();
                 // reluCore.Input = reluCoreTester.Output;
                 // reluCoreTester.Input = reluCore.Output;
 
-                // // ReluCtrl test
+                // // ReluCtrl Test
                 // ReluCtrl reluCtrl = new ReluCtrl(2,3);
                 // ReluCore reluCore = new ReluCore();
                 // ReluTester reluTester = new ReluTester(2,3);
@@ -32,18 +33,31 @@ namespace CNN
                 // reluCore.Input = reluCtrl.Output;
                 // reluTester.Input = reluCore.Output;
 
-                // PlusCtrl Test
-                PlusCtrl plusCtrl = new PlusCtrl();
-                PlusTester plusTester = new PlusTester();
-                plusCtrl.Input = plusTester.Output;
-                plusTester.Input = plusCtrl.Output;
+                // // PlusCtrl Test
+                // PlusCtrl plusCtrl = new PlusCtrl();
+                // PlusTester plusTester = new PlusTester();
+                // plusCtrl.Input = plusTester.Output;
+                // plusTester.Input = plusCtrl.Output;
 
-                // WeightValue Test
-                WeightValue weiVal= new WeightValue();
-                WeightValueTester weiValTester = new WeightValueTester();
-                weiVal.InputValue = weiValTester.OutputValue;
-                weiVal.InputWeight = weiValTester.OutputWeight;
-                weiValTester.Input = weiVal.Output;
+                // // WeightValue Test
+                // WeightValue weiVal= new WeightValue();
+                // WeightValueTester weiValTester = new WeightValueTester();
+                // weiVal.InputValue = weiValTester.OutputValue;
+                // weiVal.InputWeight = weiValTester.OutputWeight;
+                // weiValTester.Input = weiVal.Output;
+
+                // KernelCtrl Test
+                var kernelCtrl = new KernelCtrl(2,3);
+                var kernelTester = new KernelCtrlTester(2,3);
+
+                var weights = new float[6] {1,2,1,2,1,2};
+                var ram = new TrueDualPortMemory<float>(STANDARD_SAFE_SIZE, weights);
+
+                kernelCtrl.Input = kernelTester.Output;
+                kernelCtrl.ram_ctrl = ram.ControlA;
+                kernelCtrl.ram_read = ram.ReadResultA;
+                kernelTester.InputValue = kernelCtrl.OutputValue;
+                kernelTester.InputWeight = kernelCtrl.OutputWeight;
 
                 sim.Run();
             }

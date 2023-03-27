@@ -27,7 +27,7 @@ namespace CNN
             // Pack test data onto bus
             for (int i = 0; i < outHeight*outWidth; i++)
             {
-                Output.ArrData[i] = (float) i+1;
+                Output.ArrData[i] = (float) i-3;
             }
             Output.Height = outHeight;
             Output.Width = outWidth;
@@ -46,8 +46,10 @@ namespace CNN
                     while (!Input.enable) await ClockAsync();
 
                     computed[i,j] = Input.Value;
+                    Console.Write(computed[i,j] + " ");
                     await ClockAsync();
                 }
+                Console.WriteLine();
             }
 
             Console.WriteLine("Tester finished");

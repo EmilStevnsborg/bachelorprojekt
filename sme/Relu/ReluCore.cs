@@ -4,6 +4,7 @@ using SME;
 namespace CNN
 {
     // Works
+    [ClockedProcess]
     public class ReluCore : SimpleProcess
     {
         [InputBus]
