@@ -3,6 +3,7 @@ using SME;
 
 namespace CNN
 {
+    // Works
     public class ReluCore : SimpleProcess
     {
         [InputBus]
@@ -15,6 +16,7 @@ namespace CNN
         {
             // The flag can be forwarded.
             Output.enable = Input.enable;
+            Output.LastValue = false;
             // Output should only be updated when the input is valid.
             if (Output.enable)
             {
@@ -26,6 +28,11 @@ namespace CNN
                 {
                     Output.Value = 0;
                 }
+            }
+            // else deafult value is 0
+            else
+            {
+                Output.Value = 0;
             }
         }
     }

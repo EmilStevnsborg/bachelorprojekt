@@ -18,11 +18,8 @@ namespace CNN
         public TrueDualPortMemory<float>.IControlA ram_ctrl;
 
         
-        private int i = 0;
-        private int j = 0;
-        private int k;
-        private int sliceHeight;
-        private int sliceWidth;
+        private int i, j, k;
+        private int sliceHeight, sliceWidth;
         bool bufferValid = false;
         bool ramValid = false;
         private float [,] buffer;
@@ -46,7 +43,6 @@ namespace CNN
                     }
                 }
                 bufferValid = true;
-                ramValid = false;
                 i = j = k = 0;
             }
 

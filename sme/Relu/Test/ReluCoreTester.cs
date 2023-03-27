@@ -4,6 +4,7 @@ using SME;
 
 namespace CNN
 {
+    // Works
     public class ReluCoreTester : SimulationProcess
     {
 

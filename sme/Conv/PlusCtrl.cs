@@ -5,7 +5,7 @@ namespace CNN
     public class PlusCtrl : SimpleProcess
     {
         [InputBus]
-        public ValueBus InputValue;
+        public ValueBus Input;
         [OutputBus]
         public ValueBus Output = Scope.CreateBus<ValueBus>();
 
@@ -14,16 +14,13 @@ namespace CNN
         protected override void OnTick()
         {
             // Output should only be updated when the input is valid.
-            if (InputValue.enable)
+            if (Input.enable)
             {
-                buffer += InputValue.Value;
+                buffer += Input.Value;
             }
-            // Now we can set the buffer
-            if (InputValue.LastValue)
-            {
-                Output.Value = buffer;
-                Output.enable = true;
-            }
+            Output.Value = buffer;
+            Output.enable = Input.LastValue;
+            Output.LastValue = Input.LastValue;
         }
     }
 }

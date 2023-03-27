@@ -12,6 +12,12 @@ namespace CNN
 
         [OutputBus]        
         public ChannelBus Output = Scope.CreateBus<ChannelBus>();
+        private int outHeight, outWidth;
+        public ReluTester(int outHeight, int outWidth)
+        {
+            this.outHeight = outHeight;
+            this.outWidth = outWidth;
+        }
 
         public async override System.Threading.Tasks.Task Run()
         {
@@ -19,22 +25,22 @@ namespace CNN
             await ClockAsync();
             Output.enable = true;
             // Pack test data onto bus
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < outHeight*outWidth; i++)
             {
                 Output.ArrData[i] = (float) i+1;
             }
-            Output.Height = 2;
-            Output.Width = 3;
+            Output.Height = outHeight;
+            Output.Width = outWidth;
             await ClockAsync();
 
             // Ensure that the test data isn't read again.
             Output.enable = false;
             await ClockAsync();
 
-            float[,] computed = new float[2,3];
-            for (int i = 0; i < 2; i++)
+            float[,] computed = new float[outHeight,outWidth];
+            for (int i = 0; i < outHeight; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < outWidth; j++)
                 {
                     // Wait until there is something valid on the bus.
                     while (!Input.enable) await ClockAsync();
@@ -44,8 +50,6 @@ namespace CNN
                 }
             }
 
-            // Output to terminal to indicate everything went ok. If not, the
-            // earlier asserts should halt the program.
             Console.WriteLine("Tester finished");
         }
     }

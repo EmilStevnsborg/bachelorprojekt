@@ -14,6 +14,8 @@ namespace CNN
 
         protected override void OnTick()
         {
+            Output.enable = false;
+            Output.Value = 0;
             // Output should only be updated when the input is valid.
             if (InputValue.enable && InputWeight.enable)
             {
