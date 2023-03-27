@@ -14,10 +14,8 @@ namespace CNN
         [OutputBus]
         public ValueBus Output = Scope.CreateBus<ValueBus>();
 
-        private int i = 0;
-        private int j = 0;
-        private int channelHeight;
-        private int channelWidth;
+        private int i, j;
+        private int channelHeight, channelWidth;
         bool bufferValid = false;
         private float [,] buffer;
 
@@ -29,7 +27,7 @@ namespace CNN
         }
         protected override void OnTick()
         {
-            // Load the bus into the buffer
+            // If Inputbus is enabled and buffer has not been loaded
             if (!bufferValid && Input.enable)
             {
                 for (int ii = 0; ii < channelHeight; ii++)
@@ -44,18 +42,27 @@ namespace CNN
                 i = j = 0;
             }
 
+            
             Output.enable = bufferValid;
-
-            // Send out one value at a time
+            // Send out one value for each tick
             if (bufferValid)
             {
                 Output.Value = buffer[i,j];
+
                 // Always increment column index.
                 j = (j + 1) % channelWidth;
-                // Only increment row index when column have wrapped.
+                // Only increment row index when column has wrapped.
                 i = j == 0 ? (i + 1) % channelHeight : i;
-                // Check if we have processed the entire image.
+
+                // Check if we have processed the entire array.
                 bufferValid = !(i == 0 && j == 0);
+                Output.LastValue = !bufferValid;
+            }
+            // If buffer is not valid we still must set Output bus fields
+            else
+            {
+                Output.Value = 0;
+                Output.LastValue = false;
             }
         }
     }

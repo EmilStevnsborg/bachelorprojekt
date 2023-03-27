@@ -16,10 +16,7 @@ namespace CNN
         [OutputBus]
         public SliceBus Output = Scope.CreateBus<SliceBus>();
 
-        private int i = 0;
-        private int j = 0;
-        private int channelHeight;
-        private int channelWidth;
+        private int channelHeight, channelWidth;
         bool bufferValid = false;
         private float [,] buffer;
 
@@ -29,7 +26,6 @@ namespace CNN
             this.channelWidth = channelWidth;
             this.buffer = new float[channelHeight,channelWidth];
         }
-
 
         protected override void OnTick()
         {
@@ -45,12 +41,13 @@ namespace CNN
                 }
                 // buffer is now loaded fully
                 bufferValid = true;
-                i = j = 0;
             }
+            Output.enable = bufferValid;
+
             if (bufferValid && SliceInfo.enable)
             {
-                int h = SliceInfo.Data[2]-SliceInfo.Data[0];
-                int w = SliceInfo.Data[3]-SliceInfo.Data[1];
+                int h = SliceInfo.endRow-SliceInfo.startRow;
+                int w = SliceInfo.endCol-SliceInfo.startCol;
 
                 Output.Height = h;
                 Output.Width = w;
@@ -59,11 +56,10 @@ namespace CNN
                 {
                     for (int jj = 0; jj < w; jj++)
                     {
-                        Output.ArrData[ii*h + jj] = buffer[SliceInfo.Data[0]+ii, SliceInfo.Data[1]+jj];
+                        Output.ArrData[ii*w + jj] = buffer[SliceInfo.startRow + ii, SliceInfo.startCol + jj];
                     }
                 }
             }
-            Output.enable = bufferValid;
         }
     }
 }

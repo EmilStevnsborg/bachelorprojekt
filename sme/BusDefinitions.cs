@@ -29,14 +29,20 @@ namespace CNN
         [InitialValue(false)]
         bool enable { get; set; }
         // start and end i,j
-        [FixedArrayLength(4)]
-        IFixedArray<int> Data { get; set; }
+        [InitialValue(0)]
+        int startRow { get; set; }
+        [InitialValue(0)]
+        int startCol { get; set; }
+        [InitialValue(0)]
+        int endRow { get; set; }
+        [InitialValue(0)]
+        int endCol { get; set; }
     }
-
-    [InitializedBus]
     public interface ValueBus : IBus
     {
+        [InitialValue(false)]
         bool enable { get; set; }
+        [InitialValue(0)]
         float Value { get; set; }
         [InitialValue(false)]
         bool LastValue { get; set; }

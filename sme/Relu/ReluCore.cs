@@ -1,7 +1,10 @@
+using System;
 using SME;
 
 namespace CNN
 {
+    // Works
+    [ClockedProcess]
     public class ReluCore : SimpleProcess
     {
         [InputBus]
@@ -14,10 +17,23 @@ namespace CNN
         {
             // The flag can be forwarded.
             Output.enable = Input.enable;
+            Output.LastValue = false;
             // Output should only be updated when the input is valid.
             if (Output.enable)
             {
-                Output.Value = Input.Value > 0 ? Input.Value : 0;
+                if (Input.Value > 0)
+                {
+                    Output.Value = Input.Value;
+                }
+                else
+                {
+                    Output.Value = 0;
+                }
+            }
+            // else deafult value is 0
+            else
+            {
+                Output.Value = 0;
             }
         }
     }

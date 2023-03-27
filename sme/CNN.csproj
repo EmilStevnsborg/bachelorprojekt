@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="SME" Version="0.4.0-beta" />
-    <PackageReference Include="SME.Tracer" Version="0.4.0-beta" />
-    <PackageReference Include="SME.VHDL" Version="0.4.0-beta" />
-    <PackageReference Include="SME.GraphViz" Version="0.4.0-beta" />
+    <PackageReference Include="SME" Version="0.5.0" />
+    <PackageReference Include="SME.Tracer" Version="0.5.0" />
+    <PackageReference Include="SME.VHDL" Version="0.5.0" />
+    <PackageReference Include="SME.GraphViz" Version="0.5.0" />
     
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
 

@@ -3,26 +3,24 @@ using SME.Components;
 
 namespace CNN
 {
+
+    [ClockedProcess]
     public class KernelCtrl : SimpleProcess
     {
         [InputBus]
         public SliceBus Input;
-        // Reads from port A
         [InputBus]
-        public TrueDualPortMemory<float>.IReadResultA ram_read;
+        public TrueDualPortMemory<float>.IReadResult ram_read;
         [OutputBus]
         public ValueBus OutputValue = Scope.CreateBus<ValueBus>();
         [OutputBus]
         public ValueBus OutputWeight = Scope.CreateBus<ValueBus>();
         [OutputBus]
-        public TrueDualPortMemory<float>.IControlA ram_ctrl;
+        public TrueDualPortMemory<float>.IControl ram_ctrl;
 
         
-        private int i = 0;
-        private int j = 0;
-        private int k;
-        private int sliceHeight;
-        private int sliceWidth;
+        private int i, j, k;
+        private int sliceHeight, sliceWidth;
         bool bufferValid = false;
         bool ramValid = false;
         private float [,] buffer;
@@ -46,7 +44,6 @@ namespace CNN
                     }
                 }
                 bufferValid = true;
-                ramValid = false;
                 i = j = k = 0;
             }
 
@@ -63,7 +60,7 @@ namespace CNN
 
                 // After two clock cycles, the results come back from memory.
                 ramValid = ramValid || k >= 2;
-                k = (k + 1) % sliceWidth;
+                k = (k + 1);
 
                 // If the results are back from memory, they can be forwarded along
                 // side the image data.
