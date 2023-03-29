@@ -1,5 +1,6 @@
 using SME;
-using CNN;
+using CNNPadder;
+//using CNN;
 using System;
 
 // Much of this test is reused from the simple-relu test

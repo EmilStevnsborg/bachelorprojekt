@@ -1,8 +1,9 @@
 using SME;
-using CNN;
+using CNNPadder;
+//using CNN;
 using System;
 
-namespace CNN 
+namespace PadderClass
 {
     [ClockedProcess]
     public class Padder : SimpleProcess
@@ -31,7 +32,7 @@ namespace CNN
 
         protected override void OnTick()
         {
-            //output.enable = false;
+            output.enable = false;
             output.Height = 29;
             output.Width = 29;
 
@@ -57,10 +58,6 @@ namespace CNN
                         }
                         else
                         {
-                            Console.WriteLine((i - Top) * input.Width + j - Left);
-                            Console.WriteLine(i);
-                            Console.WriteLine(j);
-                            Console.WriteLine(Top);
                             var tmp = input.ArrData[(i - Top) * input.Width + j - Left];
                             output.ArrData[idx] = tmp;
                         }
@@ -68,10 +65,8 @@ namespace CNN
                 }
             }
 
-            if (!output.enable && input.enable)
-
-
-            output.enable = true;
+            if (!output.enable && input.enable) {output.enable = true;}
+                
         }
     }
 }

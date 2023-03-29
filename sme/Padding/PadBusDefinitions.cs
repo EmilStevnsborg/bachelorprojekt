@@ -1,5 +1,5 @@
 using SME;
-namespace CNN
+namespace CNNPadder
 {
     //<summary>
     //  This is a temporary input bus meant for testing. This bus is the output bus of the padder.
@@ -21,5 +21,5 @@ namespace CNN
         int Width { get; set; }
         [FixedArrayLength(28 * 28)]
         IFixedArray<float> ArrData { get; set; }
-    }
+    } 
 }
