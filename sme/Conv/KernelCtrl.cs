@@ -1,3 +1,4 @@
+using System;
 using SME;
 using SME.Components;
 
@@ -74,9 +75,9 @@ namespace CNN
                     // Only increment row index when column have wrapped.
                     i = j == 0 ? (i + 1) % sliceHeight: i;
                     // Check if it is the last value in the slice
-                    OutputValue.LastValue = !(i == sliceHeight-1 && j == sliceWidth-1);
-                    // Check if we have processed the entire image.
-                    bufferValid = !(i == 0 && j == 0);
+                    OutputValue.LastValue = (i == sliceHeight-1 && j == sliceWidth-1);
+                    // Check if we have processed the entire channel.
+                    bufferValid = (i == 0 && j == 0);
                 }
             }
         }

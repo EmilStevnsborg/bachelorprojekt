@@ -12,11 +12,10 @@ namespace CNN
 
             using(var sim = new Simulation())
             {
-                // // SliceCtrl Test
-                // SliceCtrl slicectrl = new SliceCtrl(2,3);
+                // SliceCtrl Test
+                // SliceCtrl slicectrl = new SliceCtrl((4,4), (2,2), (2,2));
                 // SliceTester sliceTester = new SliceTester();
                 // slicectrl.Input = sliceTester.Output;
-                // slicectrl.SliceInfo = sliceTester.SliceInfo;
                 // sliceTester.Input = slicectrl.Output;
 
                 // // ReluCore Test
@@ -50,14 +49,26 @@ namespace CNN
                 var kernelCtrl = new KernelCtrl(2,3);
                 var kernelTester = new KernelCtrlTester(2,3);
 
-                var weights = new float[6] {1,2,1,2,1,2};
-                var ram = new TrueDualPortMemory<float>(STANDARD_SAFE_SIZE, weights);
+                // var weights = new float[6] {1,2,1,2,1,2};
+                // var ram = new TrueDualPortMemory<float>(STANDARD_SAFE_SIZE, weights);
 
-                kernelCtrl.Input = kernelTester.Output;
-                kernelCtrl.ram_ctrl = ram.ControlA;
-                kernelCtrl.ram_read = ram.ReadResultA;
-                kernelTester.InputValue = kernelCtrl.OutputValue;
-                kernelTester.InputWeight = kernelCtrl.OutputWeight;
+                // kernelCtrl.Input = kernelTester.Output;
+                // kernelCtrl.ram_ctrl = ram.ControlA;
+                // kernelCtrl.ram_read = ram.ReadResultA;
+                // kernelTester.InputValue = kernelCtrl.OutputValue;
+                // kernelTester.InputWeight = kernelCtrl.OutputWeight;
+
+                // // Bias Test
+                // Bias bias = new Bias(2);
+                // BiasTester biasTester = new BiasTester();
+                // bias.Input = biasTester.Output;
+                // biasTester.Input = bias.Output;
+
+                // // Upsample Test 
+                // UpSample upSample = new UpSample(2,2);
+                // UpSampleTester upSampleTester = new UpSampleTester();
+                // upSample.Input = upSampleTester.Output;
+                // upSampleTester.Input = upSample.Output;
 
                 sim.Run();
             }

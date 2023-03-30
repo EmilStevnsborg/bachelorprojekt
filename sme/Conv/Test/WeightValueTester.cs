@@ -4,7 +4,7 @@ using SME;
 
 namespace CNN
 {
-    // Works
+    [ClockedProcess]
     public class WeightValueTester : SimulationProcess
     {
 
@@ -24,6 +24,7 @@ namespace CNN
             OutputWeight.Value = -2;
             await ClockAsync();
             OutputValue.enable = OutputWeight.enable = false;
+            while(!Input.enable) await ClockAsync();
             Console.WriteLine(OutputValue.Value + " * " + OutputWeight.Value + " = " + Input.Value);
             await ClockAsync();
         }

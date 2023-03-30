@@ -1,28 +1,32 @@
+using System;
 using SME;
 
 namespace CNN
 {
 
     [ClockedProcess]
-    public class PlusCtrl : SimpleProcess
+    public class Bias : SimpleProcess
     {
         [InputBus]
         public ValueBus Input;
         [OutputBus]
         public ValueBus Output = Scope.CreateBus<ValueBus>();
-
-        float buffer = 0;
+        private float bias;
+        public Bias(float bias)
+        {
+            this.bias = bias;
+        } 
 
         protected override void OnTick()
         {
+            Output.Value = Input.Value;
             // Output should only be updated when the input is valid.
             if (Input.enable)
             {
-                buffer += Input.Value;
+                Output.Value = Input.Value + bias;
             }
-            Output.Value = buffer;
-            Output.enable = Input.LastValue;
-            Output.LastValue = false;
+            Output.enable = Input.enable;
+            Output.LastValue = Input.LastValue;
         }
     }
 }

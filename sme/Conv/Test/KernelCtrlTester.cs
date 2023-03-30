@@ -6,7 +6,7 @@ using SME.Components;
 
 namespace CNN
 {
-    // Works
+    [ClockedProcess]
     public class KernelCtrlTester : SimulationProcess
     {
 
@@ -14,7 +14,6 @@ namespace CNN
         public ValueBus InputValue;
         [InputBus]
         public ValueBus InputWeight;
-
         [OutputBus]        
         public SliceBus Output = Scope.CreateBus<SliceBus>();
         private int sliceHeight, sliceWidth;
@@ -37,11 +36,9 @@ namespace CNN
             Output.Height = sliceHeight;
             Output.Width = sliceWidth;
             await ClockAsync();
-
             // Ensure that the test data isn't read again.
             Output.enable = false;
             await ClockAsync();
-
             for (int i = 0; i < sliceHeight; i++)
             {
                 for (int j = 0; j < sliceWidth; j++)

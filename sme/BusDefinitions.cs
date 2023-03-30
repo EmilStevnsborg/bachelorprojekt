@@ -24,20 +24,6 @@ namespace CNN
         [FixedArrayLength(STANDARD_SAFE_SIZE)]
         IFixedArray<float> ArrData { get; set; }
     }
-    public interface SliceInfoBus : IBus
-    {
-        [InitialValue(false)]
-        bool enable { get; set; }
-        // start and end i,j
-        [InitialValue(0)]
-        int startRow { get; set; }
-        [InitialValue(0)]
-        int startCol { get; set; }
-        [InitialValue(0)]
-        int endRow { get; set; }
-        [InitialValue(0)]
-        int endCol { get; set; }
-    }
     public interface ValueBus : IBus
     {
         [InitialValue(false)]

@@ -4,18 +4,15 @@ using SME;
 
 namespace CNN
 {
-    [ClockedProcess]
-    public class SliceTester : SimulationProcess
+    public class ConvKernelTester : SimulationProcess
     {
         [InputBus]
-        public SliceBus Input;
+        public ChannelBus Input;
         [OutputBus]
         public ChannelBus Output = Scope.CreateBus<ChannelBus>();
-        [OutputBus]
 
         public override async Task Run()
         {
-            var count = 0;
             await ClockAsync();
             Output.enable = true;
             
@@ -30,7 +27,8 @@ namespace CNN
             // Data shouldn't be read again
             Output.enable = false;
             await ClockAsync();
-            while (Input.enable && count < 4)
+
+            if (Input.enable) 
             {
                 var ih = Input.Height;
                 var iw = Input.Width;
@@ -42,11 +40,7 @@ namespace CNN
                     }
                     Console.WriteLine();
                 }
-                Console.WriteLine();
-                count = count + 1;
-                await ClockAsync();
             }
-            await ClockAsync();
         }
     }
 }
