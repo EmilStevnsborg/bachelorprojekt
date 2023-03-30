@@ -77,7 +77,7 @@ namespace CNN
                     // Check if it is the last value in the slice
                     OutputValue.LastValue = (i == sliceHeight-1 && j == sliceWidth-1);
                     // Check if we have processed the entire channel.
-                    bufferValid = (i == 0 && j == 0);
+                    bufferValid = !(i == 0 && j == 0);
                 }
             }
         }
