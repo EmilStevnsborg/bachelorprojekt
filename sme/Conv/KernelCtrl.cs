@@ -4,7 +4,6 @@ using SME.Components;
 
 namespace CNN
 {
-
     [ClockedProcess]
     public class KernelCtrl : SimpleProcess
     {
@@ -55,12 +54,13 @@ namespace CNN
             {
                 // Issue ram read
                 ram_ctrl.Enabled = true;
-                ram_ctrl.Address = k;
+                ram_ctrl.Address = 0;
                 ram_ctrl.IsWriting = false;
                 ram_ctrl.Data = 0;
 
                 // After two clock cycles, the results come back from memory.
-                ramValid = ramValid || k >= 2;
+                ramValid = k >= 2;
+                Console.WriteLine(k);
                 k = (k + 1);
 
                 // If the results are back from memory, they can be forwarded along
@@ -78,6 +78,7 @@ namespace CNN
                     OutputValue.LastValue = (i == sliceHeight-1 && j == sliceWidth-1);
                     // Check if we have processed the entire channel.
                     bufferValid = !(i == 0 && j == 0);
+                    Console.WriteLine("Value and Weight " + OutputValue.Value + " " + OutputWeight.Value);
                 }
             }
         }

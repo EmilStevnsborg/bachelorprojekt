@@ -4,6 +4,7 @@ using SME;
 
 namespace CNN
 {
+    [ClockedProcess]
     public class ConvKernelTester : SimulationProcess
     {
         [InputBus]
@@ -26,8 +27,20 @@ namespace CNN
             await ClockAsync();
             // Data shouldn't be read again
             Output.enable = false;
+            
+            Console.WriteLine("Clock await after sending: 1");
             await ClockAsync();
-
+            Console.WriteLine("Clock await after sending: 2");
+            await ClockAsync();
+            Console.WriteLine("Clock await after sending: 3");
+            await ClockAsync();
+            Console.WriteLine("Clock await after sending: 4");
+            await ClockAsync();
+            Console.WriteLine("Clock await after sending: 5");
+            await ClockAsync();
+            Console.WriteLine("Clock await after sending: 6");
+            await ClockAsync();
+            Console.WriteLine("Clock await after sending: 7");
             if (Input.enable) 
             {
                 var ih = Input.Height;

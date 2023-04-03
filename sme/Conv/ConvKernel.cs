@@ -5,6 +5,7 @@ using static System.Math;
 
 namespace CNN
 {
+    [ClockedProcess]
     // Wrapper class for instantiating the internal network, only exposing input
     // and output.
     public class ConvKernel
@@ -49,12 +50,17 @@ namespace CNN
             upSample = new UpSample(uh, uw);
 
             // Connect the buses
-            sliceCtrl.Input = Input;
             kernelCtrl.Input = sliceCtrl.Output;
+            kernelCtrl.ram_ctrl = ram.ControlA;
+            kernelCtrl.ram_read = ram.ReadResultA;
+
             weightValue.InputValue = kernelCtrl.OutputValue;
             weightValue.InputWeight = kernelCtrl.OutputWeight;
+            
             plusCtrl.Input = weightValue.Output;
+            
             bias.Input = plusCtrl.Output;
+            
             upSample.Input = bias.Output;
         }
 
