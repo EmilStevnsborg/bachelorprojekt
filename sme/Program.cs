@@ -46,9 +46,9 @@ namespace CNN
                 // weiValTester.Input = weiVal.Output;
 
                 // // KernelCtrl Test
-                // var kernelCtrl = new KernelCtrl(2,3);
-                // var kernelTester = new KernelCtrlTester(2,3);
-                // var weights = new float[6] {1,2,1,2,1,2};
+                // var kernelCtrl = new KernelCtrl((4,4),(2,2),(2,2));
+                // var kernelTester = new KernelCtrlTester(4,4);
+                // var weights = new float[4] {0,1,2,3};
                 // var ram = new TrueDualPortMemory<float>(STANDARD_SAFE_SIZE, weights);
                 // kernelCtrl.Input = kernelTester.Output;
                 // kernelCtrl.ram_ctrl = ram.ControlA;
@@ -68,10 +68,16 @@ namespace CNN
                 // upSample.Input = upSampleTester.Output;
                 // upSampleTester.Input = upSample.Output;
 
-                // ConvKernel Test (doesn't work)
-                var weights = new float[16];
-                Array.Fill(weights, 2);
-                ConvKernel convKernel = new ConvKernel(weights, 1, (4,4), (2,2), (2,2));
+                // ConvKernel Test
+                var weights = new float[4] {1,2,1,0};
+                // print weights
+                Console.WriteLine("Test weights: ");
+                for (int i = 0; i < 4; i++)
+                {
+                    Console.Write(weights[i] + " ");
+                    if ((i + 1) % 2 == 0) {Console.WriteLine();}
+                }
+                ConvKernel convKernel = new ConvKernel(weights, (4,4), (2,2), (2,2));
                 ConvKernelTester convKernelTester = new ConvKernelTester();
                 convKernel.Input = convKernelTester.Output;
                 convKernelTester.Input = convKernel.Output;

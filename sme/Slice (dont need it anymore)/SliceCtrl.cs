@@ -61,9 +61,7 @@ namespace CNN
                     for (int jj = 0; jj < sliceWidth; jj++)
                     {
                         Output.ArrData[ii*sliceWidth + jj] = buffer[startRow + ii, startCol + jj];
-                        Console.Write(buffer[startRow + ii, startCol + jj] + " ");
                     }
-                    Console.WriteLine();
                 }
                 // increment start column index with the width of the stride column
                 startCol = (startCol + strideCol) % channelWidth;

@@ -8,7 +8,7 @@ namespace CNN
     public class ConvKernelTester : SimulationProcess
     {
         [InputBus]
-        public ChannelBus Input;
+        public ValueBus Input;
         [OutputBus]
         public ChannelBus Output = Scope.CreateBus<ChannelBus>();
 
@@ -18,41 +18,26 @@ namespace CNN
             Output.enable = true;
             
             // Pack test data onto bus
+            Console.WriteLine("Test channel: ");
             for (int i = 0; i < 16; i++)
             {
                 Output.ArrData[i] = (float) i;
+                Console.Write(i + " ");
+                if ((i + 1) % 4 == 0) {Console.WriteLine();}
             }
             Output.Height = 4;
             Output.Width = 4;
+            Console.WriteLine();
             await ClockAsync();
             // Data shouldn't be read again
             Output.enable = false;
-            
-            Console.WriteLine("Clock await after sending: 1");
             await ClockAsync();
-            Console.WriteLine("Clock await after sending: 2");
-            await ClockAsync();
-            Console.WriteLine("Clock await after sending: 3");
-            await ClockAsync();
-            Console.WriteLine("Clock await after sending: 4");
-            await ClockAsync();
-            Console.WriteLine("Clock await after sending: 5");
-            await ClockAsync();
-            Console.WriteLine("Clock await after sending: 6");
-            await ClockAsync();
-            Console.WriteLine("Clock await after sending: 7");
-            if (Input.enable) 
+            for (int i = 0; i < 4; i++)
             {
-                var ih = Input.Height;
-                var iw = Input.Width;
-                for (int i = 0; i < ih; i++)
-                {
-                    for (int j = 0; j < iw; j++)
-                    {
-                        Console.Write(Input.ArrData[i*iw + j]);
-                    }
-                    Console.WriteLine();
-                }
+                while (!Input.enable) await ClockAsync();
+                Console.Write(Input.Value + " ");
+                if ((i + 1) % 2 == 0) {Console.WriteLine();}
+                await ClockAsync();
             }
         }
     }

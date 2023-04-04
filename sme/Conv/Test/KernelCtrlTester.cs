@@ -15,12 +15,12 @@ namespace CNN
         [InputBus]
         public ValueBus InputWeight;
         [OutputBus]        
-        public SliceBus Output = Scope.CreateBus<SliceBus>();
-        private int sliceHeight, sliceWidth;
-        public KernelCtrlTester(int sliceHeight, int sliceWidth)
+        public ChannelBus Output = Scope.CreateBus<ChannelBus>();
+        private int channelHeight, channelWidth;
+        public KernelCtrlTester(int channelHeight, int channelWidth)
         {
-            this.sliceHeight = sliceHeight;
-            this.sliceWidth = sliceWidth;
+            this.channelHeight = channelHeight;
+            this.channelWidth = channelWidth;
         }
 
         public async override System.Threading.Tasks.Task Run()
@@ -29,28 +29,34 @@ namespace CNN
             await ClockAsync();
             Output.enable = true;
             // Pack test data onto bus
-            for (int i = 0; i < sliceHeight*sliceWidth; i++)
+            Console.WriteLine("Test channel: ");
+            for (int i = 0; i < channelHeight*channelWidth; i++)
             {
                 Output.ArrData[i] = (float) i;
+                Console.Write(i + " ");
+                if ((i + 1) % 4 == 0) {Console.WriteLine();}
             }
-            Output.Height = sliceHeight;
-            Output.Width = sliceWidth;
+            Console.WriteLine();
+            Output.Height = channelHeight;
+            Output.Width = channelWidth;
             await ClockAsync();
             // Ensure that the test data isn't read again.
             Output.enable = false;
             await ClockAsync();
-            for (int i = 0; i < sliceHeight; i++)
+            for (int x = 0; x < 4; x++)
             {
-                for (int j = 0; j < sliceWidth; j++)
+                for (int i = 0; i < 2; i++)
                 {
-                    // Wait until there is something valid on the bus.
-                    while (!InputValue.enable) await ClockAsync();
-                    Console.Write(InputValue.Value + " * " + InputWeight.Value + ", ");
-                    await ClockAsync();
+                    for (int j = 0; j < 2; j++)
+                    {
+                        // Wait until there is something valid on the bus.
+                        while (!InputValue.enable) await ClockAsync();
+                        Console.Write(InputValue.Value + " * " + InputWeight.Value + ", ");
+                        await ClockAsync();
+                    }
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
             }
-
             Console.WriteLine("Tester finished");
         }
     }

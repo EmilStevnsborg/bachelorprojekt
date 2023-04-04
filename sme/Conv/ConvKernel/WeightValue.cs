@@ -1,3 +1,4 @@
+using System;
 using SME;
 
 namespace CNN
@@ -21,6 +22,7 @@ namespace CNN
             // Output should only be updated when the input is valid.
             if (InputValue.enable && InputWeight.enable)
             {
+                // Console.WriteLine(InputValue.Value + " * " + InputWeight.Value);
                 Output.Value = InputValue.Value * InputWeight.Value;
                 Output.enable = true;
             }

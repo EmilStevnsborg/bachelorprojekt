@@ -1,3 +1,4 @@
+using System;
 using SME;
 
 namespace CNN
@@ -23,6 +24,12 @@ namespace CNN
             Output.Value = buffer;
             Output.enable = Input.LastValue;
             Output.LastValue = false;
+            // Console.WriteLine("add " + Input.Value);
+            if (Input.LastValue)
+            {
+                // Console.WriteLine("Result of plus and multiply: " + Output.Value);
+                buffer = 0;
+            }
         }
     }
 }

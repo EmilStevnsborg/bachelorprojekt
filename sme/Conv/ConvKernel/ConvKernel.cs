@@ -12,17 +12,17 @@ namespace CNN
     {
         public ChannelBus Input
         {
-            get => sliceCtrl.Input;
-            set => sliceCtrl.Input = value;
+            get => kernelCtrl.Input;
+            set => kernelCtrl.Input = value;
         }
 
-        public ChannelBus Output
+        public ValueBus Output
         {
-            get => upSample.Output;
-            set => upSample.Output = value;
+            get => plusCtrl.Output;
+            set => plusCtrl.Output = value;
         }
 
-        public ConvKernel(float[] weights, float biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public ConvKernel(float[] weights, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
         {
             // channel input
             var ch = channelSize.Item1;
@@ -41,16 +41,12 @@ namespace CNN
             var uw = cw - (kw-1) - (sc-1);
 
             // Instantiate the processes
-            sliceCtrl = new SliceCtrl(channelSize, kernelSize, stride);
             ram  = new TrueDualPortMemory<float>(kh*kw, weights);
-            kernelCtrl = new KernelCtrl(kh, kw);
+            kernelCtrl = new KernelCtrl(channelSize, kernelSize, stride);
             weightValue = new WeightValue();
             plusCtrl = new PlusCtrl();
-            bias = new Bias(biasVal);
-            upSample = new UpSample(uh, uw);
 
             // Connect the buses
-            kernelCtrl.Input = sliceCtrl.Output;
             kernelCtrl.ram_ctrl = ram.ControlA;
             kernelCtrl.ram_read = ram.ReadResultA;
 
@@ -58,14 +54,9 @@ namespace CNN
             weightValue.InputWeight = kernelCtrl.OutputWeight;
             
             plusCtrl.Input = weightValue.Output;
-            
-            bias.Input = plusCtrl.Output;
-            
-            upSample.Input = bias.Output;
         }
 
         // Hold the internal processes as fields
-        private SliceCtrl sliceCtrl;
         private TrueDualPortMemory<float> ram;
         private KernelCtrl kernelCtrl;
         private WeightValue weightValue;
