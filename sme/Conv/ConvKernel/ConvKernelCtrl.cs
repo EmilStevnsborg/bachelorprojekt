@@ -5,7 +5,7 @@ using SME.Components;
 namespace CNN
 {
     [ClockedProcess]
-    public class KernelCtrl : SimpleProcess
+    public class ConvKernelCtrl : SimpleProcess
     {
         [InputBus]
         public ChannelBus Input;
@@ -27,7 +27,7 @@ namespace CNN
         bool ramValid = false;
         private float [,] buffer;
 
-        public KernelCtrl((int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public ConvKernelCtrl((int,int) channelSize, (int,int) kernelSize, (int,int) stride)
         {
             this.channelHeight = channelSize.Item1;
             this.channelWidth = channelSize.Item2;

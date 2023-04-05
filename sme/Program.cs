@@ -68,19 +68,37 @@ namespace CNN
                 // upSample.Input = upSampleTester.Output;
                 // upSampleTester.Input = upSample.Output;
 
-                // ConvKernel Test
-                var weights = new float[4] {1,2,1,0};
-                // print weights
-                Console.WriteLine("Test weights: ");
-                for (int i = 0; i < 4; i++)
-                {
-                    Console.Write(weights[i] + " ");
-                    if ((i + 1) % 2 == 0) {Console.WriteLine();}
-                }
-                ConvKernel convKernel = new ConvKernel(weights, (4,4), (2,2), (2,2));
-                ConvKernelTester convKernelTester = new ConvKernelTester();
-                convKernel.Input = convKernelTester.Output;
-                convKernelTester.Input = convKernel.Output;
+                // // ConvKernel Test
+                // var weights = new float[4] {1,2,1,0};
+                // // print weights
+                // Console.WriteLine("Test weights: ");
+                // for (int i = 0; i < 4; i++)
+                // {
+                //     Console.Write(weights[i] + " ");
+                //     if ((i + 1) % 2 == 0) {Console.WriteLine();}
+                // }
+                // ConvKernel convKernel = new ConvKernel(weights, (4,4), (2,2), (2,2));
+                // ConvKernelTester convKernelTester = new ConvKernelTester();
+                // convKernel.Input = convKernelTester.Output;
+                // convKernelTester.Input = convKernel.Output;
+
+                // // ConvKernel Test
+                // var weights = new float[4] {1,2,1,0};
+                // MaxPoolKernel maxPoolKernel = new MaxPoolKernel((4,4), (2,2), (2,2));
+                // MaxPoolKernelTester maxPoolKernelTester = new MaxPoolKernelTester();
+                // maxPoolKernel.Input = maxPoolKernelTester.Output;
+                // maxPoolKernelTester.Input = maxPoolKernel.Output;
+
+                // Filter Test
+                float[][] weights = { new float[4] {1,2,1,0}, new float[4] {1,2,1,0}};
+                Filter filter = new Filter(2, weights, (4,4), (2,2), (2,2));
+                FilterTester filterTester = new FilterTester();
+                // for (int i = 0; i < filter.NumInChannels; i++)
+                // {
+                //     filter.Inputs[i] = filterTester.Outputs[i];                    
+                // }
+                filter.Inputs = filterTester.Outputs;
+                filterTester.Inputs = filter.Outputs;
 
                 sim.Run();
             }

@@ -6,8 +6,6 @@ using static System.Math;
 namespace CNN
 {
     [ClockedProcess]
-    // Wrapper class for instantiating the internal network, only exposing input
-    // and output.
     public class ConvKernel
     {
         public ChannelBus Input
@@ -42,7 +40,7 @@ namespace CNN
 
             // Instantiate the processes
             ram  = new TrueDualPortMemory<float>(kh*kw, weights);
-            kernelCtrl = new KernelCtrl(channelSize, kernelSize, stride);
+            kernelCtrl = new ConvKernelCtrl(channelSize, kernelSize, stride);
             weightValue = new WeightValue();
             plusCtrl = new PlusCtrl();
 
@@ -58,10 +56,8 @@ namespace CNN
 
         // Hold the internal processes as fields
         private TrueDualPortMemory<float> ram;
-        private KernelCtrl kernelCtrl;
+        private ConvKernelCtrl kernelCtrl;
         private WeightValue weightValue;
         private PlusCtrl plusCtrl;
-        private Bias bias;
-        private UpSample upSample;
     }
 }
