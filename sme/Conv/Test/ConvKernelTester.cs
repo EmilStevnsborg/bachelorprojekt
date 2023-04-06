@@ -21,8 +21,9 @@ namespace CNN
             Console.WriteLine("Test channel: ");
             for (int i = 0; i < 16; i++)
             {
-                Output.ArrData[i] = (float) i;
-                Console.Write(i + " ");
+                float val = (i % 3);
+                Output.ArrData[i] = val;
+                Console.Write(val + " ");
                 if ((i + 1) % 4 == 0) {Console.WriteLine();}
             }
             Output.Height = 4;

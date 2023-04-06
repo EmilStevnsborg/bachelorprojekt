@@ -12,7 +12,7 @@ namespace CNN
         [OutputBus]
         public ValueBus Output = Scope.CreateBus<ValueBus>();
 
-        float buffer = 0;
+        private float buffer = 0;
 
         protected override void OnTick()
         {
@@ -22,12 +22,10 @@ namespace CNN
                 buffer += Input.Value;
             }
             Output.Value = buffer;
-            Output.enable = Input.LastValue;
-            Output.LastValue = false;
-            // Console.WriteLine("add " + Input.Value);
+            Output.enable = Output.LastValue = Input.LastValue;
             if (Input.LastValue)
             {
-                Console.WriteLine("Result of plus and multiply: " + buffer);
+                // Console.WriteLine("Result of plus: " + buffer);
                 buffer = 0;
             }
         }

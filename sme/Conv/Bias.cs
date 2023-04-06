@@ -20,13 +20,13 @@ namespace CNN
         protected override void OnTick()
         {
             Output.Value = Input.Value;
+            Output.enable = Input.enable;
+            Output.LastValue = Input.LastValue;
             // Output should only be updated when the input is valid.
             if (Input.enable)
             {
                 Output.Value = Input.Value + bias;
             }
-            Output.enable = Input.enable;
-            Output.LastValue = Input.LastValue;
         }
     }
 }

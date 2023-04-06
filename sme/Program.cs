@@ -69,7 +69,7 @@ namespace CNN
                 // upSampleTester.Input = upSample.Output;
 
                 // // ConvKernel Test
-                // var weights = new float[4] {1,2,3,4};
+                // var weights = new float[4] {1,0,0,1};
                 // // print weights
                 // Console.WriteLine("Test weights: ");
                 // for (int i = 0; i < 4; i++)
@@ -89,8 +89,18 @@ namespace CNN
                 // maxPoolKernel.Input = maxPoolKernelTester.Output;
                 // maxPoolKernelTester.Input = maxPoolKernel.Output;
 
-                // Filter Test
-                float[][] weights = { new float[4] {1,0,0,1}, new float[4] {1,1,1,1}};
+                // // ValueArrayCtrl Test
+                // ValueArrayCtrl valueArrayCtrl = new ValueArrayCtrl(3);
+                // PlusCtrl plusCtrl = new PlusCtrl();
+                // Bias bias = new Bias(1);
+                // ValueArrayCtrlTester tester = new ValueArrayCtrlTester();
+                // valueArrayCtrl.Input = tester.Outputs;
+                // plusCtrl.Input = valueArrayCtrl.Output;
+                // bias.Input = plusCtrl.Output;
+                // tester.Input = bias.Output;
+
+                // Filter Test (Looks only at channel 2 for some reason)
+                float[][] weights = { new float[4] {1,0,3,2}, new float[4] {0,4,0,1}};
                 for (int k = 0; k < 2; k++)
                 {
                     Console.WriteLine("weights " + (k + 1));
@@ -103,11 +113,17 @@ namespace CNN
                         Console.WriteLine();
                     }
                 }
-                Filter filter = new Filter(2, weights, (4,4), (2,2), (2,2));
+                Filter filter = new Filter(2, weights, 1, (4,4), (2,2), (2,2));
+                ValueArrayCtrl valueArrayCtrl = new ValueArrayCtrl(2);
+                PlusCtrl plusCtrl = new PlusCtrl();
+                Bias bias = new Bias(1);
                 FilterTester filterTester = new FilterTester();
                 filter.Inputs = filterTester.Outputs;
                 filter.PushInputs();
-                filterTester.Inputs = filter.Outputs;
+                valueArrayCtrl.Input = filter.Output;
+                plusCtrl.Input = valueArrayCtrl.Output;
+                bias.Input = plusCtrl.Output;
+                filterTester.Input = bias.Output;
 
                 sim.Run();
             }

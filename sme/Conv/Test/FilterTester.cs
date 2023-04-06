@@ -8,20 +8,9 @@ namespace CNN
     public class FilterTester : SimulationProcess
     {
         [InputBus]
-        public ValueBus[] Inputs;
+        public ValueBus Input;
         [OutputBus]
         public ChannelBus[] Outputs;
-
-        // public ValueBus[] GetInputs
-        // {
-        //     get => Inputs;
-        //     set => Inputs = value;
-        // }
-        // public ChannelBus[] GetOutputs
-        // {
-        //     get => Outputs;
-        //     set => Outputs = value;
-        // }
 
         public FilterTester()
         {
@@ -39,7 +28,7 @@ namespace CNN
                 Console.WriteLine("Test channel: ");
                 for (int j = 0; j < 16; j++)
                 {
-                    float val = j + 1;
+                    float val = i+j;
                     Outputs[i].ArrData[j] = val;
                     Console.Write(val + " ");
                     if ((j + 1) % 4 == 0) {Console.WriteLine();}
@@ -55,34 +44,22 @@ namespace CNN
                 Outputs[i].enable = false;
             }
             var outputOne = new float[4];
-            var outputTwo = new float[4];
             await ClockAsync();
             // Loading inputs
             for (int i = 0; i < 4; i++)
             {
-                // Two values arrive at the same time
-                while (!(Inputs[0].enable && Inputs[1].enable)) await ClockAsync();
-                outputOne[i] = Inputs[0].Value;
-                outputTwo[i] = Inputs[1].Value;
+                while (!(Input.enable)) await ClockAsync();
+                outputOne[i] = Input.Value;
+                Console.WriteLine(Input.Value + ": " + Input.LastValue);
                 await ClockAsync();
             }
             // print results
-            for (int j = 0; j < 2; j++)
+            for (int i  = 0; i < 4; i++)
             {
-                for (int i  = 0; i < 4; i++)
-                {
-                    if (j == 0)
-                    {
-                        Console.Write(outputOne[i] + " ");
-                    }
-                    else
-                    {
-                        Console.Write(outputTwo[i] + " ");
-                    }
-                    if ((i + 1) % 2 == 0) {Console.WriteLine();}
-                }
-                Console.WriteLine();
+                Console.Write(outputOne[i] + " ");
+                if ((i + 1) % 2 == 0) {Console.WriteLine();}
             }
+                Console.WriteLine();
         }
     }
 }

@@ -29,16 +29,16 @@ namespace CNN
             get => inputChannels;
             set => inputChannels = value;
         }
-        public ValueBus[] Outputs
+        public ValueBus[] Output
         {
-            get => outputValues;
-            set => outputValues = value;
+            get => kernelOutputs;
+            set => kernelOutputs = value;
         }
-        public Filter(int numInChannels, float[][] weights, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public Filter(int numInChannels, float[][] weights, float biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
         {
             this.numInChannels = numInChannels;
             inputChannels = new ChannelBus[numInChannels];
-            outputValues = new ValueBus[numInChannels];
+            kernelOutputs = new ValueBus[numInChannels];
             convKernels = new ConvKernel[numInChannels];
             for (int i = 0; i < numInChannels; i++)
             {
@@ -46,7 +46,7 @@ namespace CNN
                 ConvKernel convKernel = new ConvKernel(weightsKernel, channelSize, kernelSize, stride);
                 convKernels[i] = convKernel;
                 inputChannels[i] = convKernel.Input;
-                outputValues[i] = convKernel.Output;
+                kernelOutputs[i] = convKernel.Output;
             }
         }
         public int NumInChannels
@@ -63,6 +63,6 @@ namespace CNN
         private int numInChannels;
         private ConvKernel[] convKernels;
         private ChannelBus[] inputChannels;
-        private ValueBus[] outputValues;
+        private ValueBus[] kernelOutputs;
     }
 }
