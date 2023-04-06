@@ -34,24 +34,34 @@ namespace CNN
             get => outputValues;
             set => outputValues = value;
         }
-        public int NumInChannels
-        {
-            get => numInChannels;
-        }
         public Filter(int numInChannels, float[][] weights, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
         {
             this.numInChannels = numInChannels;
             inputChannels = new ChannelBus[numInChannels];
             outputValues = new ValueBus[numInChannels];
+            convKernels = new ConvKernel[numInChannels];
             for (int i = 0; i < numInChannels; i++)
             {
                 var weightsKernel = weights[i];
                 ConvKernel convKernel = new ConvKernel(weightsKernel, channelSize, kernelSize, stride);
+                convKernels[i] = convKernel;
                 inputChannels[i] = convKernel.Input;
                 outputValues[i] = convKernel.Output;
             }
         }
+        public int NumInChannels
+        {
+            get => numInChannels;
+        }
+        public void PushInputs()
+        {
+            for (int i = 0; i < numInChannels; i++)
+            {
+                convKernels[i].Input = inputChannels[i];
+            }
+        }
         private int numInChannels;
+        private ConvKernel[] convKernels;
         private ChannelBus[] inputChannels;
         private ValueBus[] outputValues;
     }

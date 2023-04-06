@@ -42,18 +42,23 @@ namespace CNN
         }
         protected override void OnTick()
         {
-            // Load values from bus into buffer.
-            if (!bufferValid && Input.enable)
+            // No buffer loaded
+            if (!bufferValid)
             {
-                for (int ii = 0; ii < channelHeight; ii++)
+                // Load Input into buffer
+                if (Input.enable)
                 {
-                    for (int jj = 0; jj < channelWidth; jj++)
+                    for (int ii = 0; ii < channelHeight; ii++)
                     {
-                        buffer[ii,jj] = Input.ArrData[ii*channelWidth + jj];
+                        for (int jj = 0; jj < channelWidth; jj++)
+                        {
+                            buffer[ii,jj] = Input.ArrData[ii*channelWidth + jj];
+                        }
                     }
+                    bufferValid = true;
+                    i = j = k = adress = 0;
                 }
-                bufferValid = true;
-                i = j = k = adress = 0;
+                OutputValue.enable = OutputWeight.enable = OutputValue.LastValue = false;
             }
 
             // If the buffer is filled, issue a read to the memory at every clock
@@ -75,19 +80,19 @@ namespace CNN
                 // If the results are back from memory, they can be forwarded along
                 // side the Value data.
                 OutputValue.enable = OutputWeight.enable = ramValid;
+
                 if (ramValid)
                 {
                     OutputValue.Value = buffer[startRow + i, startCol + j];
                     OutputWeight.Value = ram_read.Data;
-                    OutputValue.LastValue = false;
                     // Always increment column index.
                     j = (j + 1) % kernelWidth;
                     // Only increment row index when column have wrapped.
                     i = j == 0 ? (i + 1) % kernelHeight: i;
                     // Check if the end index of the slice has been reached
+                    OutputValue.LastValue = (i == 0 && j == 0);
                     if (i == 0 && j == 0)
                     {
-                        OutputValue.LastValue = true;
                         if (startCol + strideCol == channelWidth)
                         {
                             startCol = 0;
@@ -98,14 +103,12 @@ namespace CNN
                             startCol = startCol + strideCol;
                         }
                     }
-                    // Check if we have processed the entire channel.
-                    if (startRow == channelHeight)
-                    {
-                        bufferValid = ramValid = false;
-                    }
-
-                    // Console.WriteLine("Value, Weight, Last? " + OutputValue.Value + " " + OutputWeight.Value + " " + OutputValue.LastValue);
                 }
+            }
+            // Check if we have processed the entire channel.
+            if (startRow == channelHeight)
+            {
+                bufferValid = ramValid = false;
             }
         }
     }

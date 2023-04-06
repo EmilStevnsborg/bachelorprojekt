@@ -27,7 +27,7 @@ namespace CNN
             // Console.WriteLine("add " + Input.Value);
             if (Input.LastValue)
             {
-                // Console.WriteLine("Result of plus and multiply: " + Output.Value);
+                Console.WriteLine("Result of plus and multiply: " + buffer);
                 buffer = 0;
             }
         }

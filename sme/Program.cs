@@ -69,7 +69,7 @@ namespace CNN
                 // upSampleTester.Input = upSample.Output;
 
                 // // ConvKernel Test
-                // var weights = new float[4] {1,2,1,0};
+                // var weights = new float[4] {1,2,3,4};
                 // // print weights
                 // Console.WriteLine("Test weights: ");
                 // for (int i = 0; i < 4; i++)
@@ -82,22 +82,31 @@ namespace CNN
                 // convKernel.Input = convKernelTester.Output;
                 // convKernelTester.Input = convKernel.Output;
 
-                // // ConvKernel Test
-                // var weights = new float[4] {1,2,1,0};
+                // // MaxPoolKernel Test
+                // var weights = new float[4] {1,2,3,4};
                 // MaxPoolKernel maxPoolKernel = new MaxPoolKernel((4,4), (2,2), (2,2));
                 // MaxPoolKernelTester maxPoolKernelTester = new MaxPoolKernelTester();
                 // maxPoolKernel.Input = maxPoolKernelTester.Output;
                 // maxPoolKernelTester.Input = maxPoolKernel.Output;
 
                 // Filter Test
-                float[][] weights = { new float[4] {1,2,1,0}, new float[4] {1,2,1,0}};
+                float[][] weights = { new float[4] {1,0,0,1}, new float[4] {1,1,1,1}};
+                for (int k = 0; k < 2; k++)
+                {
+                    Console.WriteLine("weights " + (k + 1));
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int j = 0; j < 2; j++)
+                        {
+                            Console.Write(weights[k][i * 2 + j] + " ");
+                        }
+                        Console.WriteLine();
+                    }
+                }
                 Filter filter = new Filter(2, weights, (4,4), (2,2), (2,2));
                 FilterTester filterTester = new FilterTester();
-                // for (int i = 0; i < filter.NumInChannels; i++)
-                // {
-                //     filter.Inputs[i] = filterTester.Outputs[i];                    
-                // }
                 filter.Inputs = filterTester.Outputs;
+                filter.PushInputs();
                 filterTester.Inputs = filter.Outputs;
 
                 sim.Run();

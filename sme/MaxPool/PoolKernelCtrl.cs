@@ -35,23 +35,25 @@ namespace CNN
         }
         protected override void OnTick()
         {
-            // Load values from bus into buffer.
-            if (!bufferValid && Input.enable)
+            // No buffer loaded
+            if (!bufferValid)
             {
-                for (int ii = 0; ii < channelHeight; ii++)
+                // Load Input into buffer
+                if (Input.enable)
                 {
-                    for (int jj = 0; jj < channelWidth; jj++)
+                    for (int ii = 0; ii < channelHeight; ii++)
                     {
-                        buffer[ii,jj] = Input.ArrData[ii*channelWidth + jj];
+                        for (int jj = 0; jj < channelWidth; jj++)
+                        {
+                            buffer[ii,jj] = Input.ArrData[ii*channelWidth + jj];
+                        }
                     }
+                    bufferValid = true;
                 }
-                bufferValid = true;
-                i = j = 0;
+                OutputValue.enable = OutputValue.LastValue = false;
             }
 
-            // If the buffer is filled, issue a read to the memory at every clock
-            // cycle. When the data comes back from the memory, emit the output at
-            // each clock cycle.
+            // If the buffer is filled, emit the output at each clock cycle.
             if (bufferValid)
             {                
                 OutputValue.enable = bufferValid;
@@ -75,11 +77,11 @@ namespace CNN
                         startCol = startCol + strideCol;
                     }
                 }
-                // Check if we have processed the entire channel.
-                if (startRow == channelHeight)
-                {
-                    bufferValid = false;
-                }
+            }
+            // Check if we have processed the entire channel.
+            if (startRow == channelHeight)
+            {
+                bufferValid = false;
             }
         }
     }
