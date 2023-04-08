@@ -99,8 +99,8 @@ namespace CNN
                 // bias.Input = plusCtrl.Output;
                 // tester.Input = bias.Output;
 
-                // Filter Test (Looks only at channel 2 for some reason)
-                float[][] weights = { new float[4] {1,0,3,2}, new float[4] {0,4,0,1}};
+                // Filter Test (should work now)
+                float[][] weights = { new float[4] {1,1,1,1}, new float[4] {2,1,2,1}};
                 for (int k = 0; k < 2; k++)
                 {
                     Console.WriteLine("weights " + (k + 1));
@@ -114,16 +114,23 @@ namespace CNN
                     }
                 }
                 Filter filter = new Filter(2, weights, 1, (4,4), (2,2), (2,2));
-                ValueArrayCtrl valueArrayCtrl = new ValueArrayCtrl(2);
-                PlusCtrl plusCtrl = new PlusCtrl();
-                Bias bias = new Bias(1);
                 FilterTester filterTester = new FilterTester();
                 filter.Inputs = filterTester.Outputs;
                 filter.PushInputs();
-                valueArrayCtrl.Input = filter.Output;
-                plusCtrl.Input = valueArrayCtrl.Output;
-                bias.Input = plusCtrl.Output;
-                filterTester.Input = bias.Output;
+                filterTester.Input = filter.Output;
+
+                // // ConvLayer Test
+                // float[][] weightsOne = { new float[4] {1,1,1,1}, new float[4] {2,2,2,2}};
+                // float biasOne = 1;
+                // float[][] weightsTwo = { new float[4] {2,2,2,2}, new float[4] {3,3,3,3}};
+                // float biasTwo = 2;
+                // float[][][] weigths = {weightsOne, weightsTwo};
+                // float[] biases = {biasOne, biasTwo};
+                // ConvLayer convLayer = new ConvLayer(2,2,weigths,biases,(4,4),(2,2),(2,2));
+                // ConvLayerTester convLayerTester = new ConvLayerTester();
+                // convLayer.Inputs = convLayerTester.Outputs;
+                // convLayer.PushInputs();
+                // convLayerTester.Inputs = convLayer.Outputs;
 
                 sim.Run();
             }

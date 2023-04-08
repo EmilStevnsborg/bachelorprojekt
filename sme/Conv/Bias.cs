@@ -25,6 +25,7 @@ namespace CNN
             // Output should only be updated when the input is valid.
             if (Input.enable)
             {
+                Console.Write(Input.Value + " ");
                 Output.Value = Input.Value + bias;
             }
         }

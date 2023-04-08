@@ -29,10 +29,8 @@ namespace CNN
                 {
                     if (Input[ii].enable)
                     {
-                        Console.Write(Input[ii].Value + " ");
                         buffer.Add(Input[ii].Value);
                     }
-                    if (ii + 1 == numInChannels) {Console.WriteLine();}
                 }
             }
             if (buffer.Count > 0 && i < buffer.Count)

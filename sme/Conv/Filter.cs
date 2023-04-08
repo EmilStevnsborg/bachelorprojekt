@@ -1,18 +1,3 @@
-//ChannelBus1
-//ChannelBus2
-//ChannelBus3
-
-//ConvKernel1 (process)
-//ConvKernel2 (process)
-//ConvKernel3 (process)
-
-//OutputBus = ConvKernel1.Out + ConvKernel2.Out + ConvKernel3.Out + bias
-
-//Upsample.Input = OutputBus
-//
-//
-//Print(UpSample)
-
 using SME;
 using SME.Components;
 using System;
@@ -29,10 +14,10 @@ namespace CNN
             get => inputChannels;
             set => inputChannels = value;
         }
-        public ValueBus[] Output
+        public ValueBus Output
         {
-            get => kernelOutputs;
-            set => kernelOutputs = value;
+            get => bias.Output;
+            set => bias.Output = value;
         }
         public Filter(int numInChannels, float[][] weights, float biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
         {
@@ -40,6 +25,9 @@ namespace CNN
             inputChannels = new ChannelBus[numInChannels];
             kernelOutputs = new ValueBus[numInChannels];
             convKernels = new ConvKernel[numInChannels];
+            valueArrayCtrl = new ValueArrayCtrl(numInChannels);
+            plusCtrl = new PlusCtrl();
+            bias = new Bias(biasVal);
             for (int i = 0; i < numInChannels; i++)
             {
                 var weightsKernel = weights[i];
@@ -48,10 +36,10 @@ namespace CNN
                 inputChannels[i] = convKernel.Input;
                 kernelOutputs[i] = convKernel.Output;
             }
-        }
-        public int NumInChannels
-        {
-            get => numInChannels;
+            // connect busses
+            valueArrayCtrl.Input = kernelOutputs;
+            plusCtrl.Input = valueArrayCtrl.Output;
+            bias.Input = plusCtrl.Output;
         }
         public void PushInputs()
         {
@@ -64,5 +52,8 @@ namespace CNN
         private ConvKernel[] convKernels;
         private ChannelBus[] inputChannels;
         private ValueBus[] kernelOutputs;
+        private ValueArrayCtrl valueArrayCtrl;
+        private PlusCtrl plusCtrl;
+        private Bias bias ;
     }
 }
