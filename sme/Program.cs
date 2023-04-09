@@ -12,12 +12,6 @@ namespace CNN
 
             using(var sim = new Simulation())
             {
-                // SliceCtrl Test
-                // SliceCtrl slicectrl = new SliceCtrl((4,4), (2,2), (2,2));
-                // SliceTester sliceTester = new SliceTester();
-                // slicectrl.Input = sliceTester.Output;
-                // sliceTester.Input = slicectrl.Output;
-
                 // // ReluCore Test
                 // ReluCore reluCore = new ReluCore();
                 // ReluCoreTester reluCoreTester = new ReluCoreTester();
@@ -99,38 +93,45 @@ namespace CNN
                 // bias.Input = plusCtrl.Output;
                 // tester.Input = bias.Output;
 
-                // Filter Test (should work now)
-                float[][] weights = { new float[4] {1,1,1,1}, new float[4] {2,1,2,1}};
-                for (int k = 0; k < 2; k++)
-                {
-                    Console.WriteLine("weights " + (k + 1));
-                    for (int i = 0; i < 2; i++)
-                    {
-                        for (int j = 0; j < 2; j++)
-                        {
-                            Console.Write(weights[k][i * 2 + j] + " ");
-                        }
-                        Console.WriteLine();
-                    }
-                }
-                Filter filter = new Filter(2, weights, 1, (4,4), (2,2), (2,2));
-                FilterTester filterTester = new FilterTester();
-                filter.Inputs = filterTester.Outputs;
-                filter.PushInputs();
-                filterTester.Input = filter.Output;
+                // // Filter Test (should work now)
+                // float[][] weights = { new float[4] {1,1,1,1}, new float[4] {2,1,2,1}};
+                // for (int k = 0; k < 2; k++)
+                // {
+                //     Console.WriteLine("weights " + (k + 1));
+                //     for (int i = 0; i < 2; i++)
+                //     {
+                //         for (int j = 0; j < 2; j++)
+                //         {
+                //             Console.Write(weights[k][i * 2 + j] + " ");
+                //         }
+                //         Console.WriteLine();
+                //     }
+                // }
+                // Filter filter = new Filter(2, weights, 1, (4,4), (2,2), (2,2));
+                // FilterTester filterTester = new FilterTester();
+                // filter.Inputs = filterTester.Outputs;
+                // filter.PushInputs();
+                // filterTester.Input = filter.Output;
 
-                // // ConvLayer Test
-                // float[][] weightsOne = { new float[4] {1,1,1,1}, new float[4] {2,2,2,2}};
-                // float biasOne = 1;
-                // float[][] weightsTwo = { new float[4] {2,2,2,2}, new float[4] {3,3,3,3}};
-                // float biasTwo = 2;
-                // float[][][] weigths = {weightsOne, weightsTwo};
-                // float[] biases = {biasOne, biasTwo};
-                // ConvLayer convLayer = new ConvLayer(2,2,weigths,biases,(4,4),(2,2),(2,2));
-                // ConvLayerTester convLayerTester = new ConvLayerTester();
-                // convLayer.Inputs = convLayerTester.Outputs;
-                // convLayer.PushInputs();
-                // convLayerTester.Inputs = convLayer.Outputs;
+                // ConvLayer Test
+                float[][] weightsOne = { new float[4] {1,1,1,1}, new float[4] {2,2,2,2}};
+                float biasOne = 1;
+                float[][] weightsTwo = { new float[4] {2,2,2,2}, new float[4] {3,3,3,3}};
+                float biasTwo = 2;
+                float[][][] weigths = {weightsOne, weightsTwo};
+                float[] biases = {biasOne, biasTwo};
+                ConvLayer convLayer = new ConvLayer(2,2,weigths,biases,(4,4),(2,2),(2,2));
+                ConvLayerTester convLayerTester = new ConvLayerTester();
+                convLayer.Inputs = convLayerTester.Outputs;
+                convLayer.PushInputs();
+                convLayerTester.Inputs = convLayer.Outputs;
+
+                // // MaxPoolLayer Test
+                // MaxPoolLayer maxPoolLayer = new MaxPoolLayer(2,(4,4),(2,2),(2,2));
+                // MaxPoolLayerTester maxPoolLayerTester = new MaxPoolLayerTester();
+                // maxPoolLayer.Inputs = maxPoolLayerTester.Outputs;
+                // maxPoolLayer.PushInputs();
+                // maxPoolLayerTester.Inputs = maxPoolLayer.Outputs;
 
                 sim.Run();
             }

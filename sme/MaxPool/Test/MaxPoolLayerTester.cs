@@ -5,14 +5,14 @@ using SME;
 namespace CNN
 {
     [ClockedProcess]
-    public class ConvLayerTester : SimulationProcess
+    public class MaxPoolLayerTester : SimulationProcess
     {
         [InputBus]
         public ValueBus[] Inputs;
         [OutputBus]
         public ChannelBus[] Outputs;
 
-        public ConvLayerTester()
+        public MaxPoolLayerTester()
         {
             
             Outputs = new ChannelBus[2];
@@ -30,7 +30,7 @@ namespace CNN
                 Console.WriteLine("Test channel: ");
                 for (int j = 0; j < 16; j++)
                 {
-                    float val = (j % 4) * (i+1);
+                    float val = (i + 1) * (j - 3);
                     Outputs[i].ArrData[j] = val;
                     Console.Write(val + " ");
                     if ((j + 1) % 4 == 0) {Console.WriteLine();}
