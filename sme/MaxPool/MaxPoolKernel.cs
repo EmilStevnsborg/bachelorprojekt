@@ -20,9 +20,9 @@ namespace CNN
             set => max.Output = value;
         }
 
-        public MaxPoolKernel((int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public MaxPoolKernel((int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
-            kernelCtrl = new PoolKernelCtrl(channelSize, kernelSize, stride);
+            kernelCtrl = new PoolKernelCtrl(channelSize, kernelSize, stride, padding, padVal);
             max = new Max();
 
             // Connect the buses

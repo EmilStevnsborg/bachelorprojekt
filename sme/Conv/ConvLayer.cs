@@ -19,7 +19,7 @@ namespace CNN
             get => outputValues;
             set => outputValues = value;
         }
-        public ConvLayer(int numInChannels, int numOutChannels, float[][][] weights, float[] biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public ConvLayer(int numInChannels, int numOutChannels, float[][][] weights, float[] biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
             this.numInChannels = numInChannels;
             this.numOutChannels = numOutChannels;
@@ -29,7 +29,7 @@ namespace CNN
             {
                 var weightsFilter = weights[i];
                 var biasFilter = biasVal[i];
-                Filter filter = new Filter(numInChannels, weightsFilter, biasFilter, channelSize, kernelSize, stride);
+                Filter filter = new Filter(numInChannels, weightsFilter, biasFilter, channelSize, kernelSize, stride, padding, padVal);
                 filters[i] = filter;
                 outputValues[i] = filter.Output;
             }

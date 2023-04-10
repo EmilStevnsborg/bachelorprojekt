@@ -30,7 +30,7 @@ namespace CNN
                 Console.WriteLine("Test channel: ");
                 for (int j = 0; j < 16; j++)
                 {
-                    float val = (j % 4) * (i+1);
+                    float val = (8-j) * (i+1);
                     Outputs[i].ArrData[j] = val;
                     Console.Write(val + " ");
                     if ((j + 1) % 4 == 0) {Console.WriteLine();}

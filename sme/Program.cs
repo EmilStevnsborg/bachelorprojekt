@@ -71,14 +71,14 @@ namespace CNN
                 //     Console.Write(weights[i] + " ");
                 //     if ((i + 1) % 2 == 0) {Console.WriteLine();}
                 // }
-                // ConvKernel convKernel = new ConvKernel(weights, (4,4), (2,2), (2,2));
+                // ConvKernel convKernel = new ConvKernel(weights, (4,4), (2,2), (2,2), (1,1), 0);
                 // ConvKernelTester convKernelTester = new ConvKernelTester();
                 // convKernel.Input = convKernelTester.Output;
                 // convKernelTester.Input = convKernel.Output;
 
                 // // MaxPoolKernel Test
                 // var weights = new float[4] {1,2,3,4};
-                // MaxPoolKernel maxPoolKernel = new MaxPoolKernel((4,4), (2,2), (2,2));
+                // MaxPoolKernel maxPoolKernel = new MaxPoolKernel((4,4), (2,2), (2,2), (1,1), 30);
                 // MaxPoolKernelTester maxPoolKernelTester = new MaxPoolKernelTester();
                 // maxPoolKernel.Input = maxPoolKernelTester.Output;
                 // maxPoolKernelTester.Input = maxPoolKernel.Output;
@@ -107,24 +107,24 @@ namespace CNN
                 //         Console.WriteLine();
                 //     }
                 // }
-                // Filter filter = new Filter(2, weights, 1, (4,4), (2,2), (2,2));
+                // Filter filter = new Filter(2, weights, 1, (4,4), (2,2), (2,2), (1,1), 0);
                 // FilterTester filterTester = new FilterTester();
                 // filter.Inputs = filterTester.Outputs;
                 // filter.PushInputs();
                 // filterTester.Input = filter.Output;
 
-                // ConvLayer Test
-                float[][] weightsOne = { new float[4] {1,1,1,1}, new float[4] {2,2,2,2}};
-                float biasOne = 1;
-                float[][] weightsTwo = { new float[4] {2,2,2,2}, new float[4] {3,3,3,3}};
-                float biasTwo = 2;
-                float[][][] weigths = {weightsOne, weightsTwo};
-                float[] biases = {biasOne, biasTwo};
-                ConvLayer convLayer = new ConvLayer(2,2,weigths,biases,(4,4),(2,2),(2,2));
-                ConvLayerTester convLayerTester = new ConvLayerTester();
-                convLayer.Inputs = convLayerTester.Outputs;
-                convLayer.PushInputs();
-                convLayerTester.Inputs = convLayer.Outputs;
+                // // ConvLayer Test
+                // float[][] weightsOne = { new float[4] {1,1,1,1}, new float[4] {2,2,2,2}};
+                // float biasOne = 1;
+                // float[][] weightsTwo = { new float[4] {2,2,2,2}, new float[4] {3,3,3,3}};
+                // float biasTwo = 2;
+                // float[][][] weigths = {weightsOne, weightsTwo};
+                // float[] biases = {biasOne, biasTwo};
+                // ConvLayer convLayer = new ConvLayer(2,2,weigths,biases,(4,4),(2,2),(2,2),(0,0),0);
+                // ConvLayerTester convLayerTester = new ConvLayerTester();
+                // convLayer.Inputs = convLayerTester.Outputs;
+                // convLayer.PushInputs();
+                // convLayerTester.Inputs = convLayer.Outputs;
 
                 // // MaxPoolLayer Test
                 // MaxPoolLayer maxPoolLayer = new MaxPoolLayer(2,(4,4),(2,2),(2,2));
@@ -132,6 +132,22 @@ namespace CNN
                 // maxPoolLayer.Inputs = maxPoolLayerTester.Outputs;
                 // maxPoolLayer.PushInputs();
                 // maxPoolLayerTester.Inputs = maxPoolLayer.Outputs;
+
+                // // ReluLayer Test on ConvLayer
+                // float[][] weightsOne = { new float[4] {1,1,1,1}, new float[4] {2,2,2,2}};
+                // float biasOne = 1;
+                // float[][] weightsTwo = { new float[4] {2,2,2,2}, new float[4] {3,3,3,3}};
+                // float biasTwo = 2;
+                // float[][][] weigths = {weightsOne, weightsTwo};
+                // float[] biases = {biasOne, biasTwo};
+                // ConvLayer convLayer = new ConvLayer(2,2,weigths,biases,(4,4),(2,2),(2,2),(0,0),0);
+                // ReluLayer reluLayer = new ReluLayer(2);
+                // ConvLayerTester convLayerTester = new ConvLayerTester();
+                // convLayer.Inputs = convLayerTester.Outputs;
+                // convLayer.PushInputs();
+                // reluLayer.Inputs = convLayer.Outputs;
+                // reluLayer.PushInputs();
+                // convLayerTester.Inputs = reluLayer.Outputs;
 
                 sim.Run();
             }

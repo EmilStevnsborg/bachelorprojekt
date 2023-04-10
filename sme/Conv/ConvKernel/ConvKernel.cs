@@ -20,7 +20,7 @@ namespace CNN
             set => plusCtrl.Output = value;
         }
 
-        public ConvKernel(float[] weights, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public ConvKernel(float[] weights, (int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
             // channel input
             var ch = channelSize.Item1;
@@ -40,7 +40,7 @@ namespace CNN
 
             // Instantiate the processes
             ram  = new TrueDualPortMemory<float>(kh*kw, weights);
-            kernelCtrl = new ConvKernelCtrl(channelSize, kernelSize, stride);
+            kernelCtrl = new ConvKernelCtrl(channelSize, kernelSize, stride, padding, padVal);
             weightValue = new WeightValue();
             plusCtrl = new PlusCtrl();
 

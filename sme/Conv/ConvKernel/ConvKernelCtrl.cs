@@ -20,15 +20,20 @@ namespace CNN
 
         private int i, j, k, adress;
         private int channelHeight, channelWidth;
-        private int strideRow, strideCol;
+        private int padHeight, padWidth;
         private int kernelHeight, kernelWidth;
+        private int strideRow, strideCol;
         private int startRow = 0, startCol = 0;
         bool bufferValid = false;
         bool ramValid = false;
         private float [,] buffer;
+        private float padVal;
 
-        public ConvKernelCtrl((int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public ConvKernelCtrl((int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
+            this.padHeight = padding.Item1;
+            this.padWidth = padding.Item2;     
+
             this.channelHeight = channelSize.Item1;
             this.channelWidth = channelSize.Item2;
 
@@ -38,7 +43,12 @@ namespace CNN
             this.strideRow = stride.Item1;
             this.strideCol = stride.Item2;
 
-            this.buffer = new float[channelHeight,channelWidth];
+            this.buffer = new float[channelHeight + 2 * padHeight,channelWidth + 2 * padWidth];
+
+            this.padVal = padVal;
+
+            // fill in padding
+            Helper.Padding(ref buffer, channelHeight, channelWidth, padHeight, padWidth, padVal);
         }
         protected override void OnTick()
         {
@@ -52,7 +62,7 @@ namespace CNN
                     {
                         for (int jj = 0; jj < channelWidth; jj++)
                         {
-                            buffer[ii,jj] = Input.ArrData[ii*channelWidth + jj];
+                            buffer[ii+padHeight,jj+padWidth] = Input.ArrData[ii*channelWidth + jj];
                         }
                     }
                     bufferValid = true;
@@ -93,7 +103,7 @@ namespace CNN
                     OutputValue.LastValue = (i == 0 && j == 0);
                     if (i == 0 && j == 0)
                     {
-                        if (startCol + strideCol == channelWidth)
+                        if (startCol + strideCol == channelWidth + 2 * padWidth)
                         {
                             startCol = 0;
                             startRow = startRow + strideRow;
@@ -106,7 +116,7 @@ namespace CNN
                 }
             }
             // Check if we have processed the entire channel.
-            if (startRow == channelHeight)
+            if (startRow == channelHeight + 2 * padHeight)
             {
                 bufferValid = ramValid = false;
             }

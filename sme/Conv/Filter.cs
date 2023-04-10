@@ -19,7 +19,7 @@ namespace CNN
             get => bias.Output;
             set => bias.Output = value;
         }
-        public Filter(int numInChannels, float[][] weights, float biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public Filter(int numInChannels, float[][] weights, float biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
             this.numInChannels = numInChannels;
             inputChannels = new ChannelBus[numInChannels];
@@ -31,7 +31,7 @@ namespace CNN
             for (int i = 0; i < numInChannels; i++)
             {
                 var weightsKernel = weights[i];
-                ConvKernel convKernel = new ConvKernel(weightsKernel, channelSize, kernelSize, stride);
+                ConvKernel convKernel = new ConvKernel(weightsKernel, channelSize, kernelSize, stride, padding, padVal);
                 convKernels[i] = convKernel;
                 inputChannels[i] = convKernel.Input;
                 kernelOutputs[i] = convKernel.Output;

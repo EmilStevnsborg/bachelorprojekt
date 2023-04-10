@@ -11,7 +11,6 @@ namespace CNN
         public ValueBus Input;
         [OutputBus]
         public ChannelBus Output = Scope.CreateBus<ChannelBus>();
-
         public override async Task Run()
         {
             await ClockAsync();
@@ -33,11 +32,11 @@ namespace CNN
             // Data shouldn't be read again
             Output.enable = false;
             await ClockAsync();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 9; i++)
             {
                 while (!Input.enable) await ClockAsync();
                 Console.Write(Input.Value + " ");
-                if ((i + 1) % 2 == 0) {Console.WriteLine();}
+                if ((i + 1) % 3 == 0) {Console.WriteLine();}
                 await ClockAsync();
             }
         }

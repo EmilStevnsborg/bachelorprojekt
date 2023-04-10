@@ -45,21 +45,20 @@ namespace CNN
             {
                 Outputs[i].enable = false;
             }
-            var outputOne = new float[4];
+            var outputOne = new float[9];
             await ClockAsync();
             // Loading inputs
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 9; i++)
             {
                 while (!(Input.enable)) await ClockAsync();
                 outputOne[i] = Input.Value;
-                Console.WriteLine(Input.Value + ": " + Input.LastValue);
                 await ClockAsync();
             }
             // print results
-            for (int i  = 0; i < 4; i++)
+            for (int i  = 0; i < 9; i++)
             {
                 Console.Write(outputOne[i] + " ");
-                if ((i + 1) % 2 == 0) {Console.WriteLine();}
+                if ((i + 1) % 3 == 0) {Console.WriteLine();}
             }
             Console.WriteLine();
         }

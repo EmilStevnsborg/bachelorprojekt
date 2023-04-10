@@ -19,7 +19,7 @@ namespace CNN
             get => kernelOutputs;
             set => kernelOutputs = value;
         }
-        public MaxPoolLayer(int numInChannels, (int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public MaxPoolLayer(int numInChannels, (int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
             this.numInChannels = numInChannels;
             inputChannels = new ChannelBus[numInChannels];
@@ -27,7 +27,7 @@ namespace CNN
             maxPoolKernels = new MaxPoolKernel[numInChannels];
             for (int i = 0; i < numInChannels; i++)
             {
-                MaxPoolKernel maxPoolKernel = new MaxPoolKernel(channelSize, kernelSize, stride);
+                MaxPoolKernel maxPoolKernel = new MaxPoolKernel(channelSize, kernelSize, stride, padding, padVal);
                 maxPoolKernels[i] = maxPoolKernel;
                 inputChannels[i] = maxPoolKernel.Input;
                 kernelOutputs[i] = maxPoolKernel.Output;

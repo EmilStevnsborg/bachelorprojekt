@@ -14,14 +14,19 @@ namespace CNN
 
         private int i, j;
         private int channelHeight, channelWidth;
-        private int strideRow, strideCol;
+        private int padHeight, padWidth;
         private int kernelHeight, kernelWidth;
+        private int strideRow, strideCol;
         private int startRow = 0, startCol = 0;
         bool bufferValid = false;
         private float [,] buffer;
+        private float padVal;
 
-        public PoolKernelCtrl((int,int) channelSize, (int,int) kernelSize, (int,int) stride)
+        public PoolKernelCtrl((int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
+            this.padHeight = padding.Item1;
+            this.padWidth = padding.Item2;   
+
             this.channelHeight = channelSize.Item1;
             this.channelWidth = channelSize.Item2;
 
@@ -31,7 +36,12 @@ namespace CNN
             this.strideRow = stride.Item1;
             this.strideCol = stride.Item2;
 
-            this.buffer = new float[channelHeight,channelWidth];
+            this.buffer = new float[channelHeight + 2 * padHeight,channelWidth + 2 * padWidth];
+
+            this.padVal = padVal;
+
+            // fill in padding
+            Helper.Padding(ref buffer, channelHeight, channelWidth, padHeight, padWidth, padVal);
         }
         protected override void OnTick()
         {
@@ -45,7 +55,7 @@ namespace CNN
                     {
                         for (int jj = 0; jj < channelWidth; jj++)
                         {
-                            buffer[ii,jj] = Input.ArrData[ii*channelWidth + jj];
+                            buffer[ii+padHeight,jj+padWidth] = Input.ArrData[ii*channelWidth + jj];
                         }
                     }
                     bufferValid = true;
@@ -67,7 +77,7 @@ namespace CNN
                 if (i == 0 && j == 0)
                 {
                     OutputValue.LastValue = true;
-                    if (startCol + strideCol == channelWidth)
+                    if (startCol + strideCol == channelWidth + 2 * padWidth)
                     {
                         startCol = 0;
                         startRow = startRow + strideRow;
@@ -79,7 +89,7 @@ namespace CNN
                 }
             }
             // Check if we have processed the entire channel.
-            if (startRow == channelHeight)
+            if (startRow == channelHeight + 2 * padHeight)
             {
                 bufferValid = false;
             }
