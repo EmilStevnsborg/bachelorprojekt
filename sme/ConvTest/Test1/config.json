@@ -1,0 +1,26 @@
+{
+    "numInChannels" : 3,
+    "numOutChannels" : 2,
+    "channelHeight" : 4,
+    "channelWidth" : 5,
+    "kernelHeight" : 2,
+    "kernelWidth" : 3,
+    "strideRow" : 2,
+    "strideCol" : 1,
+    "padHeight" : 0,
+    "padWidth" : 0,
+    "padVal" : 0.0,
+    "weights" :
+    [
+        [
+            [1,1,1,1,1,1],
+            [2,2,2,2,2,2],
+            [3,3,3,3,3,3]
+        ],
+        [
+            [0.1,0.1,0.1,0.1,0.1,0.1],
+            [0.5,0.5,0.5,0.5,0.5,0.5],
+            [2,2,2,3,3,3]
+        ]
+    ]
+}
