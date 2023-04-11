@@ -17,15 +17,14 @@ namespace CNN
         public ValueBus OutputWeight = Scope.CreateBus<ValueBus>();
         [OutputBus]
         public TrueDualPortMemory<float>.IControl ram_ctrl;
-
         private int i, j, k, adress;
         private int channelHeight, channelWidth;
         private int padHeight, padWidth;
         private int kernelHeight, kernelWidth;
         private int strideRow, strideCol;
         private int startRow = 0, startCol = 0;
-        bool bufferValid = false;
-        bool ramValid = false;
+        private bool bufferValid = false;
+        private bool ramValid = false;
         private float [,] buffer;
         private float padVal;
 
@@ -82,7 +81,7 @@ namespace CNN
                 ram_ctrl.IsWriting = false;
                 ram_ctrl.Data = 0;
 
-                // After two clock cycles, the results come back from memory.
+                // After two clock cycles, the results comes back from memory.
                 ramValid = k >= 2;
                 k = (k + 1);
                 adress = k % (kernelHeight * kernelWidth);

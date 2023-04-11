@@ -149,6 +149,13 @@ namespace CNN
                 // reluLayer.PushInputs();
                 // convLayerTester.Inputs = reluLayer.Outputs;
 
+                // LinearNode Test
+                float[] weights = new float[6] {1,1,2,2,3,3};
+                LinearNode linearNode = new LinearNode(3, weights, (1,2));
+                LinearNodeTester linearNodeTester = new LinearNodeTester();
+                linearNode.Inputs = linearNodeTester.Outputs;
+                linearNodeTester.Input = linearNode.Output;
+
                 sim.Run();
             }
 

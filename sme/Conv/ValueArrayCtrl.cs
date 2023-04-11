@@ -33,14 +33,21 @@ namespace CNN
                     }
                 }
             }
+            // remember to toss buffer after done (check)
             if (buffer.Count > 0 && i < buffer.Count)
             {
+
                 Output.Value = buffer[i];
                 Output.enable = true;
                 i = i + 1;
                 if (i % numInChannels == 0)
                 {
                     Output.LastValue = true;
+                }
+                if (i == buffer.Count)
+                {
+                    buffer = new List<float>();
+                    i = 0;
                 }
             }
             
