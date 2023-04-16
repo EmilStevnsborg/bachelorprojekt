@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader, TensorDataset, Subset
 import torch.optim as optim
 import torch.nn.functional as F
 import os
+import sys
 
 from CNN_small_architecture import CNNSmall
 from CNN_layers import linear_layer_homemade
@@ -17,12 +18,12 @@ from Tests.helper_functions import tokenize, transform_input, compare, create_co
                                 create_batchnorm_homemade, create_maxpool_homemade
 from test_functions import layer_test
 
-def main():
+def main(batch_size_ : int = 2):
     # Importing data
     MNIST_test = datasets.MNIST(root='./data', train=True, download=True, 
                                 transform=torchvision.transforms.ToTensor())
     test_set = [[data[0], tokenize(data[1])] for data in MNIST_test if data[1] in [1,2]]
-    batch_size = 2000 # batch size must be greater than 1
+    batch_size = batch_size_ # batch size must be greater than 1
     test_loader = DataLoader(test_set, batch_size=batch_size)
 
     # Setting up the original network
@@ -111,52 +112,67 @@ to an equivalent Pytorch layer when each layer gets the
 output of the previous layer - where the homemade layers
 #receive input from homemade layers and likewise the PyTorch
 #layers receive input from PyTorch layers..\n""")
-#    
-#    # Testing conv1
-#    out_homemade_conv1, out_original_conv1 = layer_test(conv1_homemade, model_original.conv1, 
-#                                                        input_homemade_test, input_original_test, 
-#                                                        "Conv1 test: ")
-#
-#    # Testing batchnorm1
-#    out_homemade_batchnorm1, out_original_batchnorm1 = layer_test(batchnorm1_homemade, 
-#                                                                  model_original.batchNorm1,
-#                                                                  out_homemade_conv1,
-#                                                                  out_original_conv1, 
-#                                                                  "BatchNorm1 test: ")
-#    
-#    # Testing relu1
-#    out_homemade_relu1, out_original_relu1 = layer_test(relu_homemade, model_original.relu1, 
-#                                       out_homemade_batchnorm1, out_original_batchnorm1, 
-#                                       "ReLU1 test: ")
-#    
-#    # Testing maxpool1
-#    out_homemade_maxpool1, out_original_maxpool = layer_test(maxpool1_homemade, 
-#                                                             model_original.maxPool1,
-#                                                             out_homemade_relu1, 
-#                                                             out_original_relu1,"MaxPool1 test: ")
-#    
-#    # Testing conv2
-#    out_homemade_conv2, out_original_conv2 = layer_test(conv2_homemade, 
-#                                                        model_original.conv2,
-#                                                        out_homemade_maxpool1, 
-#                                                        out_original_maxpool,"Conv2 test: ")
-#    
-#    # Testing batchnorm 2
-#    _, out_original_batchnorm2 = layer_test(batchnorm2_homemade, model_original.batchNorm2,
-#                                            transform_input(out_original_conv2), out_original_conv2,
-#                                            "BatchNorm2 test: ")
-#
-#    # Testing relu2
-#    _, out_original_relu2 = layer_test(relu_homemade, model_original.relu2, 
-#                                       transform_input(out_original_batchnorm2), 
-#                                       out_original_batchnorm2, "ReLU2 test: ")
-#    
-#    # Testing linear
-#    _, out_original_lin = layer_test(linear_homemade, model_original.lin,
-#                                     transform_input(out_original_relu2), out_original_relu2,
-#                                     "Linear test: ")
-#
-#
-#
+    
+    # Testing conv1
+    out_homemade_conv1, out_original_conv1 = layer_test(conv1_homemade, model_original.conv1, 
+                                                        input_homemade_test, input_original_test, 
+                                                        "Conv1 test: ")
+
+    # Testing batchnorm1
+    out_homemade_batchnorm1, out_original_batchnorm1 = layer_test(batchnorm1_homemade, 
+                                                                  model_original.batchNorm1,
+                                                                  out_homemade_conv1,
+                                                                  out_original_conv1, 
+                                                                  "BatchNorm1 test: ")
+    
+    # Testing relu1
+    out_homemade_relu1, out_original_relu1 = layer_test(relu_homemade, model_original.relu1, 
+                                       out_homemade_batchnorm1, out_original_batchnorm1, 
+                                       "ReLU1 test: ")
+    
+    # Testing maxpool1
+    out_homemade_maxpool1, out_original_maxpool = layer_test(maxpool1_homemade, 
+                                                             model_original.maxPool1,
+                                                             out_homemade_relu1, 
+                                                             out_original_relu1,"MaxPool1 test: ")
+    
+    # Testing conv2
+    out_homemade_conv2, out_original_conv2 = layer_test(conv2_homemade, 
+                                                        model_original.conv2,
+                                                        out_homemade_maxpool1, 
+                                                        out_original_maxpool,"Conv2 test: ")
+    
+    # Testing batchnorm 2
+    out_homemade_batchnorm2, out_original_batchnorm2 = layer_test(batchnorm2_homemade, 
+                                                                  model_original.batchNorm2,
+                                                                  out_homemade_conv2, 
+                                                                  out_original_conv2,
+                                                                  "BatchNorm2 test: ")
+
+    # Testing relu2
+    out_homemade_relu2, out_original_relu2 = layer_test(relu_homemade, model_original.relu2,
+                                                        out_homemade_batchnorm2, 
+                                                        out_original_batchnorm2, "ReLU2 test: ")
+    
+    # Testing maxpool2
+    out_homemade_maxpool2, out_original_maxpool2 = layer_test(maxpool2_homemade, 
+                                                              model_original.maxPool2,
+                                                              out_homemade_relu2,out_original_relu2,
+                                                              "MaxPool2 test: ")
+    
+    out_original_flat = torch.reshape(out_original_maxpool2, (batch_size,45))
+    
+    # Testing linear
+    out_homemade_linear, out_original_lin = layer_test(linear_homemade, model_original.lin,
+                                                       out_homemade_maxpool2, out_original_flat,
+                                                       "Linear test: ", False)
+
+
+
 if __name__=='__main__':
-    main()
+    if (int(sys.argv[1]) < 2):
+        raise ValueError("The batchsize must be greater than or equal to 2")
+    try:
+        main(batch_size_ = int(sys.argv[1]))
+    except:
+        main()
