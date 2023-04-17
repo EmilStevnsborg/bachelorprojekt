@@ -5,7 +5,7 @@ namespace CNN
     [ClockedProcess]
     public class ConvLayer
     {
-        public ChannelBus[] Inputs
+        public ValueBus[] Inputs
         {
             get => inputChannels;
             set => inputChannels = value;
@@ -41,7 +41,7 @@ namespace CNN
         private int numInChannels;
         private int numOutChannels;
         private Filter[] filters;
-        private ChannelBus[] inputChannels;
+        private ValueBus[] inputChannels;
         private ValueBus[] outputValues;
     }
 }

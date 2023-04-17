@@ -10,14 +10,14 @@ namespace CNN
         [InputBus]
         public ValueBus[] Inputs;
         [OutputBus]
-        public ChannelBus[] Outputs;
+        public ValueBus[] Outputs;
 
         public ConvLayerTester()
         {
             
-            Outputs = new ChannelBus[2];
-            Outputs[0] = Scope.CreateBus<ChannelBus>();
-            Outputs[1] = Scope.CreateBus<ChannelBus>();
+            Outputs = new ValueBus[2];
+            Outputs[0] = Scope.CreateBus<ValueBus>();
+            Outputs[1] = Scope.CreateBus<ValueBus>();
         }
 
         public override async Task Run()
@@ -31,12 +31,10 @@ namespace CNN
                 for (int j = 0; j < 16; j++)
                 {
                     float val = (8-j) * (i+1);
-                    Outputs[i].ArrData[j] = val;
+                    Outputs[i].Value = val;
                     Console.Write(val + " ");
                     if ((j + 1) % 4 == 0) {Console.WriteLine();}
                 }
-                Outputs[i].Height = 4;
-                Outputs[i].Width = 4;
             }
             Console.WriteLine();
             await ClockAsync();

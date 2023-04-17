@@ -5,7 +5,7 @@ namespace CNN
     [ClockedProcess]
     public class Filter
     {
-        public ChannelBus[] Inputs
+        public ValueBus[] Inputs
         {
             get => inputChannels;
             set => inputChannels = value;
@@ -18,7 +18,7 @@ namespace CNN
         public Filter(int numInChannels, float[][] weights, float biasVal, (int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
             this.numInChannels = numInChannels;
-            inputChannels = new ChannelBus[numInChannels];
+            inputChannels = new ValueBus[numInChannels];
             kernelOutputs = new ValueBus[numInChannels];
             convKernels = new ConvKernel[numInChannels];
             valueArrayCtrl = new ValueArrayCtrl(numInChannels);
@@ -46,7 +46,7 @@ namespace CNN
         }
         private int numInChannels;
         private ConvKernel[] convKernels;
-        private ChannelBus[] inputChannels;
+        private ValueBus[] inputChannels;
         private ValueBus[] kernelOutputs;
         private ValueArrayCtrl valueArrayCtrl;
         private PlusCtrl plusCtrl;

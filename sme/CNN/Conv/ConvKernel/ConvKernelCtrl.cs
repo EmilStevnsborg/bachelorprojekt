@@ -7,7 +7,7 @@ namespace CNN
     public class ConvKernelCtrl : SimpleProcess
     {
         [InputBus]
-        public ChannelBus Input;
+        public ValueBus Input;
         [InputBus]
         public TrueDualPortMemory<float>.IReadResult ram_read;
         [OutputBus]
@@ -16,7 +16,7 @@ namespace CNN
         public ValueBus OutputWeight = Scope.CreateBus<ValueBus>();
         [OutputBus]
         public TrueDualPortMemory<float>.IControl ram_ctrl;
-        private int i, j, k, adress;
+        private int ii = 0, jj = 0, i, j, k, adress;
         private int channelHeight, channelWidth;
         private int padHeight, padWidth;
         private int kernelHeight, kernelWidth;
@@ -56,15 +56,18 @@ namespace CNN
                 // Load Input into buffer
                 if (Input.enable)
                 {
-                    for (int ii = 0; ii < channelHeight; ii++)
+                    buffer[ii+padHeight,jj+padWidth] = Input.Value;
+
+                    // Always increment column index.
+                    jj = (jj + 1) % channelWidth;
+                    // Only increment row index when column have wrapped.
+                    ii = jj == 0 ? (ii + 1) % channelHeight: ii;
+                    // Whole channels has been read
+                    if (ii == 0 && jj == 0)
                     {
-                        for (int jj = 0; jj < channelWidth; jj++)
-                        {
-                            buffer[ii+padHeight,jj+padWidth] = Input.ArrData[ii*channelWidth + jj];
-                        }
+                        bufferValid = true;
+                        i = j = k = adress = 0;
                     }
-                    bufferValid = true;
-                    i = j = k = adress = 0;
                 }
                 OutputValue.enable = OutputWeight.enable = OutputValue.LastValue = false;
             }

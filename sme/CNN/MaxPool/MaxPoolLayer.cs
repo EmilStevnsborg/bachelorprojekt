@@ -9,7 +9,7 @@ namespace CNN
     [ClockedProcess]
     public class MaxPoolLayer
     {
-        public ChannelBus[] Inputs
+        public ValueBus[] Inputs
         {
             get => inputChannels;
             set => inputChannels = value;
@@ -22,7 +22,7 @@ namespace CNN
         public MaxPoolLayer(int numInChannels, (int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
             this.numInChannels = numInChannels;
-            inputChannels = new ChannelBus[numInChannels];
+            inputChannels = new ValueBus[numInChannels];
             kernelOutputs = new ValueBus[numInChannels];
             maxPoolKernels = new MaxPoolKernel[numInChannels];
             for (int i = 0; i < numInChannels; i++)
@@ -42,7 +42,7 @@ namespace CNN
         }
         private int numInChannels;
         private MaxPoolKernel[] maxPoolKernels;
-        private ChannelBus[] inputChannels;
+        private ValueBus[] inputChannels;
         private ValueBus[] kernelOutputs;
     }
 }

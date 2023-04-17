@@ -1,62 +1,42 @@
 using System;
 using System.Threading.Tasks;
 using SME;
-using SME.Components;
 
 namespace CNN
 {
     [ClockedProcess]
     public class KernelCtrlTester : SimulationProcess
     {
-
         [InputBus]
         public ValueBus InputValue;
         [InputBus]
         public ValueBus InputWeight;
-        [OutputBus]        
-        public ChannelBus Output = Scope.CreateBus<ChannelBus>();
-        private int channelHeight, channelWidth;
-        public KernelCtrlTester(int channelHeight, int channelWidth)
+        [OutputBus]
+        public ValueBus Output = Scope.CreateBus<ValueBus>();
+        public override async Task Run()
         {
-            this.channelHeight = channelHeight;
-            this.channelWidth = channelWidth;
-        }
-
-        public async override System.Threading.Tasks.Task Run()
-        {
-
             await ClockAsync();
-            Output.enable = true;
+            Output.enable = true;            
             // Pack test data onto bus
             Console.WriteLine("Test channel: ");
-            for (int i = 0; i < channelHeight*channelWidth; i++)
+            for (int i = 0; i < 16; i++)
             {
-                Output.ArrData[i] = (float) i;
-                Console.Write(i + " ");
+                float val = i;
+                Output.Value = val;
+                Console.Write(val + " ");
                 if ((i + 1) % 4 == 0) {Console.WriteLine();}
+                await ClockAsync();
             }
             Console.WriteLine();
-            Output.Height = channelHeight;
-            Output.Width = channelWidth;
-            await ClockAsync();
-            // Ensure that the test data isn't read again.
+            // Data shouldn't be read again
             Output.enable = false;
             await ClockAsync();
-            for (int x = 0; x < 4; x++)
+            for (int i = 0; i < 16; i++)
             {
-                for (int i = 0; i < 2; i++)
-                {
-                    for (int j = 0; j < 2; j++)
-                    {
-                        // Wait until there is something valid on the bus.
-                        while (!InputValue.enable) await ClockAsync();
-                        Console.Write(InputValue.Value + " * " + InputWeight.Value + ", ");
-                        await ClockAsync();
-                    }
-                    Console.WriteLine();
-                }
+                while (!InputValue.enable) await ClockAsync();
+                Console.WriteLine(InputValue.Value + " " + InputWeight.Value + " ");
+                await ClockAsync();
             }
-            Console.WriteLine("Tester finished");
         }
     }
 }

@@ -10,33 +10,30 @@ namespace CNN
         [InputBus]
         public ValueBus Input;
         [OutputBus]
-        public ChannelBus Output = Scope.CreateBus<ChannelBus>();
+        public ValueBus Output = Scope.CreateBus<ValueBus>();
         public override async Task Run()
         {
             await ClockAsync();
-            Output.enable = true;
-            
+            Output.enable = true;            
             // Pack test data onto bus
             Console.WriteLine("Test channel: ");
             for (int i = 0; i < 16; i++)
             {
-                float val = (i % 3);
-                Output.ArrData[i] = val;
+                float val = i;
+                Output.Value = val;
                 Console.Write(val + " ");
                 if ((i + 1) % 4 == 0) {Console.WriteLine();}
+                await ClockAsync();
             }
-            Output.Height = 4;
-            Output.Width = 4;
             Console.WriteLine();
-            await ClockAsync();
             // Data shouldn't be read again
             Output.enable = false;
             await ClockAsync();
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 4; i++)
             {
                 while (!Input.enable) await ClockAsync();
                 Console.Write(Input.Value + " ");
-                if ((i + 1) % 3 == 0) {Console.WriteLine();}
+                if (i + 1 % 2 == 0) {Console.WriteLine();}
                 await ClockAsync();
             }
         }
