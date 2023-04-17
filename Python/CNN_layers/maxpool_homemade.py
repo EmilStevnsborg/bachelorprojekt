@@ -8,10 +8,8 @@ class MaxPool():
         # Inspired by torch.nn.MaxPool2d - if stride is not set then it will be set to the size
         # of the kernel
         if (stride == None):
-            print("STRIDE = KERNEL_SIZE")
             self.stride = kernel_size
         else:
-            print("STRIDE ER PRÆDEFINERET")
             self.stride = stride
 
         self.kernel_size = kernel_size

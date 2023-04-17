@@ -28,23 +28,36 @@ def tokenize(num):
 def transform_input(input_batch):
     return list(input_batch.detach().numpy())
 
-# compares two lists of batches with same amount of channels 
-# and returns the summed absoute loss for each batch over the channels
-def compare(x, y):
-    b_diff = []
+def compare(x: list[float], y: list[float]):
+    """
+    compares two lists of batches with same amount of channels and returns the greatest error, the 
+    mean error and the variance of the error when comparing x to y
+
+    Args:
+        x (list[float]): One part of the values that must be compared 
+        y (list[float]): One part of the values that must be compared
+    Returns:
+        tuple(float,float,float): The maximum error, the mean of the mean error for each channel and
+            the mean variance of the error
+    """
+
     batch_size = len(x)
 
-    for b in range(batch_size):
-        c_diff = []
-        channels = len(x[b])
+    global_max_error = 0
+    global_mean = []
+    global_var = []
 
-        for c in range(channels):
-            diff = np.sum(np.absolute(x[b][c] - y[b][c]))
-            c_diff.append(diff)
-        
-        b_diff.append(c_diff)
+    for b in range(batch_size):
+        local_max = np.amax(np.absolute(x[b] - y[b]))
+        local_mean = np.mean(np.absolute(x[b] - y[b]))
+        local_var = np.var(np.absolute(x[b] - y[b]))
+        global_mean.append(local_mean)
+        global_var.append(local_var)
+ 
+        if local_max > global_max_error:
+            global_max_error = local_max
     
-    return b_diff
+    return global_max_error, np.mean(global_mean), np.mean(global_var)
 
 def create_conv_homemade(model_conv):
     weights = model_conv.weight
