@@ -1,3 +1,4 @@
+using System;
 using SME;
 using SME.Components;
 
@@ -77,6 +78,7 @@ namespace CNN
             // each clock cycle.
             if (bufferValid)
             {
+                Console.WriteLine("adress: " + adress);
                 // Issue ram read
                 ram_ctrl.Enabled = true;
                 ram_ctrl.Address = adress;
@@ -95,6 +97,7 @@ namespace CNN
                 if (ramValid)
                 {
                     OutputValue.Value = buffer[startRow + i, startCol + j];
+                    Console.WriteLine("ram_read.Data: " + ram_read.Data);
                     OutputWeight.Value = ram_read.Data;
                     // Always increment column index.
                     j = (j + 1) % kernelWidth;

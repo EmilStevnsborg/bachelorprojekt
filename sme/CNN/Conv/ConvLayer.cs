@@ -1,3 +1,4 @@
+using System;
 using SME;
 
 namespace CNN
@@ -32,7 +33,7 @@ namespace CNN
         }
         public void PushInputs()
         {
-            for (int i = 0; i < numInChannels; i++)
+            for (int i = 0; i < numOutChannels; i++)
             {
                 filters[i].Inputs = inputChannels;
                 filters[i].PushInputs();

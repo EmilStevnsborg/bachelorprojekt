@@ -10,7 +10,6 @@ class MainClass
 {
     public static void Main(string[] args)
     {
-
         using(var sim = new Simulation())
         {            
             // reads correctly
@@ -20,7 +19,7 @@ class MainClass
             Test test = JsonSerializer.Deserialize<Test>(config);
             test.PushConfig();
 
-            Input input = JsonSerializer.Deserialize<Input>(input1);
+            InputCase input = JsonSerializer.Deserialize<InputCase>(input1);
             test.tester.FillBuffer(input.buffer);
 
             test.convLayer.Inputs = test.tester.Outputs;

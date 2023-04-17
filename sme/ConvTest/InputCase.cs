@@ -2,9 +2,9 @@ using SME;
 using CNN;
 namespace TestConv
 {
-    public class Input
+    public class InputCase
     {
         public float[][] buffer { get; set; }
-        public Input() {}
+        public InputCase() {}
     }
 }

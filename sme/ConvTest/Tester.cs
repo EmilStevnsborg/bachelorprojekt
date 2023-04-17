@@ -13,6 +13,7 @@ namespace TestConv
         [OutputBus]
         public ValueBus[] Outputs;
         private int numInChannels { get; set; }
+        private int numOutChannels { get; set; }
         private int channelHeight { get; set; }
         private int channelWidth { get; set; }
         private float[][] buffer { get; set; }
@@ -23,6 +24,8 @@ namespace TestConv
             {
                 Outputs[i] = Scope.CreateBus<ValueBus>();
             }
+            this.numInChannels = numInChannels;
+            this.numOutChannels = numOutChannels;
             channelHeight = channelSize.Item1;
             channelWidth = channelSize.Item2;
         }
@@ -39,7 +42,8 @@ namespace TestConv
                 {
                     for (int k = 0; k < numInChannels; k++)
                     {
-                        Outputs[k].Value = buffer[i][j];
+                        Outputs[k].Value = buffer[k][i * channelWidth + j];
+                        // Console.WriteLine(i + " " + j + " " + k);
                         Outputs[k].enable = true;
                     }
                     await ClockAsync();                    
@@ -52,7 +56,7 @@ namespace TestConv
             for (int t = 0; t < 100; t++)
             {
                 await ClockAsync();
-                Console.WriteLine(Inputs.Length);
+                if (Inputs[0].enable) {Console.WriteLine(Inputs[0].Value + Inputs[1].Value + Inputs[2].Value);}
             }
         }
     }
