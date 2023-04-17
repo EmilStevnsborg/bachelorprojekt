@@ -8,11 +8,11 @@ namespace CNN
     public class PoolKernelCtrl : SimpleProcess
     {
         [InputBus]
-        public ChannelBus Input;
+        public ValueBus Input;
         [OutputBus]
         public ValueBus OutputValue = Scope.CreateBus<ValueBus>();
 
-        private int i, j;
+        private int ii = 0, jj = 0, i, j;
         private int channelHeight, channelWidth;
         private int padHeight, padWidth;
         private int kernelHeight, kernelWidth;
@@ -51,14 +51,18 @@ namespace CNN
                 // Load Input into buffer
                 if (Input.enable)
                 {
-                    for (int ii = 0; ii < channelHeight; ii++)
+                    buffer[ii+padHeight,jj+padWidth] = Input.Value;
+
+                    // Always increment column index.
+                    jj = (jj + 1) % channelWidth;
+                    // Only increment row index when column have wrapped.
+                    ii = jj == 0 ? (ii + 1) % channelHeight: ii;
+                    // Whole channels has been read
+                    if (ii == 0 && jj == 0)
                     {
-                        for (int jj = 0; jj < channelWidth; jj++)
-                        {
-                            buffer[ii+padHeight,jj+padWidth] = Input.ArrData[ii*channelWidth + jj];
-                        }
+                        bufferValid = true;
+                        i = j = 0;
                     }
-                    bufferValid = true;
                 }
                 OutputValue.enable = OutputValue.LastValue = false;
             }

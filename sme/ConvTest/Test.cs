@@ -1,3 +1,7 @@
+using SME;
+using CNN;
+using System;
+
 namespace TestConv
 {
     public class Test
@@ -14,6 +18,24 @@ namespace TestConv
         private int padWidth { get; set; }
         private float padVal { get; set; }
         private float[][][] weights { get; set; }
+        private float[] biasVal { get; set; }
         public Test() {} 
+        public ConvLayer convLayer { get; set; }
+        public Tester tester { get; set; }
+        public void PushConfig()
+        {
+            convLayer = new ConvLayer(numInChannels,
+                                      numOutChannels,
+                                      weights,
+                                      biasVal,
+                                      (channelHeight,channelWidth),
+                                      (kernelHeight,kernelWidth),
+                                      (strideRow,strideCol),
+                                      (padHeight,padWidth),
+                                      padVal);
+            var tester_ = new Tester(numInChannels, 
+                                     numOutChannels,
+                                     (channelHeight,channelWidth));
+        }
     }
 }

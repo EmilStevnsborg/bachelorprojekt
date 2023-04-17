@@ -6,7 +6,7 @@ namespace CNN
     [ClockedProcess]
     public class ConvKernel
     {
-        public ChannelBus Input
+        public ValueBus Input
         {
             get => kernelCtrl.Input;
             set => kernelCtrl.Input = value;
