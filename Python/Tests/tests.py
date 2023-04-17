@@ -11,6 +11,8 @@ import torch.nn.functional as F
 import os
 import sys
 
+sys.path.append('../')
+
 from CNN_small_architecture import CNNSmall
 from CNN_layers import linear_layer_homemade
 from CNN_layers import relu_homemade as ReLU
