@@ -24,16 +24,16 @@ namespace TestConv
         public Tester tester { get; set; }
         public void PushConfig()
         {
-            convLayer = new ConvLayer(numInChannels,
-                                      numOutChannels,
-                                      weights,
-                                      biasVal,
-                                      (channelHeight,channelWidth),
-                                      (kernelHeight,kernelWidth),
-                                      (strideRow,strideCol),
-                                      (padHeight,padWidth),
-                                      padVal);
-            var tester_ = new Tester(numInChannels, 
+            this.convLayer = new ConvLayer(numInChannels,
+                                           numOutChannels,
+                                           weights,
+                                           biasVal,
+                                           (channelHeight,channelWidth),
+                                           (kernelHeight,kernelWidth),
+                                           (strideRow,strideCol),
+                                           (padHeight,padWidth),
+                                           padVal);
+            this.tester = new Tester(numInChannels, 
                                      numOutChannels,
                                      (channelHeight,channelWidth));
         }

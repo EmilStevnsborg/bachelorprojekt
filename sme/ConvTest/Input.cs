@@ -4,6 +4,7 @@ namespace TestConv
 {
     public class Input
     {
-        public float[][] buffer;
+        public float[][] buffer { get; set; }
+        public Input() {}
     }
 }

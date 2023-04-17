@@ -21,13 +21,11 @@ class MainClass
             test.PushConfig();
 
             Input input = JsonSerializer.Deserialize<Input>(input1);
-            Console.WriteLine(input.buffer);
             test.tester.FillBuffer(input.buffer);
 
             test.convLayer.Inputs = test.tester.Outputs;
+            test.convLayer.PushInputs();
             test.tester.Inputs = test.convLayer.Outputs;
-            
-            // Console.WriteLine(test.tester);
 
             sim.Run();
         }

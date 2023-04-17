@@ -12,9 +12,10 @@ namespace TestConv
         public ValueBus[] Inputs;
         [OutputBus]
         public ValueBus[] Outputs;
-        private int channelHeight;
-        private int channelWidth;
-        public float[][] buffer;
+        private int numInChannels { get; set; }
+        private int channelHeight { get; set; }
+        private int channelWidth { get; set; }
+        private float[][] buffer { get; set; }
         public Tester(int numInChannels,int numOutChannels,(int,int) channelSize)
         {            
             Outputs = new ValueBus[numInChannels];
@@ -27,21 +28,32 @@ namespace TestConv
         }
         public void FillBuffer(float[][] buffer)
         {
-            this.buffer = new float[channelHeight][];
-            for (int i = 0; i < channelHeight; i++)
-            {
-                this.buffer[i] = new float[channelWidth];
-                for (int j = 0; j < channelWidth; j++)
-                {
-                    this.buffer[i][j] = buffer[i][j];
-                }
-            }
-            Console.WriteLine(buffer[1][1]);
+            this.buffer = buffer;
         }
         public override async Task Run()
         {
             await ClockAsync();
-            // read data in from json            
+            for (int i = 0; i < channelHeight; i++)
+            {
+                for (int j = 0; j < channelWidth; j++)
+                {
+                    for (int k = 0; k < numInChannels; k++)
+                    {
+                        Outputs[k].Value = buffer[i][j];
+                        Outputs[k].enable = true;
+                    }
+                    await ClockAsync();                    
+                }
+            }
+            for (int k = 0; k < numInChannels; k++)
+            {
+                Outputs[k].enable = false;
+            }
+            for (int t = 0; t < 100; t++)
+            {
+                await ClockAsync();
+                Console.WriteLine(Inputs.Length);
+            }
         }
     }
 }
