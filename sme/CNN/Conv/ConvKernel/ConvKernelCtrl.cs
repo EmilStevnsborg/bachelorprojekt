@@ -43,6 +43,7 @@ namespace CNN
             this.strideCol = stride.Item2;
 
             this.buffer = new float[channelHeight + 2 * padHeight,channelWidth + 2 * padWidth];
+            // Console.WriteLine((channelHeight + 2 * padHeight) + " " + (channelWidth + 2 * padWidth));
 
             this.padVal = padVal;
 
@@ -78,7 +79,6 @@ namespace CNN
             // each clock cycle.
             if (bufferValid)
             {
-                Console.WriteLine("adress: " + adress);
                 // Issue ram read
                 ram_ctrl.Enabled = true;
                 ram_ctrl.Address = adress;
@@ -97,7 +97,7 @@ namespace CNN
                 if (ramValid)
                 {
                     OutputValue.Value = buffer[startRow + i, startCol + j];
-                    Console.WriteLine("ram_read.Data: " + ram_read.Data);
+                    // Console.WriteLine("buffer, weight: " + buffer[startRow + i, startCol + j] + ", " + ram_read.Data);
                     OutputWeight.Value = ram_read.Data;
                     // Always increment column index.
                     j = (j + 1) % kernelWidth;
@@ -107,7 +107,7 @@ namespace CNN
                     OutputValue.LastValue = (i == 0 && j == 0);
                     if (i == 0 && j == 0)
                     {
-                        if (startCol + strideCol == channelWidth + 2 * padWidth)
+                        if (startCol + (kernelWidth-1) + strideCol == channelWidth + 2 * padWidth)
                         {
                             startCol = 0;
                             startRow = startRow + strideRow;

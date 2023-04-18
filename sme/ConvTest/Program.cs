@@ -20,7 +20,7 @@ class MainClass
             test.PushConfig();
 
             InputCase input = JsonSerializer.Deserialize<InputCase>(input1);
-            test.tester.FillBuffer(input.buffer);
+            test.tester.FillBuffer(input.buffer, input.computed);
 
             test.convLayer.Inputs = test.tester.Outputs;
             test.convLayer.PushInputs();

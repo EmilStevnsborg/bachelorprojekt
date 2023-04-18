@@ -81,7 +81,7 @@ namespace CNN
                 if (i == 0 && j == 0)
                 {
                     OutputValue.LastValue = true;
-                    if (startCol + strideCol == channelWidth + 2 * padWidth)
+                    if (startCol + (kernelWidth-1) + strideCol == channelWidth + 2 * padWidth)
                     {
                         startCol = 0;
                         startRow = startRow + strideRow;
