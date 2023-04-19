@@ -21,8 +21,11 @@ namespace TestConv
         public Tester(int numInChannels,int numOutChannels,(int,int) channelSize)
         {            
             Outputs = new ValueBus[numInChannels];
-            Outputs[0] = Scope.CreateBus<ValueBus>();
-            
+            for (int i = 0; i < numInChannels; i++)
+            {
+                Outputs[i] = Scope.CreateBus<ValueBus>();
+            }
+                        
             this.numInChannels = numInChannels;
             this.numOutChannels = numOutChannels;
             channelHeight = channelSize.Item1;

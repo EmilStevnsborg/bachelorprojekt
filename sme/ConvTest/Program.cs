@@ -14,7 +14,7 @@ class MainClass
         {            
             // reads correctly
             string config = File.ReadAllText(@"TestConfig1/config.json");
-            string input1 = File.ReadAllText(@"TestConfig1/input1.json");
+            string input1 = File.ReadAllText(@"TestConfig1/input2.json");
 
             Test test = JsonSerializer.Deserialize<Test>(config);
             test.PushConfig();
