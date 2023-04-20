@@ -96,8 +96,8 @@ namespace CNN
 
                 if (ramValid)
                 {
+                    // Console.WriteLine("startRow " + startRow + " i: " + (i) + ", startCol " + startCol + " j : " + (j));
                     OutputValue.Value = buffer[startRow + i, startCol + j];
-                    // Console.WriteLine("buffer, weight: " + buffer[startRow + i, startCol + j] + ", " + ram_read.Data);
                     OutputWeight.Value = ram_read.Data;
                     // Always increment column index.
                     j = (j + 1) % kernelWidth;
@@ -107,7 +107,7 @@ namespace CNN
                     OutputValue.LastValue = (i == 0 && j == 0);
                     if (i == 0 && j == 0)
                     {
-                        if (startCol + (kernelWidth-1) + strideCol == channelWidth + 2 * padWidth)
+                        if (startCol + kernelWidth == channelWidth + 2 * padWidth)
                         {
                             startCol = 0;
                             startRow = startRow + strideRow;
@@ -120,7 +120,7 @@ namespace CNN
                 }
             }
             // Check if we have processed the entire channel.
-            if (startRow == channelHeight + 2 * padHeight)
+            if (startRow + i == channelHeight + 2 * padHeight)
             {
                 bufferValid = ramValid = false;
             }

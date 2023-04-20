@@ -69,7 +69,8 @@ namespace CNN
 
             // If the buffer is filled, emit the output at each clock cycle.
             if (bufferValid)
-            {                
+            {            
+                // Console.WriteLine("startRow " + startRow + " i: " + (i) + ", startCol " + startCol + " j : " + (j));
                 OutputValue.enable = bufferValid;
                 OutputValue.Value = buffer[startRow + i, startCol + j];
                 OutputValue.LastValue = false;
@@ -81,7 +82,7 @@ namespace CNN
                 if (i == 0 && j == 0)
                 {
                     OutputValue.LastValue = true;
-                    if (startCol + (kernelWidth-1) + strideCol == channelWidth + 2 * padWidth)
+                    if (startCol + kernelWidth == channelWidth + 2 * padWidth)
                     {
                         startCol = 0;
                         startRow = startRow + strideRow;
@@ -93,7 +94,7 @@ namespace CNN
                 }
             }
             // Check if we have processed the entire channel.
-            if (startRow == channelHeight + 2 * padHeight)
+            if (startRow + i == channelHeight + 2 * padHeight)
             {
                 bufferValid = false;
             }
