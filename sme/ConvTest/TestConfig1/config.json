@@ -1,28 +1,39 @@
 {
-    "numInChannels" : 1,
-    "numOutChannels" : 2,
-    "channelHeight" : 4,
-    "channelWidth" : 5,
-    "kernelHeight" : 2,
-    "kernelWidth" : 3,
-    "strideRow" : 2,
-    "strideCol" : 1,
-    "padHeight" : 0,
-    "padWidth" : 0,
-    "padVal" : 0.0,
-    "weights" :
-    [
+    "numInChannels": 1,
+    "numOutChannels": 2,
+    "channelHeight": 4,
+    "channelWidth": 5,
+    "kernelHeight": 2,
+    "kernelWidth": 3,
+    "strideRow": 2,
+    "strideCol": 1,
+    "padHeight": 0,
+    "padWidth": 0,
+    "padVal": 0,
+    "weights": [
         [
-            [1,2,3,
-             4,5,6]
+            [
+                0.49625658988952637,
+                0.7682217955589294,
+                0.08847743272781372,
+                0.13203048706054688,
+                0.30742281675338745,
+                0.6340786814689636
+            ]
         ],
         [
-            [7,8,9,
-             10,11,12]
+            [
+                0.4900934100151062,
+                0.8964447379112244,
+                0.455627977848053,
+                0.6323062777519226,
+                0.3488934636116028,
+                0.40171730518341064
+            ]
         ]
     ],
-    "biasVal" :
-    [
-        0,0
+    "biases": [
+        0.022325754165649414,
+        0.16885894536972046
     ]
 }

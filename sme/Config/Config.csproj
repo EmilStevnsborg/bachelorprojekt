@@ -10,14 +10,13 @@
     <!-- Remove these packages as required by the OS you are using -->
     <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.6.20" />
     <PackageReference Include="runtime.linux-x64.CoreCompat.System.Drawing" Version="1.0.0-beta002" />
-
-    <ProjectReference Include="../CNN/CNN.csproj"/>
-    <ProjectReference Include="../Config/Config.csproj"/>
     
+    <ProjectReference Include="../CNN/CNN.csproj"/>
+
   </ItemGroup>
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp6.0</TargetFramework>
   </PropertyGroup>
 

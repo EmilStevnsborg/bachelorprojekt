@@ -71,9 +71,8 @@ namespace CNN
                         i = j = k = adress = 0;
                     }
                 }
-                OutputValue.enable = OutputWeight.enable = OutputValue.LastValue = false;
             }
-
+            OutputValue.enable = OutputWeight.enable = OutputValue.LastValue = false;
             // If the buffer is filled, issue a read to the memory at every clock
             // cycle. When the data comes back from the memory, emit the output at
             // each clock cycle.

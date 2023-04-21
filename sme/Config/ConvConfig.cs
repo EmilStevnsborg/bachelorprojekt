@@ -1,10 +1,9 @@
 using SME;
 using CNN;
-using System;
 
-namespace TestConv
+namespace Config
 {
-    public class Test
+    public class ConvConfig
     {
         public int numInChannels { get; set; }
         public int numOutChannels { get; set; }
@@ -18,24 +17,20 @@ namespace TestConv
         public int padWidth { get; set; }
         public float padVal { get; set; }
         public float[][][] weights { get; set; }
-        public float[] biasVal { get; set; }
-        public Test() {} 
+        public float[] biases { get; set; }
+        public ConvConfig() {} 
         public ConvLayer convLayer { get; set; }
-        public Tester tester { get; set; }
         public void PushConfig()
         {
             this.convLayer = new ConvLayer(numInChannels,
                                            numOutChannels,
                                            weights,
-                                           biasVal,
+                                           biases,
                                            (channelHeight,channelWidth),
                                            (kernelHeight,kernelWidth),
                                            (strideRow,strideCol),
                                            (padHeight,padWidth),
                                            padVal);
-            this.tester = new Tester(numInChannels, 
-                                     numOutChannels,
-                                     (channelHeight,channelWidth));
         }
     }
 }

@@ -45,6 +45,7 @@ namespace CNN
                     }
                 }
             }
+            OutputValue.enable = OutputWeight.enable = OutputValue.LastValue = false;
             // remember to toss buffer after done (check)
             if (buffer.Count > 0 && i < buffer.Count)
             {

@@ -1,6 +1,5 @@
 using SME;
-using CNN;
-namespace TestConv
+namespace CNN
 {
     public class InputCase
     {

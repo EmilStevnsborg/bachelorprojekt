@@ -14,10 +14,10 @@ namespace CNN
         }
         public ValueBus Output
         {
-            get => plusCtrl.Output;
-            set => plusCtrl.Output = value;
+            get => bias.Output;
+            set => bias.Output = value;
         }
-        public LinearNode(int numInChannels, float[] weights, (int,int) channelSize)
+        public LinearNode(int numInChannels, float[] weights,float biasVal, (int,int) channelSize)
         {
             this.numInChannels = numInChannels;
             this.channelHeight = channelSize.Item1;
@@ -28,6 +28,7 @@ namespace CNN
             nodeCtrl = new NodeCtrl(numInChannels, channelSize);
             weightValue = new WeightValue();
             plusCtrl = new PlusCtrl();
+            bias = new Bias(biasVal);
 
             // Connect the buses
             nodeCtrl.ram_ctrl = ram.ControlA;
@@ -37,6 +38,8 @@ namespace CNN
             weightValue.InputWeight = nodeCtrl.OutputWeight;
 
             plusCtrl.Input = weightValue.Output;
+
+            bias.Input = plusCtrl.Output;
         }
         private int numInChannels;
         private int channelHeight;
@@ -47,5 +50,6 @@ namespace CNN
         private NodeCtrl nodeCtrl;
         private WeightValue weightValue;
         private PlusCtrl plusCtrl;
+        private Bias bias;
     }
 }

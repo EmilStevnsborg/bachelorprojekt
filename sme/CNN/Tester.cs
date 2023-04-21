@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using SME;
 using System;
 
-namespace TestConv
+namespace CNN
 {
     [ClockedProcess]
     public class Tester : SimulationProcess
@@ -61,23 +61,31 @@ namespace TestConv
             while(!Inputs[0].enable) await ClockAsync();
             // load streaming input
             int index = 0;
-            for (int t = 0; t < 150; t++)
+            int correct = 0;
+            for (int t = 0; t < 350; t++)
             {
                 if (Inputs[0].enable) 
                 {
-                    Console.WriteLine("Index " + index);
                     for (int c = 0; c < numOutChannels; c++)
                     {
-                        Console.Write("Channel" + c + " " + Inputs[c].Value + "-" + computed[c][index] + " ");
+                        var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
+                        if (loss < 0.000001)
+                        {
+                            correct += 1;
+                        }
+                        else
+                        {
+                            Console.WriteLine(loss);
+                        }
                         if (c == numOutChannels-1) 
                         {
-                            Console.WriteLine(); 
                             index += 1;
                         }
                     }
                 }
                 await ClockAsync();
             }
+            Console.WriteLine("Amount of correct calculations: " + correct);
         }
     }
 }

@@ -1,31 +1,36 @@
-using System;
 using SME;
 using CNN;
 using System.IO;
 using System.Text.Json;
-using TestConv;
-using SME.Components;
+using Config;
 
 class MainClass
 {
     public static void Main(string[] args)
     {
         using(var sim = new Simulation())
-        {            
-            // reads correctly
-            string config = File.ReadAllText(@"TestConfig3/config.json");
-            string input1 = File.ReadAllText(@"TestConfig3/input2.json");
+        {
+            for (int c = 2; c <= 3; c++)
+            {
+                for (int t = 1; t <= 10; t++)
+                {    
+                    string config = File.ReadAllText(@"TestConfig" + c + "/config.json");
+                    string inputString = File.ReadAllText(@"TestConfig"  + c + "/input" + t +".json");
 
-            Test test = JsonSerializer.Deserialize<Test>(config);
-            test.PushConfig();
+                    ConvConfig convConfig = JsonSerializer.Deserialize<ConvConfig>(config);
+                    convConfig.PushConfig();
 
-            InputCase input = JsonSerializer.Deserialize<InputCase>(input1);
-            test.tester.FillBuffer(input.buffer, input.computed);
+                    InputCase input = JsonSerializer.Deserialize<InputCase>(inputString);
+                    Tester tester = new Tester(convConfig.numInChannels, 
+                                               convConfig.numOutChannels,
+                                               (convConfig.channelHeight,convConfig.channelWidth));
+                    tester.FillBuffer(input.buffer, input.computed);
 
-            test.convLayer.Inputs = test.tester.Outputs;
-            test.convLayer.PushInputs();
-            test.tester.Inputs = test.convLayer.Outputs;
-
+                    convConfig.convLayer.Inputs = tester.Outputs;
+                    convConfig.convLayer.PushInputs();
+                    tester.Inputs = convConfig.convLayer.Outputs;
+                }
+            }
             sim.Run();
         }
     }

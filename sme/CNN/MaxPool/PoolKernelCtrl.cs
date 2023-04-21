@@ -64,9 +64,8 @@ namespace CNN
                         i = j = 0;
                     }
                 }
-                OutputValue.enable = OutputValue.LastValue = false;
             }
-
+            OutputValue.enable = OutputValue.LastValue = false;
             // If the buffer is filled, emit the output at each clock cycle.
             if (bufferValid)
             {            
