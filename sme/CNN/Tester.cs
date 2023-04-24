@@ -59,6 +59,7 @@ namespace CNN
                     {
                         for (int c = 0; c < numOutChannels; c++)
                         {
+                            // Console.WriteLine(Inputs[c].Value + " " + computed[c][index]);
                             var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
                             if (loss < 0.000001)
                             {

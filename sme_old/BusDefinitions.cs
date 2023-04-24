@@ -1,6 +1,0 @@
-using SME;
-
-namespace CNN
-{
-    //
-}

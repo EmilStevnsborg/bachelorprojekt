@@ -5,6 +5,7 @@ torch.manual_seed(0)
 torch.set_printoptions(sci_mode=False, precision=8)
 
 def create_input_json(model, inChannels, height, width, samples, dir):
+    model.eval()
     for i in range(1,samples+1):
         d = {}
 
@@ -31,7 +32,7 @@ d["channelHeight"] = 5
 d["channelWidth"] = 4
 
 means1 = torch.rand(5)*10-5
-vars1 = torch.rand(5)*10-5
+vars1 = torch.rand(5)*25
 gammas1 = torch.rand(5)*10-5
 betas1 = torch.rand(5)*10-5
 
