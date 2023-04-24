@@ -1,0 +1,13 @@
+{
+    "numInChannels": 1,
+    "numOutChannels": 1,
+    "channelHeight": 4,
+    "channelWidth": 5,
+    "kernelHeight": 2,
+    "kernelWidth": 3,
+    "strideRow": 2,
+    "strideCol": 1,
+    "padHeight": 0,
+    "padWidth": 0,
+    "padVal": 0
+}

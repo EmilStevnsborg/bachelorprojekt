@@ -39,6 +39,9 @@ namespace CNN
         }
         public override async Task Run()
         {
+            int index = 0;
+            int correct = 0;
+
             await ClockAsync();
             for (int i = 0; i < channelHeight; i++)
             {
@@ -50,18 +53,37 @@ namespace CNN
                         // Console.WriteLine(i + " " + j + " " + k);
                         Outputs[k].enable = true;
                     }
-                    await ClockAsync();                    
+                    await ClockAsync();
+                    // check if input is back during sending
+                    if (Inputs[0].enable) 
+                    {
+                        for (int c = 0; c < numOutChannels; c++)
+                        {
+                            var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
+                            if (loss < 0.000001)
+                            {
+                                correct += 1;
+                            }
+                            else
+                            {
+                                Console.WriteLine("The loss was: " + loss);
+                            }
+                            if (c == numOutChannels-1) 
+                            {
+                                index += 1;
+                            }
+                        }
+                    }               
                 }
             }
             for (int k = 0; k < numInChannels; k++)
             {
                 Outputs[k].enable = false;
             }
+            await ClockAsync();
             // wait for input to arrive
             while(!Inputs[0].enable) await ClockAsync();
             // load streaming input
-            int index = 0;
-            int correct = 0;
             for (int t = 0; t < 350; t++)
             {
                 if (Inputs[0].enable) 
@@ -69,13 +91,14 @@ namespace CNN
                     for (int c = 0; c < numOutChannels; c++)
                     {
                         var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
+                        // Console.WriteLine(Inputs[c].Value  + " " + computed[c][index]);
                         if (loss < 0.000001)
                         {
                             correct += 1;
                         }
                         else
                         {
-                            Console.WriteLine(loss);
+                            Console.WriteLine("The loss was: " + loss);
                         }
                         if (c == numOutChannels-1) 
                         {

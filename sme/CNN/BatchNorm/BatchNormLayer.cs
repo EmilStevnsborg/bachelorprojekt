@@ -3,7 +3,7 @@ using SME;
 namespace CNN
 {
     [ClockedProcess]
-    public class LinearLayer
+    public class BatchNormLayer
     {
         public ValueBus[] Inputs
         {
@@ -15,17 +15,19 @@ namespace CNN
             get => outputValues;
             set => outputValues = value;
         }
-        public LinearLayer(int numInChannels, int numOutChannels, float[][] weights, float[] biases, (int,int) channelSize)
+        public BatchNormLayer(int numInChannels, int numOutChannels, float[] means, float[] vars, float[] gammas, float[] betas)
         {
             this.numInChannels = numInChannels;
             this.numOutChannels = numOutChannels;
-            nodes = new LinearNode[numOutChannels];
+            nodes = new BatchNorm[numOutChannels];
             outputValues = new ValueBus[numOutChannels];
             for (int i = 0; i < numOutChannels; i++)
             {
-                var weightsNode = weights[i];
-                var bias = biases[i];
-                LinearNode node = new LinearNode(numInChannels, weightsNode, bias, channelSize);
+                var mean = means[i];
+                var variance = vars[i];
+                var gamma = gammas[i];
+                var beta = betas[i];
+                BatchNorm node = new BatchNorm(gamma, beta, mean, variance);
                 nodes[i] = node;
                 outputValues[i] = node.Output;
             }
@@ -34,13 +36,14 @@ namespace CNN
         {
             for (int i = 0; i < numOutChannels; i++)
             {
-                nodes[i].Inputs = inputChannels;
+                nodes[i].Input = inputChannels[i];
             }
         }
         private int numInChannels;
         private int numOutChannels;
-        private LinearNode[] nodes;
+        private BatchNorm[] nodes;
         private ValueBus[] inputChannels;
         private ValueBus[] outputValues;
     }
 }
+   

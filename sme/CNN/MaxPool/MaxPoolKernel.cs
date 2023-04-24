@@ -1,6 +1,5 @@
 using SME;
 using SME.Components;
-using static CNN.ChannelSizes;
 using static System.Math;
 
 namespace CNN

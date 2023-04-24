@@ -1,8 +1,4 @@
 using SME;
-using SME.Components;
-using System;
-using static CNN.ChannelSizes;
-using static System.Math;
 
 namespace CNN
 {
@@ -22,14 +18,12 @@ namespace CNN
         public ReluLayer(int numInChannels)
         {
             this.numInChannels = numInChannels;
-            inputVals = new ValueBus[numInChannels];
-            reluOutputs = new ValueBus[numInChannels];
             reluCores = new ReluCore[numInChannels];
+            reluOutputs = new ValueBus[numInChannels];
             for (int i = 0; i < numInChannels; i++)
             {
                 ReluCore reluCore = new ReluCore();
                 reluCores[i] = reluCore;
-                inputVals[i] = reluCore.Input;
                 reluOutputs[i] = reluCore.Output;
             }
         }
