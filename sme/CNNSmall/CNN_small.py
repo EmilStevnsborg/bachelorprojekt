@@ -29,10 +29,14 @@ model_original.eval()
 
 # Importing data
 #######################################################################################################
+
 MNIST_test = datasets.MNIST(root='../../Python/data', train=False, download=False, 
                             transform=torchvision.transforms.ToTensor())
+
 test_set = [[data[0], tokenize(data[1])] for data in MNIST_test if data[1] in [1,2]]
-batch_size = 10 # batch size must be greater than 1
+
+batch_size = 100
+
 test_loader = DataLoader(test_set, batch_size=batch_size)
 
 conv1_input, labels_test = next(iter(test_loader))
@@ -83,5 +87,25 @@ if False:
     create_input_json(conv1_input, conv1_output, batch_size, "Tests/Conv1/")
 
 
-
+# BatchNorm1
 #######################################################################################################
+batchNorm1 = model_original.batchNorm1
+height, width = list(conv1_output[0,0,:,:].shape)
+
+d = {}
+d["numInChannels"] = conv1.out_channels
+d["numOutChannels"] = conv1.out_channels
+d["channelHeight"] = height
+d["channelWidth"] = width
+d["means"] = batchNorm1.running_mean.tolist()
+d["vars"] = batchNorm1.running_var.tolist()
+d["gammas"] = batchNorm1.weight.tolist()
+d["betas"] = batchNorm1.bias.tolist()
+
+batchNorm1_output = batchNorm1(conv1_output)
+
+if False:
+    batchNorm1_json = json.dumps(d, indent=4)
+    with open("Configs/batchNorm1.json", "w") as outfile:
+            outfile.write(batchNorm1_json)
+    create_input_json(conv1_output, batchNorm1_output, batch_size, "Tests/BatchNorm1/")

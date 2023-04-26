@@ -12,12 +12,16 @@ namespace CNN
         public ValueBus[] Inputs;
         [OutputBus]
         public ValueBus[] Outputs;
+
         private int numInChannels { get; set; }
         private int numOutChannels { get; set; }
         private int channelHeight { get; set; }
         private int channelWidth { get; set; }
         private float[][] buffer { get; set; }
         private float[][] computed { get; set; }
+
+        public float[,] Stats { get; set; }
+
         public Tester(int numInChannels,int numOutChannels,(int,int) channelSize)
         {            
             Outputs = new ValueBus[numInChannels];
@@ -30,6 +34,8 @@ namespace CNN
             this.numOutChannels = numOutChannels;
             channelHeight = channelSize.Item1;
             channelWidth = channelSize.Item2;
+
+            Stats = new float[numOutChannels, channelHeight * channelWidth];
         }
         public void FillBuffer(float[][] buffer, float[][] computed)
         {
@@ -40,7 +46,6 @@ namespace CNN
         public override async Task Run()
         {
             int index = 0;
-            int correct = 0;
 
             await ClockAsync();
             for (int i = 0; i < channelHeight; i++)
@@ -61,13 +66,10 @@ namespace CNN
                         {
                             // Console.WriteLine(Inputs[c].Value + " " + computed[c][index]);
                             var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
-                            if (loss < 0.000001)
+                            Stats[c,index] = loss;
+                            if (loss > 0.00001)
                             {
-                                correct += 1;
-                            }
-                            else
-                            {
-                                Console.WriteLine("The loss was: " + loss);
+                                Console.WriteLine("The loss was higher than 10^(-5): " + loss);
                             }
                             if (c == numOutChannels-1) 
                             {
@@ -92,14 +94,10 @@ namespace CNN
                     for (int c = 0; c < numOutChannels; c++)
                     {
                         var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
-                        if (loss < 0.0001)
+                        Stats[c,index] = loss;
+                        if (loss > 0.00001)
                         {
-                            correct += 1;
-                        }
-                        else
-                        {
-                            Console.WriteLine(Inputs[c].Value  + " " + computed[c][index]);
-                            Console.WriteLine("The loss was too high: " + loss);
+                            Console.WriteLine("The loss was higher than 10^(-5): " + loss);
                         }
                         if (c == numOutChannels-1) 
                         {
@@ -109,7 +107,6 @@ namespace CNN
                 }
                 await ClockAsync();
             }
-            Console.WriteLine("Amount of correct calculations with error less than 10^(-4): " + correct);
         }
     }
 }
