@@ -11,7 +11,7 @@ class MainClass
     {
         using(var sim = new Simulation())
         {
-            for (int c = 1; c <= 2; c++)
+            for (int c = 1; c <= 3; c++)
             {
                 for (int t = 1; t <= 10; t++)
                 {    

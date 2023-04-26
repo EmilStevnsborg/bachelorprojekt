@@ -2,7 +2,7 @@ import json
 import torch
 import torch.nn as nn
 torch.manual_seed(0)
-torch.set_printoptions(sci_mode=False, precision=8)
+torch.set_printoptions(sci_mode=False, precision=20)
     
 
 def create_input_json(model, inChannels, outChannels, height, width, samples, dir):

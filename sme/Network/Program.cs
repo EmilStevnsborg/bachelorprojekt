@@ -10,8 +10,8 @@ class MainClass
     {
         using(var sim = new Simulation())
         {
-            string config = File.ReadAllText(@"config.json");
-            string inputString = File.ReadAllText(@"Tests/input1.json");
+            string config = File.ReadAllText(@"Configs/conv1.json");
+            string inputString = File.ReadAllText(@"Tests/Conv1/input7.json");
 
             ConvConfig convConfig = JsonSerializer.Deserialize<ConvConfig>(config);
             convConfig.PushConfig();

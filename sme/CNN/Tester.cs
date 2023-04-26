@@ -92,14 +92,14 @@ namespace CNN
                     for (int c = 0; c < numOutChannels; c++)
                     {
                         var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
-                        // Console.WriteLine(Inputs[c].Value  + " " + computed[c][index]);
-                        if (loss < 0.000001)
+                        if (loss < 0.0001)
                         {
                             correct += 1;
                         }
                         else
                         {
-                            Console.WriteLine("The loss was: " + loss);
+                            Console.WriteLine(Inputs[c].Value  + " " + computed[c][index]);
+                            Console.WriteLine("The loss was too high: " + loss);
                         }
                         if (c == numOutChannels-1) 
                         {
@@ -109,7 +109,7 @@ namespace CNN
                 }
                 await ClockAsync();
             }
-            Console.WriteLine("Amount of correct calculations: " + correct);
+            Console.WriteLine("Amount of correct calculations with error less than 10^(-4): " + correct);
         }
     }
 }

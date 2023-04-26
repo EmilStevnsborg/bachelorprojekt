@@ -13,7 +13,7 @@ namespace CNN
         [OutputBus]
         public ValueBus Output = Scope.CreateBus<ValueBus>();
 
-        private float max = 0;
+        private float max = -1000;
 
         protected override void OnTick()
         {
@@ -30,7 +30,7 @@ namespace CNN
             Output.Value = max;
             if (Input.LastValue)
             {
-                max = 0;
+                max = -1000;
             }
         }
     }
