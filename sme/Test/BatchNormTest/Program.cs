@@ -12,6 +12,7 @@ class MainClass
     {
         bool configTest = false;
         bool CNNSmallTest = !configTest;
+        string batchNormLayer = "batchNorm2";
         int tests = 50;
         Stats stats = new Stats();
 
@@ -47,7 +48,7 @@ class MainClass
         {
             using(var sim = new Simulation())
             {
-                string config = File.ReadAllText(@"../../CNNSmall/Configs/batchNorm1.json");
+                string config = File.ReadAllText(@"../../CNNSmall/Configs/" + batchNormLayer + ".json");
                 BatchNormConfig[] configs = new BatchNormConfig[tests];
                 Tester[] testers = new Tester[tests];
 
@@ -67,7 +68,7 @@ class MainClass
                     BatchNormConfig convConfig = configs[t-1];
                     Tester tester = testers[t-1];
 
-                    string inputString = File.ReadAllText(@"../../CNNSmall/Tests/BatchNorm1/input" + t + ".json");
+                    string inputString = File.ReadAllText(@"../../CNNSmall/Tests/" + batchNormLayer + "/input" + t + ".json");
                     InputCase input = JsonSerializer.Deserialize<InputCase>(inputString);
 
                     tester.FillBuffer(input.buffer, input.computed);
@@ -84,6 +85,7 @@ class MainClass
                 }
             }
 
+            Console.WriteLine(batchNormLayer);
             Console.WriteLine("The mean of the losses is: " + stats.Mean());
             Console.WriteLine("The variance of the losses is: " + stats.Var());
             Console.WriteLine("The max value of the losses is: " + stats.Max());
