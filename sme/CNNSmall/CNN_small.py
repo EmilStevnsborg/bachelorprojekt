@@ -55,7 +55,6 @@ def create_input_json(buffer, computed, samples, dir):
         with open(dir + "input" + str(i) + ".json", "w") as outfile:
             outfile.write(input_json)
 
-# print(nn.Softmax(dim=1)(model_original(conv1_input)))
 
 # Conv1
 #######################################################################################################
@@ -137,7 +136,7 @@ maxPool1 = model_original.maxPool1
 height, width = list(relu1_output[0,0,:,:].shape)
 
 d = {}
-d["numInChannels"] = conv1.in_channels
+d["numInChannels"] = conv1.out_channels
 d["numOutChannels"] = conv1.out_channels
 d["channelHeight"] = height
 d["channelWidth"] = width
@@ -277,8 +276,13 @@ d["biases"] = lin.bias.tolist()
 
 lin_output = lin(nn.Flatten()(maxPool2_output)).reshape(batch_size,2,1,1)
 
-if True:
+if False:
     lin_json = json.dumps(d, indent=4)
     with open("Configs/linear.json", "w") as outfile:
         outfile.write(lin_json)
     create_input_json(maxPool2_output, lin_output, batch_size, "Tests/linear/")
+
+
+# Softmax
+#######################################################################################################
+print(nn.Softmax(dim=1)(lin_output))

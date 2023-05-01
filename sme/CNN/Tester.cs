@@ -87,13 +87,14 @@ namespace CNN
             // wait for input to arrive
             while(!Inputs[0].enable) await ClockAsync();
             // load streaming input
-            for (int t = 0; t < 1050; t++)
+            for (int t = 0; t < 350; t++)
             {
                 if (Inputs[0].enable) 
                 {
                     for (int c = 0; c < numOutChannels; c++)
                     {
                         var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
+                        // Console.WriteLine(Inputs[c].Value + " " + computed[c][index]);
                         Stats[c,index] = loss;
                         if (loss > 0.00001)
                         {

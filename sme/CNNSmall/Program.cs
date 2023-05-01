@@ -20,8 +20,8 @@ class MainClass
             string maxPool2     = File.ReadAllText(@"Configs/maxPool2.json");
             string linear       = File.ReadAllText(@"Configs/linear.json");
 
-            string inputString  = File.ReadAllText(@"Tests/conv1/input1.json");
-            string outputString = File.ReadAllText(@"Tests/linear/input1.json");
+            string inputString  = File.ReadAllText(@"Tests/conv1/input2.json");
+            string outputString = File.ReadAllText(@"Tests/linear/input2.json");
 
             // initalizing all layers
             ConvConfig conv1Config  = JsonSerializer.Deserialize<ConvConfig>(conv1);

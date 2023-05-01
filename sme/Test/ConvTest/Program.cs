@@ -12,8 +12,8 @@ class MainClass
     {
         bool configTest = false;
         bool CNNSmallTest = !configTest;
-        string convLayer = "conv2";
-        int tests = 50;
+        string convLayer = "conv1";
+        int tests = 1;
         Stats stats = new Stats();
 
         if (configTest) 

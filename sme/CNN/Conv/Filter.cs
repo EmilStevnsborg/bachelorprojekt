@@ -21,7 +21,7 @@ namespace CNN
             inputChannels = new ValueBus[numInChannels];
             kernelOutputs = new ValueBus[numInChannels];
             convKernels = new ConvKernel[numInChannels];
-            valueArrayCtrl = new ValueArrayCtrl(numInChannels);
+            valueArrayCtrl = new ValueArrayCtrl(numInChannels, channelSize);
             plusCtrl = new PlusCtrl();
             bias = new Bias(biasVal);
             for (int i = 0; i < numInChannels; i++)

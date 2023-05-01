@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using SME;
 
 namespace CNN
@@ -11,12 +10,15 @@ namespace CNN
         public ValueBus[] Input;
         [OutputBus]
         public ValueBus Output = Scope.CreateBus<ValueBus>();
-        private int numInChannels;
-        private int i = 0;
-        private List<float> buffer = new List<float>();
-        public ValueArrayCtrl(int numInChannels)
+        private int numInChannels, channelHeight, channelWidth;
+        private int i = 0, k = 0;
+        private float[] buffer;
+        public ValueArrayCtrl(int numInChannels, (int, int) channelSize)
         {
             this.numInChannels = numInChannels;
+            this.channelHeight = channelSize.Item1;
+            this.channelWidth = channelSize.Item2;
+            buffer = new float[numInChannels * channelHeight * channelWidth];
         }
         protected override void OnTick()
         {
@@ -28,25 +30,25 @@ namespace CNN
                 {
                     if (Input[ii].enable)
                     {
-                        buffer.Add(Input[ii].Value);
+                        buffer[i] = Input[ii].Value;
+                        i = i + 1;
                     }
                 }
             }
             // remember to toss buffer after done (check)
-            if (buffer.Count > 0 && i < buffer.Count)
+            if (i > 0 && k < i)
             {
-
-                Output.Value = buffer[i];
+                Output.Value = buffer[k];
                 Output.enable = true;
-                i = i + 1;
-                if (i % numInChannels == 0)
+                k = k + 1;
+                if (k % numInChannels == 0)
                 {
                     Output.LastValue = true;
                 }
-                if (i == buffer.Count)
+                if (k == i)
                 {
-                    buffer = new List<float>();
                     i = 0;
+                    k = 0;
                 }
             }
             
