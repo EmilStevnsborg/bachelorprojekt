@@ -1,47 +1,24 @@
 using System;
+using System.Collections.Generic;
 
 namespace Statistics
 {
     public class Stats
     {
-        private float sum = 0;
-        private float num = 0;
-        private float max = 0;
+        public Dictionary<string, List<float>> Results = new Dictionary<string, List<float>>();
         public Stats()
         {
+            Results["True"] = new List<float>();
+            Results["Pred"] = new List<float>();
         }
 
-        public void Add(float[,] stats)
+        public void AddStats(List<(float, float)> stats)
         {
-            int height = stats.GetLength(0); 
-            int width = stats.GetLength(1);
-
-            for (int i = 0; i < height; i++)
+            foreach ((float,float) vals in stats)
             {
-                for (int j = 0; j < width; j++)
-                {
-                    var val = stats[i,j];
-                    if (val > max)
-                    {
-                        max = val;
-                    }
-                    sum += stats[i,j];
-                    num += 1;
-                }
+                Results["True"].Add(vals.Item1);
+                Results["Pred"].Add(vals.Item2);
             }
-        }
-
-        public float Mean()
-        {
-            return sum/num;
-        }
-        public float Var()
-        {
-            return ((float) Math.Pow(sum, 2)/num - (float) Math.Pow(Mean(), 2));
-        }
-        public float Max()
-        {
-            return max;
         }
 
     }

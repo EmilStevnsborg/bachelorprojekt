@@ -2,6 +2,7 @@ using CNN;
 using System.Threading.Tasks;
 using SME;
 using System;
+using System.Collections.Generic;
 
 namespace CNN
 {
@@ -19,8 +20,7 @@ namespace CNN
         private int channelWidth { get; set; }
         private float[][] buffer { get; set; }
         private float[][] computed { get; set; }
-
-        public float[,] Stats { get; set; }
+        public List<(float, float)> Stats = new List<(float,float)>();
 
         public Tester(int numInChannels,int numOutChannels,(int,int) channelSize)
         {            
@@ -34,8 +34,6 @@ namespace CNN
             this.numOutChannels = numOutChannels;
             channelHeight = channelSize.Item1;
             channelWidth = channelSize.Item2;
-
-            Stats = new float[numOutChannels, channelHeight * channelWidth];
         }
         public void FillBuffer(float[][] buffer, float[][] computed)
         {
@@ -66,7 +64,7 @@ namespace CNN
                         {
                             // Console.WriteLine(Inputs[c].Value + " " + computed[c][index]);
                             var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
-                            Stats[c,index] = loss;
+                            Stats.Add((computed[c][index], Inputs[c].Value));
                             if (loss > 0.00001)
                             {
                                 Console.WriteLine("The loss was higher than 10^(-5): " + loss);
@@ -95,7 +93,7 @@ namespace CNN
                     {
                         var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
                         // Console.WriteLine(Inputs[c].Value + " " + computed[c][index]);
-                        Stats[c,index] = loss;
+                        Stats.Add((computed[c][index], Inputs[c].Value));
                         if (loss > 0.00001)
                         {
                             Console.WriteLine("The loss was higher than 10^(-5): " + loss);

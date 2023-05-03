@@ -13,7 +13,7 @@ class MainClass
         bool configTest = false;
         bool CNNSmallTest = !configTest;
         string reluLayer = "relu2";
-        int tests = 50;
+        int tests = 1000;
         Stats stats = new Stats();
 
         if (configTest) 
@@ -69,7 +69,7 @@ class MainClass
                     ReluConfig reluConfig = configs[t-1];
                     Tester tester = testers[t-1];
 
-                    string inputString = File.ReadAllText(@"../../CNNSmall/Tests/" + reluLayer + "/input" + t + ".json");
+                    string inputString = File.ReadAllText(@"../../CNNSmall/Tests/" + reluLayer + "/inputs/input" + t + ".json");
                     InputCase input = JsonSerializer.Deserialize<InputCase>(inputString);
 
                     tester.FillBuffer(input.buffer, input.computed);
@@ -82,14 +82,15 @@ class MainClass
 
                 for (int t = 0; t < tests; t++) 
                 {               
-                    stats.Add(testers[t].Stats);
+                    stats.AddStats(testers[t].Stats);
                 }
             }
-
-            Console.WriteLine(reluLayer);
-            Console.WriteLine("The mean of the losses is: " + stats.Mean());
-            Console.WriteLine("The variance of the losses is: " + stats.Var());
-            Console.WriteLine("The max value of the losses is: " + stats.Max());
+            // writing results out
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            File.WriteAllText(@"../../CNNSmall/Tests/" + reluLayer + "/output.json", JsonSerializer.Serialize(stats.Results, options));
         }
     }
 }

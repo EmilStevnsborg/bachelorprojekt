@@ -35,7 +35,7 @@ MNIST_test = datasets.MNIST(root='../../Python/data', train=False, download=Fals
 
 test_set = [[data[0], tokenize(data[1])] for data in MNIST_test if data[1] in [1,2]]
 
-batch_size = 100
+batch_size = 1000
 
 test_loader = DataLoader(test_set, batch_size=batch_size)
 
@@ -52,7 +52,7 @@ def create_input_json(buffer, computed, samples, dir):
 
         input_json = json.dumps(d, indent=4)
         
-        with open(dir + "input" + str(i) + ".json", "w") as outfile:
+        with open(dir + "inputs/input" + str(i) + ".json", "w") as outfile:
             outfile.write(input_json)
 
 
@@ -79,7 +79,7 @@ d["biases"] = conv1.bias.tolist()
 
 conv1_output = conv1(conv1_input)
 
-if False:
+if True:
     conv1_json = json.dumps(d, indent=4)
     with open("Configs/conv1.json", "w") as outfile:
         outfile.write(conv1_json)
@@ -103,7 +103,7 @@ d["betas"] = batchNorm1.bias.tolist()
 
 batchNorm1_output = batchNorm1(conv1_output)
 
-if False:
+if True:
     batchNorm1_json = json.dumps(d, indent=4)
     with open("Configs/batchNorm1.json", "w") as outfile:
         outfile.write(batchNorm1_json)
@@ -123,7 +123,7 @@ d["channelWidth"] = width
 
 relu1_output = relu1(batchNorm1_output)
 
-if False:
+if True:
     relu1_json = json.dumps(d, indent=4)
     with open("Configs/relu1.json", "w") as outfile:
         outfile.write(relu1_json)
@@ -150,7 +150,7 @@ d["padVal"] = 0
 
 maxPool1_output = maxPool1(relu1_output)
 
-if False:
+if True:
     maxPool1_json = json.dumps(d, indent=4)
     with open("Configs/maxPool1.json", "w") as outfile:
         outfile.write(maxPool1_json)
@@ -180,7 +180,7 @@ d["biases"] = conv2.bias.tolist()
 
 conv2_output = conv2(maxPool1_output)
 
-if False:
+if True:
     conv2_json = json.dumps(d, indent=4)
     with open("Configs/conv2.json", "w") as outfile:
         outfile.write(conv2_json)
@@ -204,7 +204,7 @@ d["betas"] = batchNorm2.bias.tolist()
 
 batchNorm2_output = batchNorm2(conv2_output)
 
-if False:
+if True:
     batchNorm2_json = json.dumps(d, indent=4)
     with open("Configs/batchNorm2.json", "w") as outfile:
         outfile.write(batchNorm2_json)
@@ -224,7 +224,7 @@ d["channelWidth"] = width
 
 relu2_output = relu1(batchNorm2_output)
 
-if False:
+if True:
     relu2_json = json.dumps(d, indent=4)
     with open("Configs/relu2.json", "w") as outfile:
         outfile.write(relu2_json)
@@ -252,7 +252,7 @@ d["padVal"] = 0
 
 maxPool2_output = maxPool2(relu2_output)
 
-if False:
+if True:
     maxPool2_json = json.dumps(d, indent=4)
     with open("Configs/maxPool2.json", "w") as outfile:
         outfile.write(maxPool2_json)
@@ -276,7 +276,7 @@ d["biases"] = lin.bias.tolist()
 
 lin_output = lin(nn.Flatten()(maxPool2_output)).reshape(batch_size,2,1,1)
 
-if False:
+if True:
     lin_json = json.dumps(d, indent=4)
     with open("Configs/linear.json", "w") as outfile:
         outfile.write(lin_json)
