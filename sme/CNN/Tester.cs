@@ -20,6 +20,7 @@ namespace CNN
         private int channelWidth { get; set; }
         private float[][] buffer { get; set; }
         private float[][] computed { get; set; }
+        private int NumInputs = 0;
         public List<(float, float)> Stats = new List<(float,float)>();
 
         public Tester(int numInChannels,int numOutChannels,(int,int) channelSize)
@@ -60,14 +61,14 @@ namespace CNN
                     // check if input is back during sending
                     if (Inputs[0].enable) 
                     {
+                        NumInputs += 1;
                         for (int c = 0; c < numOutChannels; c++)
                         {
-                            // Console.WriteLine(Inputs[c].Value + " " + computed[c][index]);
                             var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
                             Stats.Add((computed[c][index], Inputs[c].Value));
                             if (loss > 0.00001)
                             {
-                                Console.WriteLine("The loss was higher than 10^(-5): " + loss);
+                                // Console.WriteLine("The loss was higher than 10^(-5): " + loss);
                             }
                             if (c == numOutChannels-1) 
                             {
@@ -85,18 +86,27 @@ namespace CNN
             // wait for input to arrive
             while(!Inputs[0].enable) await ClockAsync();
             // load streaming input
-            for (int t = 0; t < 350; t++)
+            for (int t = 0; t < 600; t++)
             {
+                // This is to make sure to not go through unecessary clock cycles
+                if (NumInputs == 2) 
+                {
+                    NumInputs = 0;
+                    break;
+                }
                 if (Inputs[0].enable) 
                 {
                     for (int c = 0; c < numOutChannels; c++)
                     {
+                        NumInputs += 1;
+                        // Console.WriteLine("c: " + c);
+                        // Console.WriteLine("pred: " + Inputs[c].Value);
+                        // Console.WriteLine("true: " + computed[c][index]);
                         var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
-                        // Console.WriteLine(Inputs[c].Value + " " + computed[c][index]);
                         Stats.Add((computed[c][index], Inputs[c].Value));
                         if (loss > 0.00001)
                         {
-                            Console.WriteLine("The loss was higher than 10^(-5): " + loss);
+                            // Console.WriteLine("The loss was higher than 10^(-5): " + loss);
                         }
                         if (c == numOutChannels-1) 
                         {

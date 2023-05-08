@@ -65,7 +65,7 @@ class MainClass
                 }
                 for (int t = 1; t <= tests; t++)
                 { 
-                    BatchNormConfig convConfig = configs[t-1];
+                    BatchNormConfig batchNormConfig = configs[t-1];
                     Tester tester = testers[t-1];
 
                     string inputString = File.ReadAllText(@"../../CNNSmall/Tests/" + batchNormLayer + "/inputs/input" + t + ".json");
@@ -73,9 +73,9 @@ class MainClass
 
                     tester.FillBuffer(input.buffer, input.computed);
 
-                    convConfig.batchNormLayer.Inputs = tester.Outputs;
-                    convConfig.batchNormLayer.PushInputs();
-                    tester.Inputs = convConfig.batchNormLayer.Outputs;
+                    batchNormConfig.batchNormLayer.Inputs = tester.Outputs;
+                    batchNormConfig.batchNormLayer.PushInputs();
+                    tester.Inputs = batchNormConfig.batchNormLayer.Outputs;
                 } 
                 sim.Run();
 

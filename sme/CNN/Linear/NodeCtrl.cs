@@ -22,8 +22,8 @@ namespace CNN
         private int numInChannels;
         private int channelHeight;
         private int channelWidth;
-        private int i = 0, j = 0, k = 0, adress = 0;
-        private List<float> buffer = new List<float>();
+        private int x = 0, i = 0, j = 0, k = 0, adress = 0;
+        private float[] buffer;
         private bool ramValid = false;
 
         public NodeCtrl(int numInChannels, (int,int) channelSize)
@@ -31,6 +31,7 @@ namespace CNN
             this.numInChannels = numInChannels;
             this.channelHeight = channelSize.Item1;
             this.channelWidth = channelSize.Item2;
+            buffer = new float[numInChannels * channelHeight * channelWidth];
         }
         protected override void OnTick()
         {
@@ -41,13 +42,14 @@ namespace CNN
                 {
                     if (Input[ii].enable)
                     {
-                        buffer.Add(Input[ii].Value);
+                        buffer[x] = Input[ii].Value;
+                        x = x + 1;
                     }
                 }
             }
             OutputValue.enable = OutputWeight.enable = OutputValue.LastValue = false;
             // remember to toss buffer after done (check)
-            if (buffer.Count > 0 && i < buffer.Count)
+            if (x > 0 && i < x)
             {
                 // Issue ram read
                 ram_ctrl.Enabled = true;
@@ -75,12 +77,11 @@ namespace CNN
                     i = i + 1;
 
                     // buffer is done
-                    if (i % (numInChannels * channelHeight * channelWidth) == 0)
+                    if (i == x)
                     {
                         OutputValue.LastValue = true;
-                        buffer = new List<float>();
                         ramValid = false;
-                        i = k = j = adress = 0;
+                        x = i = k = j = adress = 0;
                     }
                 }
             }
