@@ -13,6 +13,7 @@ class CNNSmall(nn.Module):
         self.relu2 = nn.ReLU()
         self.maxPool2 = nn.MaxPool2d((3,3))
         self.lin = nn.Linear(45,2)
+        self.softmax = nn.Softmax(dim=1)
 
         self.network = nn.Sequential( 
             
@@ -36,4 +37,4 @@ class CNNSmall(nn.Module):
         )
     
     def forward(self, x):
-        return self.network(x)
+        return self.softmax(self.network(x))

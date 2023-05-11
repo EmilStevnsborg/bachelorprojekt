@@ -2,6 +2,7 @@ import ast
 import json 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import accuracy_score
 
 def relative_root_mean_squared_error(true, pred):
     num = np.sum(np.square(true - pred))
@@ -31,27 +32,36 @@ def analysis(layers:str):
     
     return dataframe
 
-def accuracy_newtork():
+def analysis_newtork():
     with open("Tests/Network/output.json", "r") as file:
         data = json.load(file)
     
     true = np.array(data["True"])
     pred = np.array(data["Pred"])
 
-    correct = len((np.argmax(true) == np.argmax(pred)))
-    wrong   = len(true) - correct
+    true_class = []
+    pred_class = []
+    
+    for i in range(0, true.shape[0]-1, 2):
+        true_class.append(np.argmax(true[i: i + 2]))
+        pred_class.append(np.argmax(pred[i: i + 2]))
+    
+    acc = accuracy_score(true_class, pred_class)
 
-    print(correct)
-    print(wrong)
+    dataframe = pd.DataFrame({"" : ["accuracy"]})
+    dataframe.loc[len(dataframe)] = acc
+
+    return dataframe
 
 
 layers = ["conv1","batchNorm1","relu1","maxPool1","conv2","batchNorm2","relu2","maxPool2","linear","softmax"]
 
-# layers_df = analysis(layers)
-# print("Stats for the layers isolated")
-# print(layers_df.to_latex(index=False))
-# print("\n")
+layers_df = analysis(layers)
+print("Stats for the layers isolated")
+print(layers_df.to_latex(index=False))
+print("\n")
 
-# accuracy_newtork()
+print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
+print(analysis_newtork())
 
 

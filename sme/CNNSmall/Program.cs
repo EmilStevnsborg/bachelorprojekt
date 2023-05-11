@@ -10,7 +10,7 @@ class MainClass
 {
     public static void Main(string[] args)
     {
-        int tests = 100;
+        int tests = 1000;
         Stats stats = new Stats();
         
         for (int t = 0; t < tests; t++) 
@@ -50,15 +50,15 @@ class MainClass
                 LinearConfig linearConfig = JsonSerializer.Deserialize<LinearConfig>(linear);
                 linearConfig.PushConfig();
 
-                SoftmaxConfig softmaxConfig = JsonSerializer.Deserialize<SoftmaxConfig>(softmax);
-                softmaxConfig.PushConfig();
+                // SoftmaxConfig softmaxConfig = JsonSerializer.Deserialize<SoftmaxConfig>(softmax);
+                // softmaxConfig.PushConfig();
 
                 Tester tester = new Tester(conv1Config.numInChannels, 
                                            linearConfig.numOutChannels,
                                            (conv1Config.channelHeight,conv1Config.channelWidth));
 
                 string inputString  = File.ReadAllText(@"Tests/conv1/inputs/input" + (t+1) + ".json");
-                string outputString = File.ReadAllText(@"Tests/softmax/inputs/input" + (t+1) + ".json");
+                string outputString = File.ReadAllText(@"Tests/linear/inputs/input" + (t+1) + ".json");
                 // input anf output
                 InputCase input = JsonSerializer.Deserialize<InputCase>(inputString);
                 InputCase output = JsonSerializer.Deserialize<InputCase>(outputString);
@@ -85,9 +85,11 @@ class MainClass
                 linearConfig.linearLayer.Inputs = maxPool2Config.maxPoolLayer.Outputs;
                 linearConfig.linearLayer.PushInputs();
 
-                softmaxConfig.softmaxLayer.Inputs = linearConfig.linearLayer.Outputs;
-                softmaxConfig.softmaxLayer.PushInputs();
-                tester.Inputs = softmaxConfig.softmaxLayer.Outputs;
+                // softmaxConfig.softmaxLayer.Inputs = linearConfig.linearLayer.Outputs;
+                // softmaxConfig.softmaxLayer.PushInputs();
+                // tester.Inputs = softmaxConfig.softmaxLayer.Outputs;
+
+                tester.Inputs = linearConfig.linearLayer.Outputs;
                 
                 long ticks = 0;
 
