@@ -22,17 +22,19 @@ def layer_test(homemade_layer, original_layer, input_homemade, input_original, d
     out_original = original_layer(input_original)
 
     print(description)
-    max_error,mean_error,var_error,mean_values = compare(out_homemade, 
+    max_error,mean_error,var_error,mean_values,mean_rrmse = compare(out_homemade, 
                                              transform_input(input_batch = out_original))
     print("    max error: ", max_error)
     print("    mean error: ", mean_error)
     print("    variance of errors: ", var_error)
     print("    mean values: ", mean_values)
+    print("    mean RRMSE: ", mean_rrmse)
 
     if dataframe.empty:
-        data_ = {description: [max_error, mean_error, var_error,mean_values]}
-        dataframe = pd.DataFrame(data = data_, index = ['max','mean','var','mean values'])
+        data_ = {description: [max_error, mean_error, var_error,mean_values,mean_rrmse]}
+        dataframe = pd.DataFrame(data = data_, index = ['max','mean','var','mean values',
+                                                        'mean RRMSE'])
     else:
-        dataframe.insert(len(dataframe.columns),description,[max_error,mean_error,var_error,mean_values])
+        dataframe.insert(len(dataframe.columns),description,[max_error,mean_error,var_error,mean_values,mean_rrmse])
 
     return out_homemade,out_original,dataframe

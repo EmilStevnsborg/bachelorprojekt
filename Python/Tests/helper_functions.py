@@ -32,7 +32,8 @@ def transform_input(input_batch):
 def compare(x: list[float], y: list[float]):
     """
     compares two lists of batches with same amount of channels and returns the greatest error, the 
-    mean error and the variance of the error when comparing x to y
+    mean error and the variance of the error when comparing x to y. Where y is the target and x is
+    the predicted value.
 
     Args:
         x (list[float]): One part of the values that must be compared 
@@ -48,6 +49,7 @@ def compare(x: list[float], y: list[float]):
     global_mean = []
     global_var = []
     global_mean_x = []
+    global_rrmse = []
 
     for b in range(batch_size):
         local_max = np.amax(np.absolute(x[b] - y[b]))
@@ -57,11 +59,12 @@ def compare(x: list[float], y: list[float]):
         global_mean_x.append(local_mean_x)
         global_mean.append(local_mean)
         global_var.append(local_var)
+        global_rrmse.append(np.sqrt(np.mean(np.square(y[b]- x[b]))/np.sum(np.square(y[b]))))
  
         if local_max > global_max_error:
             global_max_error = local_max
     
-    return global_max_error, np.mean(global_mean), np.mean(global_var), np.mean(global_mean_x)
+    return global_max_error, np.mean(global_mean), np.mean(global_var), np.mean(global_mean_x), np.mean(global_rrmse)
 
 def create_conv_homemade(model_conv):
     weights = model_conv.weight
