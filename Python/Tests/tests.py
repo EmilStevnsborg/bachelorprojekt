@@ -11,11 +11,11 @@ import torch.nn.functional as F
 import os
 import sys
 
-sys.path.append('../')
+sys.path.append('../Python/Tests')
 
 from CNN_small_architecture import CNNSmall
-from CNN_layers import linear_layer_homemade
-from CNN_layers import relu_homemade as ReLU
+from Python.CNN_layers import linear_layer_homemade
+from Python.CNN_layers import relu_homemade as ReLU
 from Tests.helper_functions import tokenize, transform_input, compare, create_conv_homemade, \
                                 create_batchnorm_homemade, create_maxpool_homemade
 from test_functions import layer_test
@@ -61,50 +61,52 @@ to an equivalent Pytorch layer when given, the same
 input.\n""")
     
     # Testing conv1
-    _, out_original_conv1 = layer_test(conv1_homemade, model_original.conv1, input_homemade_test,
-                                       input_original_test, "Conv1 test: ")
+    _, out_original_conv1,df = layer_test(conv1_homemade, model_original.conv1, input_homemade_test,
+                                       input_original_test, "Conv1")
 
     # Testing batchnorm1
-    _, out_original_batchnorm1 = layer_test(batchnorm1_homemade, model_original.batchNorm1,
+    _, out_original_batchnorm1,df = layer_test(batchnorm1_homemade, model_original.batchNorm1,
                                            transform_input(out_original_conv1),out_original_conv1,
-                                           "BatchNorm1 test: ")
+                                           "BatchNorm1",dataframe = df)
     
     # Testing relu1
-    _, out_original_relu1 = layer_test(relu_homemade, model_original.relu1, 
+    _, out_original_relu1,df = layer_test(relu_homemade, model_original.relu1, 
                                        transform_input(out_original_batchnorm1), 
-                                       out_original_batchnorm1, "ReLU1 test: ")
+                                       out_original_batchnorm1, "ReLU1",dataframe = df)
     
     # Testing maxpool1
-    _, out_original_maxpool = layer_test(maxpool1_homemade, model_original.maxPool1,
+    _, out_original_maxpool,df = layer_test(maxpool1_homemade, model_original.maxPool1,
                                          transform_input(out_original_relu1), out_original_relu1,
-                                         "MaxPool1 test: ")
+                                         "MaxPool1",dataframe = df)
     
     # Testing conv2
-    _, out_original_conv2 = layer_test(conv2_homemade, model_original.conv2, 
+    _, out_original_conv2,df = layer_test(conv2_homemade, model_original.conv2, 
                                        transform_input(out_original_maxpool), out_original_maxpool,
-                                       "Conv2 test: ")
+                                       "Conv2",dataframe = df)
     
     # Testing batchnorm 2
-    _, out_original_batchnorm2 = layer_test(batchnorm2_homemade, model_original.batchNorm2,
+    _, out_original_batchnorm2,df = layer_test(batchnorm2_homemade, model_original.batchNorm2,
                                             transform_input(out_original_conv2), out_original_conv2,
-                                            "BatchNorm2 test: ")
+                                            "BatchNorm2",dataframe = df)
 
     # Testing relu2
-    _, out_original_relu2 = layer_test(relu_homemade, model_original.relu2, 
+    _, out_original_relu2,df = layer_test(relu_homemade, model_original.relu2, 
                                        transform_input(out_original_batchnorm2), 
-                                       out_original_batchnorm2, "ReLU2 test: ")
+                                       out_original_batchnorm2, "ReLU2",dataframe = df)
     
-    _, out_original_maxpool2 = layer_test(maxpool2_homemade, model_original.maxPool2,
+    _, out_original_maxpool2,df = layer_test(maxpool2_homemade, model_original.maxPool2,
                                          transform_input(out_original_relu2),out_original_relu2,
-                                         "MaxPool2 test: ")
+                                         "MaxPool2",dataframe = df)
     
     out_original_flat = torch.reshape(out_original_maxpool2, (batch_size,45))
     
     # Testing linear
-    _, out_original_lin = layer_test(linear_homemade, model_original.lin,
+    _, out_original_lin,df = layer_test(linear_homemade, model_original.lin,
                                      transform_input(out_original_flat), 
                                      out_original_flat,
-                                     "Linear test: ")
+                                     "Linear",dataframe = df)
+    
+    print(df.to_latex(float_format="%.2e"))
     
 
     print("\n--------------------- TEST 2 ----------------------")
@@ -116,58 +118,65 @@ output of the previous layer - where the homemade layers
 #layers receive input from PyTorch layers..\n""")
     
     # Testing conv1
-    out_homemade_conv1, out_original_conv1 = layer_test(conv1_homemade, model_original.conv1, 
+    out_homemade_conv1, out_original_conv1,df = layer_test(conv1_homemade, model_original.conv1, 
                                                         input_homemade_test, input_original_test, 
-                                                        "Conv1 test: ")
+                                                        "Conv1")
 
     # Testing batchnorm1
-    out_homemade_batchnorm1, out_original_batchnorm1 = layer_test(batchnorm1_homemade, 
+    out_homemade_batchnorm1, out_original_batchnorm1,df = layer_test(batchnorm1_homemade, 
                                                                   model_original.batchNorm1,
                                                                   out_homemade_conv1,
                                                                   out_original_conv1, 
-                                                                  "BatchNorm1 test: ")
+                                                                  "BatchNorm1",
+                                                                  dataframe = df)
     
     # Testing relu1
-    out_homemade_relu1, out_original_relu1 = layer_test(relu_homemade, model_original.relu1, 
+    out_homemade_relu1, out_original_relu1,df = layer_test(relu_homemade, model_original.relu1, 
                                        out_homemade_batchnorm1, out_original_batchnorm1, 
-                                       "ReLU1 test: ")
+                                       "ReLU1",dataframe = df)
     
     # Testing maxpool1
-    out_homemade_maxpool1, out_original_maxpool = layer_test(maxpool1_homemade, 
+    out_homemade_maxpool1, out_original_maxpool,df = layer_test(maxpool1_homemade, 
                                                              model_original.maxPool1,
                                                              out_homemade_relu1, 
-                                                             out_original_relu1,"MaxPool1 test: ")
+                                                             out_original_relu1,"MaxPool1",
+                                                             dataframe = df)
     
     # Testing conv2
-    out_homemade_conv2, out_original_conv2 = layer_test(conv2_homemade, 
+    out_homemade_conv2, out_original_conv2,df = layer_test(conv2_homemade, 
                                                         model_original.conv2,
                                                         out_homemade_maxpool1, 
-                                                        out_original_maxpool,"Conv2 test: ")
+                                                        out_original_maxpool,"Conv2",
+                                                        dataframe = df)
     
     # Testing batchnorm 2
-    out_homemade_batchnorm2, out_original_batchnorm2 = layer_test(batchnorm2_homemade, 
+    out_homemade_batchnorm2, out_original_batchnorm2,df = layer_test(batchnorm2_homemade, 
                                                                   model_original.batchNorm2,
                                                                   out_homemade_conv2, 
                                                                   out_original_conv2,
-                                                                  "BatchNorm2 test: ")
+                                                                  "BatchNorm2",
+                                                                  dataframe = df)
 
     # Testing relu2
-    out_homemade_relu2, out_original_relu2 = layer_test(relu_homemade, model_original.relu2,
+    out_homemade_relu2, out_original_relu2,df = layer_test(relu_homemade, model_original.relu2,
                                                         out_homemade_batchnorm2, 
-                                                        out_original_batchnorm2, "ReLU2 test: ")
+                                                        out_original_batchnorm2, "ReLU2",
+                                                        dataframe = df)
     
     # Testing maxpool2
-    out_homemade_maxpool2, out_original_maxpool2 = layer_test(maxpool2_homemade, 
+    out_homemade_maxpool2, out_original_maxpool2,df = layer_test(maxpool2_homemade, 
                                                               model_original.maxPool2,
                                                               out_homemade_relu2,out_original_relu2,
-                                                              "MaxPool2 test: ")
+                                                              "MaxPool2",dataframe = df)
     
     out_original_flat = torch.reshape(out_original_maxpool2, (batch_size,45))
     
     # Testing linear
-    out_homemade_linear, out_original_lin = layer_test(linear_homemade, model_original.lin,
+    out_homemade_linear, out_original_lin,df = layer_test(linear_homemade, model_original.lin,
                                                        out_homemade_maxpool2, out_original_flat,
-                                                       "Linear test: ", False)
+                                                       "Linear", False,dataframe = df)
+    
+    print(df.to_latex(float_format="%.2e"))
 
 
 

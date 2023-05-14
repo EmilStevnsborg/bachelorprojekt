@@ -1,5 +1,5 @@
 #importing relevant libraries
-
+from __future__ import annotations
 import numpy as np
 import torch
 import torch.nn as nn
@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader, TensorDataset, Subset
 import torch.optim as optim
 import torch.nn.functional as F
 import os
+
 
 from CNN_small_architecture import CNNSmall
 from CNN_layers import conv_homemade
@@ -46,18 +47,21 @@ def compare(x: list[float], y: list[float]):
     global_max_error = 0
     global_mean = []
     global_var = []
+    global_mean_x = []
 
     for b in range(batch_size):
         local_max = np.amax(np.absolute(x[b] - y[b]))
         local_mean = np.mean(np.absolute(x[b] - y[b]))
-        local_var = np.var(np.absolute(x[b] - y[b]))
+        local_var = np.var(np.absolute(x[b] - y[b])) 
+        local_mean_x = np.mean(np.absolute(x[b]))
+        global_mean_x.append(local_mean_x)
         global_mean.append(local_mean)
         global_var.append(local_var)
  
         if local_max > global_max_error:
             global_max_error = local_max
     
-    return global_max_error, np.mean(global_mean), np.mean(global_var)
+    return global_max_error, np.mean(global_mean), np.mean(global_var), np.mean(global_mean_x)
 
 def create_conv_homemade(model_conv):
     weights = model_conv.weight
