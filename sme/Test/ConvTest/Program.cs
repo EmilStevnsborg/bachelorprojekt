@@ -13,7 +13,7 @@ class MainClass
         bool configTest = false;
         bool CNNSmallTest = !configTest;
         string convLayer = "conv1";
-        int tests = 1000;
+        int tests = 1;
         Stats stats = new Stats();
 
         if (configTest) 
@@ -77,7 +77,13 @@ class MainClass
                     convConfig.convLayer.PushInputs();
                     tester.Inputs = convConfig.convLayer.Outputs;
                 } 
-                sim.Run();
+                long ticks = 0;
+
+                sim
+                .AddTicker(s => ticks = Scope.Current.Clock.Ticks)
+                .Run();
+
+                Console.WriteLine(ticks);
 
                 for (int t = 0; t < tests; t++) 
                 {               

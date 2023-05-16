@@ -32,7 +32,7 @@ def analysis(layers:str):
     
     return dataframe
 
-def analysis_newtork():
+def analysis_network():
     with open("Tests/Network/output.json", "r") as file:
         data = json.load(file)
     
@@ -58,10 +58,11 @@ layers = ["conv1","batchNorm1","relu1","maxPool1","conv2","batchNorm2","relu2","
 
 layers_df = analysis(layers)
 print("Stats for the layers isolated")
-print(layers_df.to_latex(index=False))
+# print(layers_df.to_latex(index=False))
+print(layers_df)
 print("\n")
 
 print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
-print(analysis_newtork())
+print(analysis_network())
 
 

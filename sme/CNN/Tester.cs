@@ -30,7 +30,7 @@ namespace CNN
             {
                 Outputs[i] = Scope.CreateBus<ValueBus>();
             }
-                        
+
             this.numInChannels = numInChannels;
             this.numOutChannels = numOutChannels;
             channelHeight = channelSize.Item1;
@@ -61,9 +61,10 @@ namespace CNN
                     // check if input is back during sending
                     if (Inputs[0].enable) 
                     {
-                        NumInputs += 1;
+                        // Console.WriteLine(NumInputs);
                         for (int c = 0; c < numOutChannels; c++)
                         {
+                            NumInputs += 1;
                             var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
                             Stats.Add((computed[c][index], Inputs[c].Value));
                             if (loss > 0.00001)
@@ -85,9 +86,9 @@ namespace CNN
             await ClockAsync();
             // wait for input to arrive
             while(!Inputs[0].enable) await ClockAsync();
-            // load streaming input
-            var expectedOutputs = 2;
-            for (int t = 0; t < 500; t++)
+            // load streaming input, remember that individual send values at different times
+            var expectedOutputs = computed.Length * computed[0].Length;
+            for (int t = 0; t < 10000; t++)
             {
                 // This is to make sure to not go through unecessary clock cycles
                 if (NumInputs == expectedOutputs) 
@@ -95,12 +96,15 @@ namespace CNN
                     NumInputs = 0;
                     break;
                 }
+                // Console.WriteLine(t + " " + NumInputs);
                 if (Inputs[0].enable)
                 {
                     for (int c = 0; c < numOutChannels; c++)
-                    {
+                    { 
+                        // Console.WriteLine(Inputs[c].Value);
                         NumInputs += 1;
-                        Console.WriteLine("pred: " + Inputs[c].Value + " " + computed[c][index] + " " + index);
+                        Stats.Add((computed[c][index], Inputs[c].Value));
+                        // Console.WriteLine("pred: " + Inputs[c].Value + " " + computed[c][index] + " " + index);
                         if (c == numOutChannels-1) 
                         {
                             index += 1;
