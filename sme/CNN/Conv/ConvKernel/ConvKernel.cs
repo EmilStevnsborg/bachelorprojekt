@@ -40,23 +40,34 @@ namespace CNN
             // Instantiate the processes
             ram  = new TrueDualPortMemory<float>(kh*kw, weights);
             kernelCtrl = new ConvKernelCtrl(channelSize, kernelSize, stride, padding, padVal);
-            weightValue = new WeightValue();
+            weightValueA = new WeightValue();
+            weightValueB = new WeightValue();
+            plusTwo = new PlusTwo();
             plusCtrl = new PlusCtrl();
 
             // Connect the buses
-            kernelCtrl.ram_ctrl = ram.ControlA;
-            kernelCtrl.ram_read = ram.ReadResultA;
+            kernelCtrl.ram_ctrlA = ram.ControlA;
+            kernelCtrl.ram_readA = ram.ReadResultA;
+            kernelCtrl.ram_ctrlB = ram.ControlB;
+            kernelCtrl.ram_readB = ram.ReadResultB;
 
-            weightValue.InputValue = kernelCtrl.OutputValue;
-            weightValue.InputWeight = kernelCtrl.OutputWeight;
+            weightValueA.InputValue = kernelCtrl.OutputValueA;
+            weightValueA.InputWeight = kernelCtrl.OutputWeightA;
+            weightValueB.InputValue = kernelCtrl.OutputValueB;
+            weightValueB.InputWeight = kernelCtrl.OutputWeightB;
+
+            plusTwo.InputA = weightValueA.Output;
+            plusTwo.InputB = weightValueB.Output;
             
-            plusCtrl.Input = weightValue.Output;
+            plusCtrl.Input = plusTwo.Output;
         }
 
         // Hold the internal processes as fields
         private TrueDualPortMemory<float> ram;
         private ConvKernelCtrl kernelCtrl;
-        private WeightValue weightValue;
+        private WeightValue weightValueA;
+        private WeightValue weightValueB;
+        private PlusTwo plusTwo;
         private PlusCtrl plusCtrl;
     }
 }

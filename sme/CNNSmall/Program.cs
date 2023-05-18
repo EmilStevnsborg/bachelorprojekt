@@ -107,7 +107,7 @@ class MainClass
             {
                 WriteIndented = true
             };
-            File.WriteAllText(@"Tests/Network/output.json", JsonSerializer.Serialize(stats.Results, options));
+            File.WriteAllText(@"Tests/Network/outputTest.json", JsonSerializer.Serialize(stats.Results, options));
         }
     }
 }

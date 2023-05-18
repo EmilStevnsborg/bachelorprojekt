@@ -54,7 +54,6 @@ namespace CNN
                     for (int k = 0; k < numInChannels; k++)
                     {
                         Outputs[k].Value = buffer[k][i * channelWidth + j];
-                        // Console.WriteLine(i + " " + j + " " + k);
                         Outputs[k].enable = true;
                     }
                     await ClockAsync();
@@ -67,9 +66,9 @@ namespace CNN
                             NumInputs += 1;
                             var loss = Math.Abs(Inputs[c].Value - computed[c][index]);
                             Stats.Add((computed[c][index], Inputs[c].Value));
-                            if (loss > 0.00001)
+                            if (loss > 0.0000001)
                             {
-                                // Console.WriteLine("The loss was higher than 10^(-5): " + loss);
+                                // Console.WriteLine("The loss was higher than 10^(-7): " + loss);
                             }
                             if (c == numOutChannels-1) 
                             {
@@ -101,10 +100,9 @@ namespace CNN
                 {
                     for (int c = 0; c < numOutChannels; c++)
                     { 
-                        // Console.WriteLine(Inputs[c].Value);
                         NumInputs += 1;
                         Stats.Add((computed[c][index], Inputs[c].Value));
-                        // Console.WriteLine("pred: " + Inputs[c].Value + " " + computed[c][index] + " " + index);
+                        // Console.WriteLine("pred: " + Inputs[c].Value + " " + computed[c][index] + " " + (Inputs[c].Value - computed[c][index]));
                         if (c == numOutChannels-1) 
                         {
                             index += 1;
