@@ -21,13 +21,35 @@ namespace CNN
 
         public MaxPoolKernel((int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
         {
-            kernelCtrl = new PoolKernelCtrl(channelSize, kernelSize, stride, padding, padVal);
+            // channel input
+            var ch = channelSize.Item1;
+            var cw = channelSize.Item2;
+
+            // padding size
+            var ph = padding.Item1;
+            var pw = padding.Item2;
+
+            float[] buffer = new float[(ch + 2 * ph) * (cw + 2 * pw)];
+            // fill in padding
+            Helper.Padding(ref buffer, ch, cw, ph, pw, padVal);
+            
+            // Instantiate the processes
+            ram  = new TrueDualPortMemory<float>((ch + 2 * ph) * (cw + 2 * pw), buffer);
+            kernelCtrl = new PoolKernelCtrl(channelSize, kernelSize, stride, padding);
             max = new Max();
 
             // Connect the buses
-            max.Input = kernelCtrl.OutputValue;
+            kernelCtrl.ram_ctrlA = ram.ControlA;
+            kernelCtrl.ram_readA = ram.ReadResultA;
+            kernelCtrl.ram_ctrlB = ram.ControlB;
+            kernelCtrl.ram_readB = ram.ReadResultB;
+
+            max.InputA = kernelCtrl.OutputValueA;
+            max.InputB = kernelCtrl.OutputValueB;
         }
 
+        // Hold the internal processes as fields
+        private TrueDualPortMemory<float> ram;
         private PoolKernelCtrl kernelCtrl;
         private Max max;
 

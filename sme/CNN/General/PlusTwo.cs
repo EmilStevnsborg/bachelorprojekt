@@ -20,9 +20,9 @@ namespace CNN
             if (InputA.enable && InputB.enable)
             {
                 Output.Value = InputA.Value + InputB.Value;
+                Output.enable = InputA.enable;
+                Output.LastValue = InputA.LastValue;
             }
-            Output.enable = InputA.enable;
-            Output.LastValue = InputA.LastValue;
         }
     }
 }

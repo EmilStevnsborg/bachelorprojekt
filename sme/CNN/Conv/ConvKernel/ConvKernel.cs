@@ -25,21 +25,17 @@ namespace CNN
             var ch = channelSize.Item1;
             var cw = channelSize.Item2;
 
-            // kernel (slice height and width)
-            var kh = kernelSize.Item1;
-            var kw = kernelSize.Item2;
+            // padding size
+            var ph = padding.Item1;
+            var pw = padding.Item2;
 
-            // stride
-            var sr = stride.Item1;
-            var sc = stride.Item2;
-
-            // upsample channel output
-            var uh = ch - (kh-1) - (sr-1);
-            var uw = cw - (kw-1) - (sc-1);
-
+            float[] buffer = new float[(ch + 2 * ph) * (cw + 2 * pw)];
+            // fill in padding
+            Helper.Padding(ref buffer, ch, cw, ph, pw, padVal);
+            
             // Instantiate the processes
-            ram  = new TrueDualPortMemory<float>(kh*kw, weights);
-            kernelCtrl = new ConvKernelCtrl(channelSize, kernelSize, stride, padding, padVal);
+            ram  = new TrueDualPortMemory<float>((ch + 2 * ph) * (cw + 2 * pw), buffer);
+            kernelCtrl = new ConvKernelCtrl(channelSize, kernelSize, stride, padding, weights);
             weightValueA = new WeightValue();
             weightValueB = new WeightValue();
             plusTwo = new PlusTwo();

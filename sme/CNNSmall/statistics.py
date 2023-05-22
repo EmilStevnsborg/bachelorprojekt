@@ -64,5 +64,6 @@ print("\n")
 
 print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
 print(analysis_network())
+print(analysis(["Network"]))
 
 

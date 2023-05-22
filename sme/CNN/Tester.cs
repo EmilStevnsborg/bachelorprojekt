@@ -111,6 +111,7 @@ namespace CNN
                 }
                 await ClockAsync();
             }
+            // Console.WriteLine(NumInputs);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using SME;
 
 namespace CNN
@@ -18,7 +19,7 @@ namespace CNN
             this.numInChannels = numInChannels;
             this.channelHeight = channelSize.Item1;
             this.channelWidth = channelSize.Item2;
-            buffer = new float[numInChannels * channelHeight * channelWidth];
+            buffer = new float[numInChannels];
         }
         protected override void OnTick()
         {
@@ -30,14 +31,16 @@ namespace CNN
                 {
                     if (Input[ii].enable)
                     {
-                        buffer[i] = Input[ii].Value;
+                        // Console.WriteLine(Input[ii].Value);
+                        buffer[ii] = Input[ii].Value;
                         i = i + 1;
                     }
                 }
             }
-            // remember to toss buffer after done (check)
+            // If Inputs have loaded go through them
             if (i > 0 && k < i)
             {
+                // Console.WriteLine(numInChannels + " " + i + " " + k);
                 Output.Value = buffer[k];
                 Output.enable = true;
                 k = k + 1;
