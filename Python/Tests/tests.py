@@ -22,7 +22,7 @@ from test_functions import layer_test
 
 def main(batch_size_ : int = 2):
     # Importing data
-    MNIST_test = datasets.MNIST(root='./data', train=True, download=True, 
+    MNIST_test = datasets.MNIST(root='./data', train=False, download=True, 
                                 transform=torchvision.transforms.ToTensor())
     test_set = [[data[0], tokenize(data[1])] for data in MNIST_test if data[1] in [1,2]]
     batch_size = batch_size_ # batch size must be greater than 1
@@ -175,6 +175,26 @@ output of the previous layer - where the homemade layers
     out_homemade_linear, out_original_lin,df = layer_test(linear_homemade, model_original.lin,
                                                        out_homemade_maxpool2, out_original_flat,
                                                        "Linear", False,dataframe = df)
+
+    fails = 0
+
+    for i in range(batch_size_): 
+        original = -1
+        homemade = -1
+        if out_homemade_linear[i][0] > out_homemade_linear[i][1]:
+            homemade = 0
+        else:
+            homemade = 1
+        if out_original_lin[i][0] > out_homemade_linear[i][1]:
+            original = 0
+        else:
+            original = 1
+        if original == homemade:
+            continue
+        else:
+            fails += 1
+    
+    print("FAILS: ", fails)
     
     print(df.to_latex(float_format="%.2e"))
 
