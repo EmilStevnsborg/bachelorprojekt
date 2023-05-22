@@ -8,8 +8,11 @@ namespace Statistics
         public Dictionary<string, List<float>> Results = new Dictionary<string, List<float>>();
         public Stats()
         {
-            Results["True"] = new List<float>();
             Results["Pred"] = new List<float>();
+        }
+        public void TrueKeyAdd()
+        {
+            Results["True"] = new List<float>();
         }
 
         public void AddStats(List<(float, float)> stats)
@@ -18,6 +21,13 @@ namespace Statistics
             {
                 Results["True"].Add(vals.Item1);
                 Results["Pred"].Add(vals.Item2);
+            }
+        }
+        public void AddStats(List<float> stats)
+        {
+            foreach (float val in stats)
+            {
+                Results["Pred"].Add(val);
             }
         }
 
