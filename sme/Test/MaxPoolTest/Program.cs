@@ -12,7 +12,7 @@ class MainClass
     {
         bool configTest = false;
         bool CNNSmallTest = !configTest;
-        string mpLayer = "maxPool1";
+        string mpLayer = "maxPool2";
         int tests = 1000;
         Stats stats = new Stats();
 
@@ -77,12 +77,18 @@ class MainClass
                     maxPoolConfig.maxPoolLayer.PushInputs();
                     tester.Inputs = maxPoolConfig.maxPoolLayer.Outputs;
                 } 
-                sim.Run();
+                long ticks = 0;
+
+                sim
+                .AddTicker(s => ticks = Scope.Current.Clock.Ticks)
+                .Run();
 
                 for (int t = 0; t < tests; t++) 
                 {               
                     stats.AddStats(testers[t].Stats);
                 }
+
+                Console.WriteLine(ticks);
             }
             // writing results out
             var options = new JsonSerializerOptions

@@ -47,12 +47,18 @@ class MainClass
                     softmaxConfig.softmaxLayer.PushInputs();
                     tester.Inputs = softmaxConfig.softmaxLayer.Outputs;
                 } 
-                sim.Run();
+                long ticks = 0;
+
+                sim
+                .AddTicker(s => ticks = Scope.Current.Clock.Ticks)
+                .Run();
 
                 for (int t = 0; t < tests; t++) 
-                {
+                {               
                     stats.AddStats(testers[t].Stats);
                 }
+
+                Console.WriteLine(ticks);
             }
             // writing results out
             var options = new JsonSerializerOptions

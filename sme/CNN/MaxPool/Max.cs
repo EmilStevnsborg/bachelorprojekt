@@ -8,7 +8,9 @@ namespace CNN
     public class Max : SimpleProcess
     {
         [InputBus]
-        public ValueBus Input;
+        public ValueBus InputA;
+        [InputBus]
+        public ValueBus InputB;
 
         [OutputBus]
         public ValueBus Output = Scope.CreateBus<ValueBus>();
@@ -17,19 +19,29 @@ namespace CNN
 
         protected override void OnTick()
         {
-            // The flag can be forwarded.
-            Output.enable = Input.LastValue;
+            // Console.WriteLine(InputA.Value + "," + InputB.Value);
             // Output should only be updated when the input is valid.
-            if (Input.enable)
+            if (InputA.enable && InputB.enable)
             {
-                if (Input.Value > max)
+                if (InputA.Value > max || InputB.Value > max)
                 {
-                    max = Input.Value;
+                    if (InputB.Value > InputA.Value)
+                    {
+                        // Console.WriteLine(InputB.Value);
+                        max = InputB.Value;
+                    }
+                    else
+                    {
+                        // Console.WriteLine(InputA.Value);
+                        max = InputA.Value;
+                    }
                 }
             }
             Output.Value = max;
-            if (Input.LastValue)
+            Output.enable = InputA.LastValue;
+            if (InputA.LastValue)
             {
+                // Console.WriteLine("her: " + InputB.Value);
                 max = -1000;
             }
         }
