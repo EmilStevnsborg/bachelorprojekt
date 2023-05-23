@@ -10,7 +10,6 @@ import torch.optim as optim
 import torch.nn.functional as F
 import os
 
-
 from CNN_small_architecture import CNNSmall
 from CNN_layers import conv_homemade
 from CNN_layers import maxpool_homemade

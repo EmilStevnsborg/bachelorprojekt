@@ -42,9 +42,17 @@ def analysis_network():
     true_class = []
     pred_class = []
     
-    for i in range(0, true.shape[0]-1, 2):
-        true_class.append(np.argmax(true[i: i + 2]))
-        pred_class.append(np.argmax(pred[i: i + 2]))
+    for i in range(0, 10, 2):
+        true_val = true[i: i + 2]
+        pred_val = pred[i: i + 2]
+        loss = true_val - pred_val
+
+        true_class.append(np.argmax(true_val))
+        pred_class.append(np.argmax(pred_val))
+
+        if (np.argmax(true_val) != np.argmax(pred_val)):
+
+            print("Index: {}, True value: {}, Pred value: {}, loss: {}".format(i,true_val, pred_val, loss))
     
     acc = accuracy_score(true_class, pred_class)
 
@@ -56,11 +64,11 @@ def analysis_network():
 
 layers = ["conv1","batchNorm1","relu1","maxPool1","conv2","batchNorm2","relu2","maxPool2","linear","softmax"]
 
-layers_df = analysis(layers)
-print("Stats for the layers isolated")
-# print(layers_df.to_latex(index=False))
-print(layers_df)
-print("\n")
+# layers_df = analysis(layers)
+# print("Stats for the layers isolated")
+# # print(layers_df.to_latex(index=False))
+# print(layers_df)
+# print("\n")
 
 print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
 print(analysis_network())
