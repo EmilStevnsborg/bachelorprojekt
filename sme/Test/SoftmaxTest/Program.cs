@@ -13,6 +13,7 @@ class MainClass
         bool CNNSmallTest = true;
         int tests = 1000;
         Stats stats = new Stats();
+        stats.TrueKeyAdd();
 
         if (CNNSmallTest)
         {

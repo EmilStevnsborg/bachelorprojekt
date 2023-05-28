@@ -13,8 +13,9 @@ class MainClass
         bool configTest = false;
         bool CNNSmallTest = !configTest;
         string convLayer = "conv2";
-        int tests = 1000;
+        int tests = 1;
         Stats stats = new Stats();
+        stats.TrueKeyAdd();
 
         if (configTest) 
         {

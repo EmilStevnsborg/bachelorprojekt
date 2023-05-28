@@ -15,6 +15,7 @@ class MainClass
         string batchNormLayer = "batchNorm2";
         int tests = 1000;
         Stats stats = new Stats();
+        stats.TrueKeyAdd();
 
         if (configTest) 
         {

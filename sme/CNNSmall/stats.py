@@ -64,11 +64,11 @@ def analysis_network():
 
 layers = ["conv1","batchNorm1","relu1","maxPool1","conv2","batchNorm2","relu2","maxPool2","linear","softmax"]
 
-# layers_df = analysis(layers)
-# print("Stats for the layers isolated")
-# # print(layers_df.to_latex(index=False))
-# print(layers_df)
-# print("\n")
+layers_df = analysis(layers)
+print("Stats for the layers isolated")
+# print(layers_df.to_latex(index=False))
+print(layers_df.to_string())
+print("\n")
 
 print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
 print(analysis_network())
