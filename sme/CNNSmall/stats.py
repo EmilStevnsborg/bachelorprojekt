@@ -66,7 +66,7 @@ layers = ["conv1","batchNorm1","relu1","maxPool1","conv2","batchNorm2","relu2","
 
 layers_df = analysis(layers)
 print("Stats for the layers isolated")
-# print(layers_df.to_latex(index=False))
+print(layers_df.to_latex(index=False))
 print(layers_df.to_string())
 print("\n")
 
