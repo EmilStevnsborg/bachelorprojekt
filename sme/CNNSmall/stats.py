@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score
 
+np.set_printoptions(precision=2, suppress=True, formatter={'float': '{:0.2e}'.format})
+pd.set_option('display.float_format', '{:.2e}'.format)
+
 def relative_root_mean_squared_error(true, pred):
     num = np.sum(np.square(true - pred))
     den = np.sum(np.square(pred))
@@ -73,5 +76,7 @@ print("\n")
 print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
 print(analysis_network())
 print(analysis(["Network"]))
+
+
 
 

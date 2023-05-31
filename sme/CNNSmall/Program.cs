@@ -13,7 +13,7 @@ class MainClass
     {
         int tests = 1000;
         bool save = false;
-        bool layerOutputs = false;
+        bool layerOutputs = true;
         // main stats
         Stats stats = new Stats();
         stats.TrueKeyAdd();
