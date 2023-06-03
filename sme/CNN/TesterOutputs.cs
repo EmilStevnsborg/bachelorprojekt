@@ -32,13 +32,22 @@ namespace CNN
         {
             await ClockAsync();
             // wait for input to arrive
-            while(!Inputs[0].enable) await ClockAsync();
+            for (int t = 0; t < 10000; t++)
+            {
+                if(!Inputs[0].enable) {await ClockAsync();}
+                else 
+                {
+                    // Console.WriteLine("start: " + (t+1)); 
+                    break;
+                }
+            }
             // load streaming input, remember that individual send values at different times
             for (int t = 0; t < 10000; t++)
             {
                 // This is to make sure to not go through unecessary clock cycles
                 if (NumInputs == expectedOutputs) 
                 {
+                    // Console.WriteLine("end: " + (t+1));
                     NumInputs = 0;
                     break;
                 }
@@ -53,7 +62,7 @@ namespace CNN
                 }
                 await ClockAsync();
             }
-            Console.WriteLine(expectedOutputs + " " + numInChannels + " " + channelHeight + " " + channelWidth + " " + NumInputs);
+            // Console.WriteLine(expectedOutputs + " " + numInChannels + " " + channelHeight + " " + channelWidth + " " + NumInputs);
         }
     }
 }
