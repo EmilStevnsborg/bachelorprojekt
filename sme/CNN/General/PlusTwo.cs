@@ -16,6 +16,7 @@ namespace CNN
 
         protected override void OnTick()
         {
+            Output.enable = Output.LastValue = false;
             // Output should only be updated when the input is valid.
             if (InputA.enable && InputB.enable)
             {

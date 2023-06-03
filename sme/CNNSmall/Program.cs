@@ -11,9 +11,9 @@ class MainClass
 {
     public static void Main(string[] args)
     {
-        int tests = 10;
+        int tests = 1000;
         bool save = false;
-        bool layerOutputs = true;
+        bool layerOutputs = false;
         // main stats
         Stats stats = new Stats();
         stats.TrueKeyAdd();
@@ -277,7 +277,7 @@ class MainClass
             {
                 WriteIndented = true
             };
-            File.WriteAllText(@"Tests/Network/outputTest.json", JsonSerializer.Serialize(stats.Results, options));         
+            File.WriteAllText(@"Tests/Network/output.json", JsonSerializer.Serialize(stats.Results, options));         
         }
     }
 }

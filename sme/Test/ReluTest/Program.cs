@@ -15,6 +15,7 @@ class MainClass
         string reluLayer = "relu2";
         int tests = 1000;
         Stats stats = new Stats();
+        stats.TrueKeyAdd();
 
         if (configTest) 
         {

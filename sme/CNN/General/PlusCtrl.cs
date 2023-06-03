@@ -25,7 +25,6 @@ namespace CNN
             Output.enable = Output.LastValue = Input.LastValue;
             if (Input.LastValue)
             {
-                // Console.WriteLine("Result of plus: " + buffer);
                 buffer = 0;
             }
         }

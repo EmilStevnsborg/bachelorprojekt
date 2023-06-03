@@ -7,10 +7,15 @@ namespace CNN
     [ClockedProcess]
     public class ConvKernel
     {
-        public ValueBus Input
+        public ValueBus InputA
         {
-            get => kernelCtrl.Input;
-            set => kernelCtrl.Input = value;
+            get => kernelCtrl.InputValueA;
+            set => kernelCtrl.InputValueA = value;
+        }
+        public ValueBus InputB
+        {
+            get => kernelCtrl.InputValueB;
+            set => kernelCtrl.InputValueB = value;
         }
 
         public ValueBus Output
@@ -19,33 +24,14 @@ namespace CNN
             set => plusCtrl.Output = value;
         }
 
-        public ConvKernel(float[] weights, (int,int) channelSize, (int,int) kernelSize, (int,int) stride, (int,int) padding, float padVal)
-        {
-            // channel input
-            var ch = channelSize.Item1;
-            var cw = channelSize.Item2;
-
-            // padding size
-            var ph = padding.Item1;
-            var pw = padding.Item2;
-
-            float[] buffer = new float[(ch + 2 * ph) * (cw + 2 * pw)];
-            // fill in padding
-            Helper.Padding(ref buffer, ch, cw, ph, pw, padVal);
-            
+        public ConvKernel((int,int) kernelSize, float[] weights)
+        {            
             // Instantiate the processes
-            ram  = new TrueDualPortMemory<float>((ch + 2 * ph) * (cw + 2 * pw), buffer);
-            kernelCtrl = new ConvKernelCtrl(channelSize, kernelSize, stride, padding, weights);
+            kernelCtrl = new KernelCtrl(kernelSize, weights);
             weightValueA = new WeightValue();
             weightValueB = new WeightValue();
             plusTwo = new PlusTwo();
             plusCtrl = new PlusCtrl();
-
-            // Connect the buses
-            kernelCtrl.ram_ctrlA = ram.ControlA;
-            kernelCtrl.ram_readA = ram.ReadResultA;
-            kernelCtrl.ram_ctrlB = ram.ControlB;
-            kernelCtrl.ram_readB = ram.ReadResultB;
 
             weightValueA.InputValue = kernelCtrl.OutputValueA;
             weightValueA.InputWeight = kernelCtrl.OutputWeightA;
@@ -59,8 +45,7 @@ namespace CNN
         }
 
         // Hold the internal processes as fields
-        private TrueDualPortMemory<float> ram;
-        private ConvKernelCtrl kernelCtrl;
+        private KernelCtrl kernelCtrl;
         private WeightValue weightValueA;
         private WeightValue weightValueB;
         private PlusTwo plusTwo;

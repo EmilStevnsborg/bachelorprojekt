@@ -16,6 +16,7 @@ class MainClass
         string linLayer = "linear";
         int tests = 1000;
         Stats stats = new Stats();
+        stats.TrueKeyAdd();
 
         if (configTest) 
         {
