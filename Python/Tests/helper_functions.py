@@ -9,13 +9,15 @@ from torch.utils.data import DataLoader, TensorDataset, Subset
 import torch.optim as optim
 import torch.nn.functional as F
 import os
+import sys
+
+sys.path.insert(0, "..")
 
 from CNN_small_architecture import CNNSmall
 from CNN_layers import conv_homemade
 from CNN_layers import maxpool_homemade
 from CNN_layers import batchnorm_homemade
 from CNN_layers import linear_layer_homemade
-from CNN_layers import elu_homemade
 
 def tokenize(num):
     if num == 1:
