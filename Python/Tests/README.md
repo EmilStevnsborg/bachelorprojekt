@@ -4,4 +4,4 @@ This folder contains different tests which all test different aspects of the imp
 
 The tests that are also a part of the thesis are descriped below:
 
-*CPU_Speed_test*
+## *CPU_Speed_test*
