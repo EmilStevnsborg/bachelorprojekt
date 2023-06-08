@@ -9,14 +9,8 @@ import torch.nn.functional as F
 import os
 import sys
 
-sys.path.append('../Python/Tests')
-
 from CNN_small_architecture import CNNSmall
-from Python.CNN_layers import linear_layer_homemade
-from Python.CNN_layers import relu_homemade as ReLU
-from Tests.helper_functions import tokenize, transform_input, compare, create_conv_homemade, \
-                                create_batchnorm_homemade, create_maxpool_homemade
-from test_functions import layer_test
+from helper_functions import tokenize
 
 import time
 
