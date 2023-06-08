@@ -1,4 +1,4 @@
-# Content
+## Content
 This folder contains a Python implementation of a Convolutional-, BatchNorm-, ReLU-, MaxPool- and Linear-layer. 
 
 The implementation of these layers is found in the CNN_layers folder and the tests of theses layers is found in the Tests folder.
