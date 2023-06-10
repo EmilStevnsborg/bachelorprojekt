@@ -1,6 +1,0 @@
-Date, "description"
-8/2, "Worked on small CNN, had some problems with training, especially with the CrossEntropyLoss function. Package problems, solved using colab"
-9/2, "Had some trouble with finding CNN visualization tool. Went back to vs code after creating new conda enviroment and no dependency issues"
-10/2, "Understanding dataflow in CNN, and mapping into Python plain code"
-15/2, "MaxPool requires us to think about padding odd inputs or removing rows/columns such that stride and kernel size fit input dimensions.
-        Choice we make is to not consider odd inputs most likely"

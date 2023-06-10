@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score
 
-np.set_printoptions(precision=2, suppress=True, formatter={'float': '{:0.2e}'.format})
-pd.set_option('display.float_format', '{:.2e}'.format)
+np.set_printoptions(precision=2, suppress=True, formatter={'float': '{:e}'.format})
+pd.set_option('display.float_format', '{:.1e}'.format)
 
 def relative_root_mean_squared_error(true, pred):
     num = np.sum(np.square(true - pred))
@@ -97,21 +97,21 @@ def analysis_network():
 
 layers = ["conv1","batchNorm1","relu1","maxPool1","conv2","batchNorm2","relu2","maxPool2","linear","softmax"]
 
-# layers_df = analysis(layers)
-# print("Stats for the layers isolated")
-# print(layers_df.to_latex(index=False))
-# print(layers_df.to_string())
-# print("\n")
+layers_df = analysis(layers)
+print("Stats for the layers isolated")
+print(layers_df.to_latex(index=False))
+print(layers_df.to_string())
+print("\n")
 
 layers_accum_df = analysis_accum(layers)
-print("Stats for the layers isolated")
+print("Stats for the layers accumulated")
 print(layers_accum_df.to_latex(index=False))
 print(layers_accum_df.to_string())
 print("\n")
 
-# print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
-# print(analysis_network())
-# print(analysis(["Network"]))
+print("Accuracy of class predictions of SME implementation in relation to the PyTorch implementation")
+print(analysis_network())
+print(analysis(["Network"]))
 
 
 
