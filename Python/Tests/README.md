@@ -6,7 +6,7 @@ The tests that are also a part of the thesis are descriped below:
 
 ### *CPU_speed_test*
 
-This test can be run in a terminal by the following command.
+This test can be run in a terminal by the following command. This test should run with the environment found in the CPU_environment.yml file.
 
 ```
 Python CPU_speed_test <batch_size> <number_of_iterations>
