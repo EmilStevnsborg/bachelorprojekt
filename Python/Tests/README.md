@@ -16,7 +16,7 @@ The test will write the test results to the terminal.
 
 ### *GPU_speed_test*
 
-This test can be run in a terminal by the following command.
+This test can be run in a terminal by the following command. This test should run with the environment found in the GPU_environment.yml file.
 
 ```
 Python GPU_speed_test <batch_size> <number_of_iterations>
